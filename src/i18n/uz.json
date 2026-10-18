@@ -21,7 +21,8 @@
     "merchants": "Merchantlar",
     "approvals": "Tasdiqlar",
     "salesPoints": "Saytlar",
-    "fees": "Komissiyalar"
+    "fees": "Komissiyalar",
+    "cards": "Kartalar"
   },
   "status": {
     "PENDING_VERIFICATION": "Hujjatlar tekshirilmoqda",
@@ -349,6 +350,41 @@
       "SUSPENDED": "Toʻxtatildi",
       "RESUMED": "Davom ettirildi",
       "REVOKED": "Bekor qilindi"
+    }
+  },
+  "cards": {
+    "title": "Kartalar",
+    "description": "Karta qaysi toʻlov tizimiga tegishli va karta raqamlari faqat shifrlangan holda saqlanadigan ombor.",
+    "bins": "BIN reyestri",
+    "binsHint": "Uzcard va Humo karta raqamlari prefikslari, ishga tushganda va har kecha yangilanadi.",
+    "sync": "Yangilash",
+    "synced": "Yangilandi: Uzcard {{uzcard}}, Humo {{humo}} ta diapazon",
+    "syncKept": "{{scheme}} javob bermadi, eski roʻyxat saqlandi.",
+    "prefix": "Prefiks",
+    "issuer": "Emitent",
+    "syncedAt": "Yangilangan",
+    "noBins": "Hali BIN diapazonlari yoʻq",
+    "noBinsText": "Ikkala tizimdan olish uchun yangilang.",
+    "lookup": "Kartaning birinchi raqamlarini tekshirish",
+    "lookupHint": "6 dan 8 tagacha raqam. Eng uzun mos prefiks yutadi.",
+    "unknownBin": "Bunday raqamlar bilan boshlanadigan kartani hech qaysi tizim chiqarmaydi.",
+    "vault": "Karta ombori",
+    "vaultHint": "Raqamlar faqat shifrlangan holda saqlanadi. Qidiruv kalitli indeks orqali boʻladi, hech bir karta deshifrlanmaydi va har bir qidiruv yoziladi.",
+    "number": "Karta raqami",
+    "find": "Kartani topish",
+    "token": "Karta tokeni",
+    "boundAt": "Bogʻlangan",
+    "history": "Kartadan kim foydalangan",
+    "notBound": "Hali bogʻlanmagan",
+    "status": {
+      "PENDING": "Kod kutilmoqda",
+      "ACTIVE": "Bogʻlangan"
+    },
+    "action": {
+      "BINDING_STARTED": "Bogʻlash boshlandi",
+      "BOUND": "Bogʻlandi",
+      "DEBITED": "Yechildi",
+      "LOOKED_UP": "Qidirildi"
     }
   }
 }

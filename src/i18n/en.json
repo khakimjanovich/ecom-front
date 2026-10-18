@@ -21,7 +21,8 @@
     "merchants": "Merchants",
     "approvals": "Approvals",
     "salesPoints": "Websites",
-    "fees": "Fees"
+    "fees": "Fees",
+    "cards": "Cards"
   },
   "status": {
     "PENDING_VERIFICATION": "Checking documents",
@@ -349,6 +350,41 @@
       "SUSPENDED": "Suspended",
       "RESUMED": "Resumed",
       "REVOKED": "Revoked"
+    }
+  },
+  "cards": {
+    "title": "Cards",
+    "description": "Which scheme a card belongs to, and the vault that keeps card numbers encrypted.",
+    "bins": "BIN registry",
+    "binsHint": "Card number prefixes from Uzcard and Humo, synced at startup and every night.",
+    "sync": "Sync now",
+    "synced": "Synced: Uzcard {{uzcard}}, Humo {{humo}} ranges",
+    "syncKept": "{{scheme}} didn't answer, so its old list is kept.",
+    "prefix": "Prefix",
+    "issuer": "Issuer",
+    "syncedAt": "Synced",
+    "noBins": "No BIN ranges yet",
+    "noBinsText": "Sync to fetch them from both schemes.",
+    "lookup": "Check a card's first digits",
+    "lookupHint": "6 to 8 digits. The longest matching prefix wins.",
+    "unknownBin": "No scheme issues cards starting with these digits.",
+    "vault": "Card vault",
+    "vaultHint": "Numbers are stored only encrypted. A search uses a keyed index, so no stored card is decrypted, and every search is logged.",
+    "number": "Card number",
+    "find": "Find card",
+    "token": "Card token",
+    "boundAt": "Bound",
+    "history": "Who used this card",
+    "notBound": "Not bound yet",
+    "status": {
+      "PENDING": "Waiting for code",
+      "ACTIVE": "Bound"
+    },
+    "action": {
+      "BINDING_STARTED": "Binding started",
+      "BOUND": "Bound",
+      "DEBITED": "Debited",
+      "LOOKED_UP": "Looked up"
     }
   }
 }

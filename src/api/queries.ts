@@ -2,6 +2,7 @@ import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tansta
 import {
   api,
   call,
+  cardApi,
   commissionApi,
   terminalApi,
   type CommissionSchemas,
@@ -396,3 +397,47 @@ export function useTerminalAdmin(salesPointId: string) {
   });
   return { register, act };
 }
+
+/* ------- cards: BIN registry and vault ------- */
+
+export const useBins = () =>
+  useQuery({
+    queryKey: ['bins'],
+    queryFn: () => call(cardApi.GET('/api/v1/admin/bins')),
+  });
+
+export function useSyncBins() {
+  const queries = useQueryClient();
+  return useMutation({
+    mutationFn: () => call(cardApi.POST('/api/v1/admin/bins/sync')),
+    onSuccess: () => queries.invalidateQueries({ queryKey: ['bins'] }),
+  });
+}
+
+/** Runs once the person has typed enough digits; a miss is an answer (404), not a failure to retry. */
+export const useBinLookup = (digits: string) =>
+  useQuery({
+    queryKey: ['bins', 'lookup', digits],
+    queryFn: () => call(cardApi.GET('/api/v1/admin/bins/lookup', { params: { query: { digits } } })),
+    enabled: /^\d{6,8}$/.test(digits),
+    retry: false,
+  });
+
+/** A POST, so the card number never lands in a URL, a log or the query cache. Each search is audited. */
+export function useCardSearch() {
+  const queries = useQueryClient();
+  return useMutation({
+    mutationFn: (number: string) => call(cardApi.POST('/api/v1/admin/cards/search', { body: { number } })),
+    onSuccess: () => queries.invalidateQueries({ queryKey: ['cards', 'audit'] }),
+  });
+}
+
+export const useCardAudit = (cardToken: string | undefined) =>
+  useQuery({
+    queryKey: ['cards', 'audit', cardToken],
+    queryFn: () =>
+      call(
+        cardApi.GET('/api/v1/admin/cards/{cardToken}/audit', { params: { path: { cardToken: cardToken! } } }),
+      ),
+    enabled: !!cardToken,
+  });

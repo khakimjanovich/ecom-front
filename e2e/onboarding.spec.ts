@@ -29,7 +29,7 @@ async function signOut(page: Page) {
   await expect(page).toHaveURL(/localhost:5180\/?$/);
 }
 
-test('a merchant signs up in Uzbek, two admins activate it, it creates an API client, gets a website switched on with a terminal and a fee agreed by two admins', async ({
+test('a merchant signs up in Uzbek, two admins activate it, it creates an API client, gets a website switched on with a terminal and a fee agreed by two admins, and the bank checks card schemes', async ({
   page,
 }) => {
   const email = `e2e-${Date.now()}@example.uz`;
@@ -202,4 +202,17 @@ test('a merchant signs up in Uzbek, two admins activate it, it creates an API cl
   await page.getByRole('option', { name: /Main shop/ }).click();
   await calculator.getByRole('button', { name: 'Calculate' }).click();
   await expect(calculator.getByText(/1,001\.00/)).toBeVisible();
+
+  // Cards: the BIN registry knows both schemes, and the vault finds nothing it hasn't stored.
+  await page.getByRole('link', { name: 'Cards' }).click();
+  await page.getByRole('button', { name: 'Sync now' }).click();
+  await expect(page.getByText(/Synced: Uzcard \d+, Humo \d+ ranges/)).toBeVisible();
+  await expect(page.getByRole('cell', { name: '860014' })).toBeVisible();
+  await page.getByLabel("Check a card's first digits").fill('98600901');
+  await expect(page.getByText('Humo', { exact: true }).first()).toBeVisible();
+  await page.getByLabel("Check a card's first digits").fill('41111111');
+  await expect(page.getByText('No scheme issues cards starting with these digits.')).toBeVisible();
+  await page.getByLabel('Card number').fill('8600 1402 0000 0033');
+  await page.getByRole('button', { name: 'Find card' }).click();
+  await expect(page.getByText('No such card.')).toBeVisible();
 });
