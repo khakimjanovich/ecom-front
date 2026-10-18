@@ -1,0 +1,219 @@
+{
+  "common": {
+    "signIn": "Kirish",
+    "signUp": "Roʻyxatdan oʻtish",
+    "signOut": "Chiqish",
+    "cancel": "Bekor qilish",
+    "done": "Tayyor",
+    "language": "Til",
+    "account": "Hisob",
+    "menu": "Menyu",
+    "copy": "Nusxalash",
+    "copied": "Nusxalandi"
+  },
+  "brand": {
+    "merchantPortal": "Merchant kabineti",
+    "bankConsole": "Bank konsoli"
+  },
+  "nav": {
+    "overview": "Umumiy",
+    "apiClients": "API mijozlar",
+    "merchants": "Merchantlar",
+    "approvals": "Tasdiqlar"
+  },
+  "status": {
+    "PENDING_VERIFICATION": "Hujjatlar tekshirilmoqda",
+    "VERIFIED": "Tekshirilgan",
+    "WAITING_CONTRACT": "Shartnoma kutilmoqda",
+    "APPROVED": "Maʼqullangan",
+    "ACTIVE": "Faol",
+    "SUSPENDED": "Toʻxtatilgan",
+    "TERMINATED": "Bekor qilingan",
+    "REJECTED": "Rad etilgan"
+  },
+  "journey": {
+    "signup": {
+      "label": "Roʻyxatdan oʻtish",
+      "hint": "Email tasdiqlangan"
+    },
+    "documents": {
+      "label": "Hujjatlar",
+      "hint": "Bank tekshiradi"
+    },
+    "contract": {
+      "label": "Shartnoma",
+      "hint": "Bank bilan imzolanadi"
+    },
+    "activation": {
+      "label": "Faollashtirish",
+      "hint": "Ikki administrator kelishadi"
+    },
+    "live": {
+      "label": "Ishga tushdi",
+      "hint": "Toʻlovlar qabul qilinadi"
+    }
+  },
+  "next": {
+    "PENDING_VERIFICATION": "Bank hujjatlaringizni tekshirmoqda. Tayyor boʻlganda sizga email yuboramiz.",
+    "VERIFIED": "Hujjatlaringiz joyida. Bank shartnomangizni tayyorlamoqda.",
+    "WAITING_CONTRACT": "Shartnomangiz tayyorlanmoqda. Uni bankdagi menejeringiz bilan imzolang.",
+    "APPROVED": "Shartnoma imzolandi. Tez orada ikki bank administratori hisobingizni yoqadi.",
+    "ACTIVE": "Siz ishga tushdingiz. Saytingiz toʻlov qabul qilishi uchun API mijoz yarating.",
+    "SUSPENDED": "Hisobingiz toʻxtatilgan. Sababi va qanday tiklashni bilish uchun bank bilan bogʻlaning.",
+    "TERMINATED": "Bu hisob yopilgan va endi toʻlov qabul qila olmaydi.",
+    "REJECTED": "Bank bu hisobni maʼqullay olmadi. Tafsilotlarni bankdan soʻrang."
+  },
+  "landing": {
+    "title": "Saytingizda karta orqali toʻlov qabul qiling",
+    "subtitle": "Roʻyxatdan oʻting, emailingizni tasdiqlang — qolganini bank bajaradi: hujjatlar, shartnoma va ikki administrator tomonidan faollashtirish.",
+    "create": "Merchant hisobini yaratish",
+    "points": {
+      "card": {
+        "title": "Karta maʼlumotlari bankda qoladi",
+        "text": "Xaridor kartani bankning oʻz sahifasida kiritadi."
+      },
+      "people": {
+        "title": "Ikki kishi tekshiradi",
+        "text": "Har bir merchantni ishga tushishdan oldin ikki bank administratori tasdiqlaydi."
+      },
+      "keys": {
+        "title": "Serverlaringiz uchun kalitlar",
+        "text": "API mijozlar yarating va ularning maxfiy kalitlarini oʻzingiz almashtiring."
+      }
+    }
+  },
+  "signup": {
+    "title": "Merchant hisobini yarating",
+    "subtitle": "Manzilni tasdiqlash uchun emailingizga kod yuboramiz.",
+    "company": "Kompaniya nomi",
+    "email": "Ish emaili",
+    "password": "Parol",
+    "passwordHint": "Kamida 12 belgi. Qisqa jumla ham yaxshi.",
+    "submit": "Hisob yaratish",
+    "haveAccount": "Hisobingiz bormi?",
+    "haveCode": "Menda kod bor",
+    "errors": {
+      "company": "Kompaniya nomini kiriting",
+      "email": "Toʻgʻri email kiriting",
+      "password": "Kamida 12 belgi"
+    }
+  },
+  "verify": {
+    "title": "Emailingizni tekshiring",
+    "subtitle": "Yuborilgan 6 xonali kodni kiriting. U bir necha daqiqa amal qiladi.",
+    "email": "Email",
+    "code": "Kod",
+    "submit": "Tasdiqlash",
+    "resend": "Yangi kod yuborish",
+    "resendIn": "Yangi kodni {{seconds}} soniyadan keyin yuborish mumkin",
+    "sent": "Yangi kod yuborildi",
+    "doneTitle": "Email tasdiqlandi",
+    "doneText": "Email va parolingiz bilan kiring. Endi bank hujjatlaringizni tekshiradi."
+  },
+  "overview": {
+    "next": "Keyingi qadam",
+    "createClient": "API mijoz yaratish",
+    "email": "Email",
+    "verified": "Tasdiqlangan",
+    "notVerified": "Tasdiqlanmagan",
+    "contract": "Shartnoma",
+    "notSigned": "Hali imzolanmagan",
+    "signedUp": "Roʻyxatdan oʻtgan"
+  },
+  "clients": {
+    "title": "API mijozlar",
+    "description": "Serverlaringiz ular orqali kirish tokenlarini oladi (OAuth2 client credentials).",
+    "new": "Yangi mijoz",
+    "emptyTitle": "Hali API mijozlar yoʻq",
+    "emptyText": "Bankka murojaat qiladigan har bir server yoki muhit uchun alohida yarating.",
+    "lockedTitle": "API mijozlar ishga tushgandan keyin ochiladi",
+    "lockedText": "Ikki bank administratori hisobingizni faollashtirgach, bu yerda serverlaringiz uchun kalitlar yaratishingiz mumkin.",
+    "clientId": "Client ID",
+    "secret": "Mijoz maxfiy kaliti",
+    "created": "Yaratilgan",
+    "rotated": "Kalit almashtirilgan",
+    "never": "Hech qachon",
+    "rotate": "Kalitni almashtirish",
+    "rotateTitle": "Kalit almashtirilsinmi?",
+    "rotateText": "Joriy kalit darhol ishlamay qoladi. Shundan soʻng serverlaringizni yangilang.",
+    "newTitle": "Yangi API mijozingiz",
+    "newSecretTitle": "Yangi kalit",
+    "onceWarning": "Bu kalit faqat bir marta koʻrsatiladi. Uni hoziroq serveringizning maxfiy kalitlar omboriga saqlang.",
+    "stored": "Kalitni xavfsiz saqladim"
+  },
+  "partners": {
+    "title": "Merchantlar",
+    "description": "Barcha merchantlar, avval yangilari.",
+    "search": "Kompaniya yoki email boʻyicha qidirish",
+    "allStatuses": "Barcha holatlar",
+    "company": "Kompaniya",
+    "email": "Email",
+    "signedUp": "Roʻyxatdan oʻtgan",
+    "emptyTitle": "Merchantlar topilmadi",
+    "emptyText": "Boshqa holat yoki soʻrovni sinab koʻring."
+  },
+  "partner": {
+    "back": "Barcha merchantlar",
+    "details": "Maʼlumotlar",
+    "history": "Tarix",
+    "noHistory": "Hali oʻzgarishlar yoʻq.",
+    "actions": "Amallar",
+    "noActions": "Bu holatda amallar yoʻq.",
+    "by": "{{name}}",
+    "contractNumber": "Shartnoma raqami",
+    "contractHint": "Imzolangan shartnomadagidek",
+    "reason": "Sabab",
+    "reasonHint": "Merchant tarixida saqlanadi",
+    "reasonShort": "Kamida bir necha soʻz yozing",
+    "emailNotVerified": "Merchant hali emailini tasdiqlamagan, shuning uchun hujjatlarni maʼqullab boʻlmaydi.",
+    "done": "Bajarildi",
+    "action": {
+      "verify": "Hujjatlarni maʼqullash",
+      "reject": "Rad etish",
+      "contract": "Shartnomani imzolash",
+      "requestActivation": "Faollashtirishni soʻrash",
+      "suspend": "Toʻxtatish",
+      "restore": "Tiklash",
+      "terminate": "Bekor qilish"
+    },
+    "explain": {
+      "verify": "Hujjatlar joyida; merchant shartnoma bosqichiga oʻtadi.",
+      "reject": "Ariza butunlay rad etiladi.",
+      "contract": "Imzolangan shartnomani qayd etish. Merchant maʼqullangan boʻladi.",
+      "requestActivation": "Merchantni yoqishni ikkinchi administratordan soʻrash.",
+      "suspend": "Muammo hal boʻlguncha toʻlovlarni toʻxtatish.",
+      "restore": "Toʻlovlarga yana ruxsat berish.",
+      "terminate": "Hisobni butunlay yopish."
+    },
+    "requested": "Faollashtirish soʻraldi. Uni boshqa administrator «Tasdiqlar» boʻlimida tasdiqlashi kerak."
+  },
+  "approvals": {
+    "title": "Tasdiqlar",
+    "description": "Ikkinchi administratorni kutayotgan faollashtirish soʻrovlari, avval eskilari.",
+    "emptyTitle": "Hech narsa kutmayapti",
+    "emptyText": "Administrator merchantni faollashtirishni soʻraganda, soʻrov boshqa administrator qaror qilishi uchun shu yerda paydo boʻladi.",
+    "requestedBy": "Soʻragan: {{name}}",
+    "expires": "Muddati {{when}} tugaydi",
+    "approve": "Tasdiqlash",
+    "reject": "Rad etish",
+    "yours": "Bu soʻrovni siz yaratgansiz. Qarorni boshqa administrator qabul qiladi.",
+    "approved": "{{company}} endi faol",
+    "rejected": "Soʻrov rad etildi"
+  },
+  "role": {
+    "title": "Bu boʻlim sizning hisobingiz uchun emas",
+    "partner": "Merchant sahifalari email tasdiqlangandan keyin ochiladi. Hozirgina tasdiqlagan boʻlsangiz, chiqib qayta kiring.",
+    "admin": "Administrator konsoli faqat bank xodimlari uchun.",
+    "home": "Bosh sahifamga"
+  },
+  "notFound": {
+    "title": "Sahifa topilmadi",
+    "text": "Havola eskirgan yoki notoʻgʻri yozilgan boʻlishi mumkin.",
+    "home": "Bosh sahifaga"
+  },
+  "errors": {
+    "title": "Bajarilmadi",
+    "network": "Server bilan bogʻlanib boʻlmadi. Internet aloqasini tekshiring.",
+    "unknown": "Nimadir xato ketdi. Qaytadan urinib koʻring."
+  }
+}

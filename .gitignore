@@ -1,0 +1,9 @@
+node_modules/
+dist/
+src/api/generated/
+test-results/
+playwright-report/
+.env.local
+*.log
+.DS_Store
+*.tsbuildinfo

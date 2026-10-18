@@ -1,0 +1,219 @@
+{
+  "common": {
+    "signIn": "Sign in",
+    "signUp": "Sign up",
+    "signOut": "Sign out",
+    "cancel": "Cancel",
+    "done": "Done",
+    "language": "Language",
+    "account": "Account",
+    "menu": "Menu",
+    "copy": "Copy",
+    "copied": "Copied"
+  },
+  "brand": {
+    "merchantPortal": "Merchant portal",
+    "bankConsole": "Bank console"
+  },
+  "nav": {
+    "overview": "Overview",
+    "apiClients": "API clients",
+    "merchants": "Merchants",
+    "approvals": "Approvals"
+  },
+  "status": {
+    "PENDING_VERIFICATION": "Checking documents",
+    "VERIFIED": "Verified",
+    "WAITING_CONTRACT": "Waiting for contract",
+    "APPROVED": "Approved",
+    "ACTIVE": "Active",
+    "SUSPENDED": "Suspended",
+    "TERMINATED": "Terminated",
+    "REJECTED": "Rejected"
+  },
+  "journey": {
+    "signup": {
+      "label": "Sign up",
+      "hint": "Email verified"
+    },
+    "documents": {
+      "label": "Documents",
+      "hint": "The bank checks them"
+    },
+    "contract": {
+      "label": "Contract",
+      "hint": "Signed with the bank"
+    },
+    "activation": {
+      "label": "Activation",
+      "hint": "Two bank admins agree"
+    },
+    "live": {
+      "label": "Live",
+      "hint": "Taking payments"
+    }
+  },
+  "next": {
+    "PENDING_VERIFICATION": "The bank is checking your documents. We will email you when it is done.",
+    "VERIFIED": "Your documents are fine. The bank is preparing your contract.",
+    "WAITING_CONTRACT": "Your contract is being prepared. Sign it with your bank manager.",
+    "APPROVED": "Your contract is signed. Two bank admins will switch your account on shortly.",
+    "ACTIVE": "You are live. Create an API client so your website can take payments.",
+    "SUSPENDED": "Your account is paused. Contact the bank to find out why and how to restore it.",
+    "TERMINATED": "This account is closed and can no longer take payments.",
+    "REJECTED": "The bank could not approve this account. Contact the bank for details."
+  },
+  "landing": {
+    "title": "Take card payments on your website",
+    "subtitle": "Sign up, verify your email, and the bank takes it from there: documents, contract, and two-admin activation.",
+    "create": "Create a merchant account",
+    "points": {
+      "card": {
+        "title": "Card data stays with the bank",
+        "text": "Buyers type their card on the bank’s own page."
+      },
+      "people": {
+        "title": "Checked by two people",
+        "text": "Two bank admins approve every merchant before it goes live."
+      },
+      "keys": {
+        "title": "Keys for your servers",
+        "text": "Create API clients and rotate their secrets yourself."
+      }
+    }
+  },
+  "signup": {
+    "title": "Create a merchant account",
+    "subtitle": "We will email you a code to confirm the address.",
+    "company": "Company name",
+    "email": "Work email",
+    "password": "Password",
+    "passwordHint": "At least 12 characters. A short sentence works well.",
+    "submit": "Create account",
+    "haveAccount": "Already have an account?",
+    "haveCode": "I have a code",
+    "errors": {
+      "company": "Enter your company name",
+      "email": "Enter a valid email",
+      "password": "Use at least 12 characters"
+    }
+  },
+  "verify": {
+    "title": "Check your email",
+    "subtitle": "Enter the 6-digit code we sent. It works for a few minutes.",
+    "email": "Email",
+    "code": "Code",
+    "submit": "Verify",
+    "resend": "Send a new code",
+    "resendIn": "Send a new code in {{seconds}}s",
+    "sent": "A new code is on its way",
+    "doneTitle": "Email verified",
+    "doneText": "Sign in with your email and password. The bank will now check your documents."
+  },
+  "overview": {
+    "next": "What happens next",
+    "createClient": "Create an API client",
+    "email": "Email",
+    "verified": "Verified",
+    "notVerified": "Not verified",
+    "contract": "Contract",
+    "notSigned": "Not signed yet",
+    "signedUp": "Signed up"
+  },
+  "clients": {
+    "title": "API clients",
+    "description": "Your servers use these to get access tokens (OAuth2 client credentials).",
+    "new": "New client",
+    "emptyTitle": "No API clients yet",
+    "emptyText": "Create one for each server or environment that calls the bank.",
+    "lockedTitle": "API clients open when you are live",
+    "lockedText": "Once two bank admins activate your account, you can create keys for your servers here.",
+    "clientId": "Client ID",
+    "secret": "Client secret",
+    "created": "Created",
+    "rotated": "Secret rotated",
+    "never": "Never",
+    "rotate": "Rotate secret",
+    "rotateTitle": "Rotate the secret?",
+    "rotateText": "The current secret stops working immediately. Update your servers right after.",
+    "newTitle": "Your new API client",
+    "newSecretTitle": "New secret",
+    "onceWarning": "This is the only time you will see this secret. Store it in your server's secret manager now.",
+    "stored": "I have stored the secret safely"
+  },
+  "partners": {
+    "title": "Merchants",
+    "description": "Every merchant, newest first.",
+    "search": "Search by company or email",
+    "allStatuses": "All statuses",
+    "company": "Company",
+    "email": "Email",
+    "signedUp": "Signed up",
+    "emptyTitle": "No merchants found",
+    "emptyText": "Try another status or search."
+  },
+  "partner": {
+    "back": "All merchants",
+    "details": "Details",
+    "history": "History",
+    "noHistory": "No changes yet.",
+    "actions": "Actions",
+    "noActions": "Nothing to do in this status.",
+    "by": "by {{name}}",
+    "contractNumber": "Contract number",
+    "contractHint": "As printed on the signed contract",
+    "reason": "Reason",
+    "reasonHint": "Saved in the merchant's history",
+    "reasonShort": "Write at least a few words",
+    "emailNotVerified": "The merchant hasn't verified their email yet, so documents can't be approved.",
+    "done": "Done",
+    "action": {
+      "verify": "Approve documents",
+      "reject": "Reject",
+      "contract": "Sign contract",
+      "requestActivation": "Request activation",
+      "suspend": "Suspend",
+      "restore": "Restore",
+      "terminate": "Terminate"
+    },
+    "explain": {
+      "verify": "The documents are fine; the merchant moves on to the contract.",
+      "reject": "The application is refused for good.",
+      "contract": "Record the signed contract. The merchant becomes approved.",
+      "requestActivation": "Ask a second admin to switch the merchant on.",
+      "suspend": "Pause payments until the problem is solved.",
+      "restore": "Allow payments again.",
+      "terminate": "Close the account for good."
+    },
+    "requested": "Activation requested. Another admin has to approve it in Approvals."
+  },
+  "approvals": {
+    "title": "Approvals",
+    "description": "Activation requests waiting for a second admin, oldest first.",
+    "emptyTitle": "Nothing waiting",
+    "emptyText": "When an admin asks to activate a merchant, it shows up here for someone else to decide.",
+    "requestedBy": "Requested by {{name}}",
+    "expires": "Expires {{when}}",
+    "approve": "Approve",
+    "reject": "Reject",
+    "yours": "You made this request. Another admin has to decide it.",
+    "approved": "{{company}} is now active",
+    "rejected": "Request rejected"
+  },
+  "role": {
+    "title": "This area isn't for your account",
+    "partner": "Merchant pages open once your email is verified. If you just verified it, sign out and sign in again.",
+    "admin": "Only bank staff can open the admin console.",
+    "home": "Go to my home"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "text": "The link may be old or mistyped.",
+    "home": "Go home"
+  },
+  "errors": {
+    "title": "Not done",
+    "network": "We could not reach the server. Check your connection.",
+    "unknown": "Something went wrong. Please try again."
+  }
+}
