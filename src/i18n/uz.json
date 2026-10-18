@@ -19,7 +19,8 @@
     "overview": "Umumiy",
     "apiClients": "API mijozlar",
     "merchants": "Merchantlar",
-    "approvals": "Tasdiqlar"
+    "approvals": "Tasdiqlar",
+    "salesPoints": "Saytlar"
   },
   "status": {
     "PENDING_VERIFICATION": "Hujjatlar tekshirilmoqda",
@@ -215,5 +216,66 @@
     "title": "Bajarilmadi",
     "network": "Server bilan bogʻlanib boʻlmadi. Internet aloqasini tekshiring.",
     "unknown": "Nimadir xato ketdi. Qaytadan urinib koʻring."
+  },
+  "spStatus": {
+    "DRAFT": "Qoralama",
+    "ACTIVE": "Toʻlov qabul qilmoqda",
+    "SUSPENDED": "Toʻxtatilgan",
+    "CLOSED": "Yopilgan"
+  },
+  "scheme": {
+    "UZCARD": "Uzcard",
+    "HUMO": "Humo"
+  },
+  "check": {
+    "PASSED": "Oʻtdi",
+    "FAILED": "Oʻtmadi"
+  },
+  "salesPoints": {
+    "title": "Saytlar",
+    "description": "Toʻlov qabul qiladigan har bir saytni bank tekshiradi va yoqadi.",
+    "add": "Sayt qoʻshish",
+    "emptyTitle": "Hali saytlar yoʻq",
+    "emptyText": "Xaridorlar toʻlov qiladigan saytni qoʻshing. Toʻlov qabul qilishdan oldin bank uni tekshiradi.",
+    "name": "Nomi",
+    "nameHint": "Sizga va bankka koʻrinadi, masalan «Asosiy doʻkon»",
+    "website": "Sayt",
+    "websiteHint": "https:// bilan boshlanadi",
+    "returnUrls": "Qaytish manzillari",
+    "returnUrlsHint": "Toʻlovdan soʻng xaridor qaytadigan manzillar. Har biridan keyin Enter bosing; ular saytning oʻz domenida boʻlishi kerak.",
+    "editReturnUrls": "Qaytish manzillarini oʻzgartirish",
+    "schemes": "Kartalar",
+    "noSchemes": "Hali belgilanmagan",
+    "refund": "Qaytarish muddati",
+    "days": "{{count}} kun",
+    "plusDays": "+{{count}} kun: {{reason}}",
+    "lastCheck": "Sayt tekshiruvi",
+    "notChecked": "Hali tekshirilmagan",
+    "added": "Sayt qoʻshildi. Bank uni tekshiradi.",
+    "saved": "Saqlandi",
+    "draftOnly": "Qaytish manzillarini faqat bank saytni tekshirguncha oʻzgartirish mumkin."
+  },
+  "salesPoint": {
+    "back": "Merchantga qaytish",
+    "checks": "Sayt tekshiruvlari",
+    "noChecks": "Hali tekshiruvlar yoʻq.",
+    "recordCheck": "Tekshiruvni yozish",
+    "result": "Natija",
+    "findings": "Nima topildi",
+    "findingsHint": "Har bir qatorga bittadan. Tekshiruv oʻtmasa majburiy.",
+    "save": "Saqlash",
+    "settings": "Shartnoma shartlari",
+    "refundDays": "Qaytarish muddati, kun",
+    "extendedDays": "Qoʻshimcha kunlar",
+    "extendedReason": "Qoʻshimcha kunlar sababi",
+    "activate": "Yoqish",
+    "suspend": "Toʻxtatish",
+    "restore": "Tiklash",
+    "close": "Butunlay yopish",
+    "activateHint": "Faol merchant, oxirgi tekshiruv oʻtgan va kamida bitta karta kerak.",
+    "websitesOf": "Saytlar",
+    "noWebsites": "Bu merchantda hali saytlar yoʻq.",
+    "by": "{{name}} · {{when}}",
+    "reason": "Sabab"
   }
 }

@@ -19,9 +19,10 @@ import { useTranslation } from 'react-i18next';
 import { Link, useParams } from 'react-router';
 import type { Partner } from '../../api/client';
 import { messageFor } from '../../api/errors';
-import { useHistory, usePartner, usePartnerAction } from '../../api/queries';
+import { useHistory, usePartner, usePartnerAction, usePartnerSalesPoints } from '../../api/queries';
 import { Journey } from '../../components/Journey';
 import { PromptModal } from '../../components/PromptModal';
+import { SalesPointBadge } from '../../components/SalesPointFacts';
 import { StatusBadge } from '../../components/StatusBadge';
 import { notifyError, notifySuccess } from '../../lib/notify';
 import { ACTIONS, type AdminAction, DESTRUCTIVE, NEEDS_REASON } from '../../lib/partner';
@@ -64,7 +65,10 @@ export function PartnerPage() {
 
       <Grid gap="lg">
         <Grid.Col span={{ base: 12, md: 5 }}>
-          <Actions partner={partner.data} />
+          <Stack>
+            <Actions partner={partner.data} />
+            <Websites partnerId={partner.data.id} />
+          </Stack>
         </Grid.Col>
         <Grid.Col span={{ base: 12, md: 7 }}>
           <Card withBorder padding="lg">
@@ -176,6 +180,34 @@ function Actions({ partner }: { partner: Partner }) {
         loading={act.isPending}
         onSubmit={(value) => prompt && run(prompt, value)}
       />
+    </Card>
+  );
+}
+
+function Websites({ partnerId }: { partnerId: string }) {
+  const { t } = useTranslation();
+  const salesPoints = usePartnerSalesPoints(partnerId);
+  return (
+    <Card withBorder padding="lg">
+      <Title order={4} mb="md">
+        {t('salesPoint.websitesOf')}
+      </Title>
+      {salesPoints.data?.length === 0 && <Text c="dimmed">{t('salesPoint.noWebsites')}</Text>}
+      <Stack gap="xs">
+        {salesPoints.data?.map((salesPoint) => (
+          <Group key={salesPoint.id} justify="space-between" wrap="nowrap">
+            <div style={{ minWidth: 0 }}>
+              <Anchor component={Link} to={`/admin/sales-points/${salesPoint.id}`} fw={500}>
+                {salesPoint.name}
+              </Anchor>
+              <Text size="xs" c="dimmed" truncate>
+                {salesPoint.websiteUrl}
+              </Text>
+            </div>
+            <SalesPointBadge status={salesPoint.status} />
+          </Group>
+        ))}
+      </Stack>
     </Card>
   );
 }

@@ -6,7 +6,12 @@ const PASSWORD = 'correct-horse-battery-42';
 
 /** The newest one-time code Mailpit received for this address. */
 async function codeFor(page: Page, email: string): Promise<string> {
-  await expect.poll(async () => (await (await page.request.get(`${MAILPIT}/api/v1/search?query=to:${email}`)).json()).messages_count).toBeGreaterThan(0);
+  await expect
+    .poll(
+      async () =>
+        (await (await page.request.get(`${MAILPIT}/api/v1/search?query=to:${email}`)).json()).messages_count,
+    )
+    .toBeGreaterThan(0);
   const { messages } = await (await page.request.get(`${MAILPIT}/api/v1/search?query=to:${email}`)).json();
   const message = await (await page.request.get(`${MAILPIT}/api/v1/message/${messages[0].ID}`)).json();
   return message.Text.match(/\b\d{6}\b/)[0];
@@ -24,7 +29,9 @@ async function signOut(page: Page) {
   await expect(page).toHaveURL(/localhost:5180\/?$/);
 }
 
-test('a merchant signs up in Uzbek, two admins activate it, and it creates an API client', async ({ page }) => {
+test('a merchant signs up in Uzbek, two admins activate it, it creates an API client and gets a website switched on', async ({
+  page,
+}) => {
   const email = `e2e-${Date.now()}@example.uz`;
   const company = `Aziza Shoes ${Date.now()}`;
 
@@ -40,7 +47,10 @@ test('a merchant signs up in Uzbek, two admins activate it, and it creates an AP
 
   // The emailed code, typed into the six boxes; the email itself is in Uzbek.
   await expect(page.getByRole('heading', { name: 'Emailingizni tekshiring' })).toBeVisible();
-  await page.getByLabel('Kod').first().pressSequentially(await codeFor(page, email));
+  await page
+    .getByLabel('Kod')
+    .first()
+    .pressSequentially(await codeFor(page, email));
   await expect(page.getByRole('heading', { name: 'Email tasdiqlandi' })).toBeVisible();
 
   // A wrong action shows the server's message in the screen language.
@@ -79,7 +89,10 @@ test('a merchant signs up in Uzbek, two admins activate it, and it creates an AP
   // Admin malika approves.
   await page.goto('/admin/approvals');
   await signIn(page, 'malika', ADMIN_PASSWORD);
-  await page.locator('.mantine-Card-root', { hasText: company }).getByRole('button', { name: 'Approve' }).click();
+  await page
+    .locator('.mantine-Card-root', { hasText: company })
+    .getByRole('button', { name: 'Approve' })
+    .click();
   await expect(page.getByText(`${company} is now active`)).toBeVisible();
   await signOut(page);
 
@@ -90,7 +103,9 @@ test('a merchant signs up in Uzbek, two admins activate it, and it creates an AP
   await page.getByRole('link', { name: 'API clients' }).click();
   await page.getByRole('button', { name: 'New client' }).click();
   const secret = page.getByRole('dialog');
-  await expect(secret.getByText('This is the only time you will see this secret.', { exact: false })).toBeVisible();
+  await expect(
+    secret.getByText('This is the only time you will see this secret.', { exact: false }),
+  ).toBeVisible();
   await expect(secret.getByRole('button', { name: 'Done' })).toBeDisabled();
   await secret.getByRole('checkbox').check();
   await secret.getByRole('button', { name: 'Done' }).click();
@@ -99,4 +114,46 @@ test('a merchant signs up in Uzbek, two admins activate it, and it creates an AP
   await page.getByRole('button', { name: 'Rotate secret' }).click();
   await page.getByRole('dialog').getByRole('button', { name: 'Rotate secret' }).click();
   await expect(page.getByRole('dialog').getByText('New secret')).toBeVisible();
+
+  await page.getByRole('dialog').getByRole('checkbox').check();
+  await page.getByRole('dialog').getByRole('button', { name: 'Done' }).click();
+
+  // A website: a return address on another domain is refused by the server; a correct one makes a draft.
+  const site = `https://shop-${Date.now()}.example.uz`;
+  await page.getByRole('link', { name: 'Websites' }).click();
+  await page.getByRole('button', { name: 'Add website' }).click();
+  const add = page.getByRole('dialog');
+  await add.getByLabel('Name').fill('Main shop');
+  await add.getByLabel('Website').fill(site);
+  await add.getByLabel('Return addresses').fill('https://evil.example/steal');
+  await add.getByLabel('Return addresses').press('Enter');
+  await add.getByRole('button', { name: 'Add website' }).click();
+  await expect(add.getByText('Return URLs must be on the website', { exact: false })).toBeVisible();
+  await add.getByLabel('Return addresses').press('Backspace'); // removes the last address
+  await add.getByLabel('Return addresses').fill(`${site}/done`);
+  await add.getByLabel('Return addresses').press('Enter');
+  await add.getByRole('button', { name: 'Add website' }).click();
+  await expect(page.getByText('Draft')).toBeVisible();
+  await signOut(page);
+
+  // The bank: a failed check blocks switching on; a passed check, the terms, then it takes payments.
+  await page.goto('/admin/partners');
+  await signIn(page, 'aziz', ADMIN_PASSWORD);
+  await page.getByPlaceholder('Search by company or email').fill(email);
+  await page.getByRole('link', { name: company }).click();
+  await page.getByRole('link', { name: 'Main shop' }).click();
+  await page.getByRole('radiogroup', { name: 'Result' }).getByText('Failed').click();
+  await page.getByLabel('What you found').fill('No refund policy page');
+  await page.getByRole('button', { name: 'Record a check' }).click();
+  await page.getByRole('checkbox', { name: 'Uzcard' }).check();
+  await page.getByRole('button', { name: 'Save' }).click();
+  await page.getByRole('button', { name: 'Switch on' }).click();
+  await page.getByRole('dialog').getByRole('button', { name: 'Switch on' }).click();
+  await expect(page.getByText('latest check must have passed', { exact: false })).toBeVisible();
+
+  await page.getByRole('radiogroup', { name: 'Result' }).getByText('Passed').click();
+  await page.getByRole('button', { name: 'Record a check' }).click();
+  await page.getByRole('button', { name: 'Switch on' }).click();
+  await page.getByRole('dialog').getByRole('button', { name: 'Switch on' }).click();
+  await expect(page.getByText('Taking payments').first()).toBeVisible();
 });

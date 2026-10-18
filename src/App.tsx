@@ -17,6 +17,8 @@ const ApiClientsPage = page(() => import('./pages/merchant/ApiClientsPage'), 'Ap
 const PartnersPage = page(() => import('./pages/admin/PartnersPage'), 'PartnersPage');
 const PartnerPage = page(() => import('./pages/admin/PartnerPage'), 'PartnerPage');
 const ApprovalsPage = page(() => import('./pages/admin/ApprovalsPage'), 'ApprovalsPage');
+const SalesPointsPage = page(() => import('./pages/merchant/SalesPointsPage'), 'SalesPointsPage');
+const SalesPointPage = page(() => import('./pages/admin/SalesPointPage'), 'SalesPointPage');
 
 const loading = (
   <Center mih="40vh">
@@ -36,6 +38,7 @@ export function App() {
 
           <Route path="merchant" element={<RequireRole role="partner" />}>
             <Route index element={<OverviewPage />} />
+            <Route path="sales-points" element={<SalesPointsPage />} />
             <Route path="api-clients" element={<ApiClientsPage />} />
           </Route>
 
@@ -44,6 +47,7 @@ export function App() {
             <Route path="partners" element={<PartnersPage />} />
             <Route path="partners/:id" element={<PartnerPage />} />
             <Route path="approvals" element={<ApprovalsPage />} />
+            <Route path="sales-points/:id" element={<SalesPointPage />} />
           </Route>
 
           <Route path="*" element={<NotFoundPage />} />

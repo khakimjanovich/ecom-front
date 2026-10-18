@@ -1,5 +1,5 @@
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { api, call, type PartnerStatus } from './client';
+import { api, call, type PartnerStatus, type Schemas } from './client';
 
 /** Every server read and write the pages use, in one place. Keys are shared so writes refresh the right reads. */
 const keys = {
@@ -147,3 +147,104 @@ export function useDecideActivation() {
     onSuccess: () => queries.invalidateQueries(),
   });
 }
+
+/* ------- sales points (websites) ------- */
+
+const salesPointKeys = {
+  mine: ['salesPoints', 'mine'] as const,
+  ofPartner: (partnerId: string) => ['salesPoints', 'partner', partnerId] as const,
+  one: (id: string) => ['salesPoint', id] as const,
+  checks: (id: string) => ['salesPoint', id, 'checks'] as const,
+};
+
+export const useMySalesPoints = () =>
+  useQuery({ queryKey: salesPointKeys.mine, queryFn: () => call(api.GET('/api/v1/partner/sales-points')) });
+
+export function useCreateSalesPoint() {
+  const queries = useQueryClient();
+  return useMutation({
+    mutationFn: (body: Schemas['SalesPointRequest']) =>
+      call(api.POST('/api/v1/partner/sales-points', { body })),
+    onSuccess: () => queries.invalidateQueries({ queryKey: salesPointKeys.mine }),
+  });
+}
+
+export function useUpdateReturnUrls() {
+  const queries = useQueryClient();
+  return useMutation({
+    mutationFn: ({ salesPointId, returnUrls }: { salesPointId: string; returnUrls: string[] }) =>
+      call(
+        api.PUT('/api/v1/partner/sales-points/{salesPointId}/return-urls', {
+          params: { path: { salesPointId } },
+          body: { returnUrls },
+        }),
+      ),
+    onSuccess: () => queries.invalidateQueries({ queryKey: salesPointKeys.mine }),
+  });
+}
+
+export const usePartnerSalesPoints = (partnerId: string) =>
+  useQuery({
+    queryKey: salesPointKeys.ofPartner(partnerId),
+    queryFn: () =>
+      call(api.GET('/api/v1/admin/partners/{id}/sales-points', { params: { path: { id: partnerId } } })),
+  });
+
+export const useSalesPoint = (salesPointId: string) =>
+  useQuery({
+    queryKey: salesPointKeys.one(salesPointId),
+    queryFn: () =>
+      call(api.GET('/api/v1/admin/sales-points/{salesPointId}', { params: { path: { salesPointId } } })),
+  });
+
+export const useSiteChecks = (salesPointId: string) =>
+  useQuery({
+    queryKey: salesPointKeys.checks(salesPointId),
+    queryFn: () =>
+      call(
+        api.GET('/api/v1/admin/sales-points/{salesPointId}/site-checks', {
+          params: { path: { salesPointId } },
+        }),
+      ),
+  });
+
+/** Every admin change to one website. Each refreshes the website, its checks and the lists it appears in. */
+export function useSalesPointAdmin(salesPointId: string) {
+  const queries = useQueryClient();
+  const path = { params: { path: { salesPointId } } };
+  const onSuccess = () =>
+    queries.invalidateQueries({ predicate: (q) => String(q.queryKey[0]).startsWith('salesPoint') });
+
+  const recordCheck = useMutation({
+    mutationFn: (body: Schemas['SiteCheckRequest']) =>
+      call(api.POST('/api/v1/admin/sales-points/{salesPointId}/site-checks', { ...path, body })),
+    onSuccess,
+  });
+  const saveSettings = useMutation({
+    mutationFn: (body: Schemas['SalesPointSettingsRequest']) =>
+      call(api.PUT('/api/v1/admin/sales-points/{salesPointId}/settings', { ...path, body })),
+    onSuccess,
+  });
+  const act = useMutation({
+    mutationFn: ({ kind, reason = '' }: { kind: SalesPointAction; reason?: string }) => {
+      switch (kind) {
+        case 'activate':
+          return call(api.POST('/api/v1/admin/sales-points/{salesPointId}/activate', path));
+        case 'restore':
+          return call(api.POST('/api/v1/admin/sales-points/{salesPointId}/restore', path));
+        case 'suspend':
+          return call(
+            api.POST('/api/v1/admin/sales-points/{salesPointId}/suspend', { ...path, body: { reason } }),
+          );
+        case 'close':
+          return call(
+            api.POST('/api/v1/admin/sales-points/{salesPointId}/close', { ...path, body: { reason } }),
+          );
+      }
+    },
+    onSuccess,
+  });
+  return { recordCheck, saveSettings, act };
+}
+
+export type SalesPointAction = 'activate' | 'suspend' | 'restore' | 'close';

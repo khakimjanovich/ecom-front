@@ -19,7 +19,8 @@
     "overview": "Overview",
     "apiClients": "API clients",
     "merchants": "Merchants",
-    "approvals": "Approvals"
+    "approvals": "Approvals",
+    "salesPoints": "Websites"
   },
   "status": {
     "PENDING_VERIFICATION": "Checking documents",
@@ -215,5 +216,66 @@
     "title": "Not done",
     "network": "We could not reach the server. Check your connection.",
     "unknown": "Something went wrong. Please try again."
+  },
+  "spStatus": {
+    "DRAFT": "Draft",
+    "ACTIVE": "Taking payments",
+    "SUSPENDED": "Suspended",
+    "CLOSED": "Closed"
+  },
+  "scheme": {
+    "UZCARD": "Uzcard",
+    "HUMO": "Humo"
+  },
+  "check": {
+    "PASSED": "Passed",
+    "FAILED": "Failed"
+  },
+  "salesPoints": {
+    "title": "Websites",
+    "description": "Each website that takes payments is checked and switched on by the bank.",
+    "add": "Add website",
+    "emptyTitle": "No websites yet",
+    "emptyText": "Add the website where buyers will pay. The bank checks it before it can take payments.",
+    "name": "Name",
+    "nameHint": "Shown to you and the bank, e.g. “Main shop”",
+    "website": "Website",
+    "websiteHint": "Starts with https://",
+    "returnUrls": "Return addresses",
+    "returnUrlsHint": "Where buyers go back after paying. Press Enter after each one; they must be on the website's own domain.",
+    "editReturnUrls": "Edit return addresses",
+    "schemes": "Cards",
+    "noSchemes": "Not set yet",
+    "refund": "Refund window",
+    "days": "{{count}} days",
+    "plusDays": "+{{count}} days: {{reason}}",
+    "lastCheck": "Site check",
+    "notChecked": "Not checked yet",
+    "added": "Website added. The bank will check it.",
+    "saved": "Saved",
+    "draftOnly": "Return addresses can change only before the bank checks the website."
+  },
+  "salesPoint": {
+    "back": "Back to merchant",
+    "checks": "Site checks",
+    "noChecks": "No checks yet.",
+    "recordCheck": "Record a check",
+    "result": "Result",
+    "findings": "What you found",
+    "findingsHint": "One line each. Required when the check fails.",
+    "save": "Save",
+    "settings": "Deal terms",
+    "refundDays": "Refund window, days",
+    "extendedDays": "Extra days",
+    "extendedReason": "Why the extra days",
+    "activate": "Switch on",
+    "suspend": "Suspend",
+    "restore": "Restore",
+    "close": "Close for good",
+    "activateHint": "Needs an active merchant, a passed latest check and at least one card.",
+    "websitesOf": "Websites",
+    "noWebsites": "This merchant has no websites yet.",
+    "by": "{{name}} · {{when}}",
+    "reason": "Reason"
   }
 }

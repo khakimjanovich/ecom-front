@@ -7,6 +7,7 @@ import {
   IconLayoutDashboard,
   IconLogout,
   IconUsers,
+  IconWorldWww,
 } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import { Link, Outlet, useLocation } from 'react-router';
@@ -17,6 +18,7 @@ type NavItem = { to: string; label: string; icon: typeof IconKey; exact?: boolea
 
 const MERCHANT_NAV: NavItem[] = [
   { to: '/merchant', label: 'nav.overview', icon: IconLayoutDashboard, exact: true },
+  { to: '/merchant/sales-points', label: 'nav.salesPoints', icon: IconWorldWww },
   { to: '/merchant/api-clients', label: 'nav.apiClients', icon: IconKey },
 ];
 const ADMIN_NAV: NavItem[] = [

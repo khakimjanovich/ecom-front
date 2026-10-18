@@ -7,6 +7,8 @@ export type Schemas = components['schemas'];
 export type Partner = Schemas['PartnerResponse'];
 export type PartnerStatus = Schemas['PartnerStatus'];
 export type Problem = Schemas['Problem'];
+export type SalesPoint = Schemas['SalesPointResponse'];
+export type SalesPointStatus = Schemas['SalesPointStatus'];
 
 /** A failed call, carrying the server's problem detail (RFC 9457) and its stable code. */
 export class ApiError extends Error {
