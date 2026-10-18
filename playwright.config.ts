@@ -3,7 +3,7 @@ import { defineConfig, devices } from '@playwright/test';
 // The whole journey runs against the real stack (ecom-infra + the ecom app); the dev server is started here.
 export default defineConfig({
   testDir: 'e2e',
-  timeout: 120_000,
+  timeout: 180_000, // one long journey; the dev server compiles each page on its first visit
   fullyParallel: false,
   retries: 0,
   reporter: [['list'], ['html', { open: 'never' }]],
@@ -17,6 +17,6 @@ export default defineConfig({
     command: 'pnpm dev',
     url: 'http://localhost:5180',
     reuseExistingServer: true,
-    timeout: 120_000,
+    timeout: 180_000, // one long journey; the dev server compiles each page on its first visit
   },
 });

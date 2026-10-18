@@ -19,6 +19,7 @@ const PartnerPage = page(() => import('./pages/admin/PartnerPage'), 'PartnerPage
 const ApprovalsPage = page(() => import('./pages/admin/ApprovalsPage'), 'ApprovalsPage');
 const SalesPointsPage = page(() => import('./pages/merchant/SalesPointsPage'), 'SalesPointsPage');
 const SalesPointPage = page(() => import('./pages/admin/SalesPointPage'), 'SalesPointPage');
+const CommissionsPage = page(() => import('./pages/admin/CommissionsPage'), 'CommissionsPage');
 
 const loading = (
   <Center mih="40vh">
@@ -48,6 +49,7 @@ export function App() {
             <Route path="partners/:id" element={<PartnerPage />} />
             <Route path="approvals" element={<ApprovalsPage />} />
             <Route path="sales-points/:id" element={<SalesPointPage />} />
+            <Route path="fees" element={<CommissionsPage />} />
           </Route>
 
           <Route path="*" element={<NotFoundPage />} />

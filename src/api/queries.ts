@@ -1,5 +1,5 @@
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { api, call, type PartnerStatus, type Schemas } from './client';
+import { api, call, commissionApi, type CommissionSchemas, type PartnerStatus, type Schemas } from './client';
 
 /** Every server read and write the pages use, in one place. Keys are shared so writes refresh the right reads. */
 const keys = {
@@ -71,6 +71,7 @@ export const usePartner = (id: string) =>
   useQuery({
     queryKey: keys.partner(id),
     queryFn: () => call(api.GET('/api/v1/partners/{id}', { params: { path: { id } } })),
+    enabled: !!id,
   });
 
 export const useHistory = (id: string) =>
@@ -188,6 +189,7 @@ export const usePartnerSalesPoints = (partnerId: string) =>
     queryKey: salesPointKeys.ofPartner(partnerId),
     queryFn: () =>
       call(api.GET('/api/v1/admin/partners/{id}/sales-points', { params: { path: { id: partnerId } } })),
+    enabled: !!partnerId,
   });
 
 export const useSalesPoint = (salesPointId: string) =>
@@ -195,6 +197,7 @@ export const useSalesPoint = (salesPointId: string) =>
     queryKey: salesPointKeys.one(salesPointId),
     queryFn: () =>
       call(api.GET('/api/v1/admin/sales-points/{salesPointId}', { params: { path: { salesPointId } } })),
+    enabled: !!salesPointId,
   });
 
 export const useSiteChecks = (salesPointId: string) =>
@@ -248,3 +251,67 @@ export function useSalesPointAdmin(salesPointId: string) {
 }
 
 export type SalesPointAction = 'activate' | 'suspend' | 'restore' | 'close';
+
+/* ------- commission ------- */
+
+const commissionKeys = {
+  rules: (partnerId?: string) => ['commission', 'rules', partnerId ?? 'all'] as const,
+  requests: ['commission', 'requests'] as const,
+};
+
+export const useCommissionRules = (partnerId?: string) =>
+  useQuery({
+    queryKey: commissionKeys.rules(partnerId),
+    queryFn: () => call(commissionApi.GET('/api/v1/admin/commissions', { params: { query: { partnerId } } })),
+  });
+
+export const useCommissionRequests = () =>
+  useQuery({
+    queryKey: commissionKeys.requests,
+    queryFn: () => call(commissionApi.GET('/api/v1/admin/commission-requests')),
+  });
+
+/** Proposals, ends and decisions all change what's pending and what's in force. */
+function useCommissionChange<T>(mutationFn: (input: T) => Promise<unknown>) {
+  const queries = useQueryClient();
+  return useMutation({
+    mutationFn,
+    onSuccess: () => queries.invalidateQueries({ queryKey: ['commission'] }),
+  });
+}
+
+export const useProposeRule = () =>
+  useCommissionChange((body: CommissionSchemas['CommissionRuleRequest']) =>
+    call(commissionApi.POST('/api/v1/admin/commissions', { body })),
+  );
+
+export const useProposeRuleEnd = () =>
+  useCommissionChange(({ ruleId, endsAt }: { ruleId: string; endsAt: string }) =>
+    call(
+      commissionApi.POST('/api/v1/admin/commissions/{ruleId}/end', {
+        params: { path: { ruleId } },
+        body: { endsAt },
+      }),
+    ),
+  );
+
+export const useDecideCommission = () =>
+  useCommissionChange(
+    ({ requestId, approve, reason = '' }: { requestId: string; approve: boolean; reason?: string }) => {
+      const path = { params: { path: { requestId } } };
+      return approve
+        ? call(commissionApi.POST('/api/v1/admin/commission-requests/{requestId}/approve', path))
+        : call(
+            commissionApi.POST('/api/v1/admin/commission-requests/{requestId}/reject', {
+              ...path,
+              body: { reason },
+            }),
+          );
+    },
+  );
+
+export const useQuote = () =>
+  useMutation({
+    mutationFn: (body: CommissionSchemas['QuoteRequest']) =>
+      call(commissionApi.POST('/api/v1/admin/commissions/quote', { body })),
+  });

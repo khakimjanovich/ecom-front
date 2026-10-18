@@ -20,7 +20,8 @@
     "apiClients": "API mijozlar",
     "merchants": "Merchantlar",
     "approvals": "Tasdiqlar",
-    "salesPoints": "Saytlar"
+    "salesPoints": "Saytlar",
+    "fees": "Komissiyalar"
   },
   "status": {
     "PENDING_VERIFICATION": "Hujjatlar tekshirilmoqda",
@@ -199,7 +200,11 @@
     "reject": "Rad etish",
     "yours": "Bu soʻrovni siz yaratgansiz. Qarorni boshqa administrator qabul qiladi.",
     "approved": "{{company}} endi faol",
-    "rejected": "Soʻrov rad etildi"
+    "rejected": "Soʻrov rad etildi",
+    "activations": "Faollashtirishlar",
+    "feeChanges": "Komissiya oʻzgarishlari",
+    "create": "Yangi komissiya qoidasi",
+    "endRule": "Komissiya qoidasini {{when}} tugatish"
   },
   "role": {
     "title": "Bu boʻlim sizning hisobingiz uchun emas",
@@ -277,5 +282,47 @@
     "noWebsites": "Bu merchantda hali saytlar yoʻq.",
     "by": "{{name}} · {{when}}",
     "reason": "Sabab"
+  },
+  "fees": {
+    "title": "Komissiyalar",
+    "description": "Komissiya qoidalari: eng aniq qoida amal qiladi. Yangi qoida yoki uni tugatish ikkinchi administrator tasdiqlagandan keyin kuchga kiradi.",
+    "new": "Yangi qoida",
+    "scope": "Kimga tegishli",
+    "anyMerchant": "Har qanday merchant",
+    "anySalesPoint": "Har qanday sayt",
+    "anyScheme": "Har qanday karta",
+    "merchant": "Merchant",
+    "salesPoint": "Sayt",
+    "scheme": "Karta",
+    "percent": "Foiz",
+    "fixed": "Qatʼiy komissiya, soʻm",
+    "min": "Minimum, soʻm",
+    "max": "Maksimum, soʻm",
+    "validFrom": "Dan",
+    "validTo": "Gacha",
+    "noEnd": "Muddatsiz",
+    "status": "Holat",
+    "fee": "Komissiya",
+    "proposedBy": "Taklif qildi: {{name}}",
+    "approvedBy": "tasdiqladi: {{name}}",
+    "end": "Tugatish…",
+    "endTitle": "Qoidani tugatish",
+    "endsAt": "Tugash vaqti",
+    "propose": "Tasdiqlashga yuborish",
+    "proposed": "Tasdiqlashga yuborildi. Uni boshqa administrator tasdiqlashi kerak.",
+    "empty": "Hali komissiya qoidalari yoʻq",
+    "emptyText": "Avval butun bank uchun qoida qoʻshing; merchant yoki saytlar uchun aniqroq qoidalar uni almashtiradi.",
+    "calculator": "Komissiya kalkulyatori",
+    "calculatorHint": "Hozir toʻlov qancha komissiya toʻlashini koʻrsatadi.",
+    "amount": "Summa, soʻm",
+    "calculate": "Hisoblash",
+    "ruleUsed": "Qoʻllangan qoida",
+    "net": "Merchant oladi",
+    "bankWide": "Butun bank uchun"
+  },
+  "ruleStatus": {
+    "PROPOSED": "Tasdiq kutmoqda",
+    "ACTIVE": "Amalda",
+    "REJECTED": "Rad etilgan"
   }
 }

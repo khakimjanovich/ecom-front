@@ -6,6 +6,7 @@ import {
   IconKey,
   IconLayoutDashboard,
   IconLogout,
+  IconPercentage,
   IconUsers,
   IconWorldWww,
 } from '@tabler/icons-react';
@@ -23,6 +24,7 @@ const MERCHANT_NAV: NavItem[] = [
 ];
 const ADMIN_NAV: NavItem[] = [
   { to: '/admin/partners', label: 'nav.merchants', icon: IconUsers },
+  { to: '/admin/fees', label: 'nav.fees', icon: IconPercentage },
   { to: '/admin/approvals', label: 'nav.approvals', icon: IconChecklist },
 ];
 

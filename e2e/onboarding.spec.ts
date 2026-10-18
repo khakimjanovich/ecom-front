@@ -29,7 +29,7 @@ async function signOut(page: Page) {
   await expect(page).toHaveURL(/localhost:5180\/?$/);
 }
 
-test('a merchant signs up in Uzbek, two admins activate it, it creates an API client and gets a website switched on', async ({
+test('a merchant signs up in Uzbek, two admins activate it, it creates an API client, gets a website switched on and a fee agreed by two admins', async ({
   page,
 }) => {
   const email = `e2e-${Date.now()}@example.uz`;
@@ -156,4 +156,42 @@ test('a merchant signs up in Uzbek, two admins activate it, it creates an API cl
   await page.getByRole('button', { name: 'Switch on' }).click();
   await page.getByRole('dialog').getByRole('button', { name: 'Switch on' }).click();
   await expect(page.getByText('Taking payments').first()).toBeVisible();
+
+  // A fee for that website: aziz proposes it, can't approve it himself, malika approves.
+  await page.getByRole('link', { name: 'Fees' }).click();
+  await page.getByRole('button', { name: 'New rule' }).click();
+  const rule = page.getByRole('dialog');
+  await rule.getByLabel('Merchant').fill(email);
+  await page.getByRole('option', { name: new RegExp(company) }).click();
+  await rule.getByLabel('Website').click();
+  await page.getByRole('option', { name: /Main shop/ }).click();
+  await rule.getByLabel('Percent').fill('1');
+  await rule.getByLabel("Fixed fee, so'm").fill('1');
+  await rule.getByRole('button', { name: 'Send for approval' }).click();
+  await expect(page.getByText('Waiting for approval').first()).toBeVisible();
+
+  await page.getByRole('link', { name: 'Approvals' }).click();
+  await page.getByRole('tab', { name: /Fee changes/ }).click();
+  const feeChange = page.locator('.mantine-Card-root', { hasText: company });
+  await expect(feeChange.getByRole('button', { name: 'Approve' })).toBeDisabled();
+  await signOut(page);
+
+  await page.goto('/admin/approvals');
+  await signIn(page, 'malika', ADMIN_PASSWORD);
+  await page.getByRole('tab', { name: /Fee changes/ }).click();
+  await page
+    .locator('.mantine-Card-root', { hasText: company })
+    .getByRole('button', { name: 'Approve' })
+    .click();
+  await expect(page.locator('.mantine-Card-root', { hasText: company })).toHaveCount(0);
+
+  // The calculator: 1% of 100 000 so'm plus 1 so'm.
+  await page.getByRole('link', { name: 'Fees' }).click();
+  const calculator = page.locator('.mantine-Card-root', { hasText: 'Fee calculator' });
+  await calculator.getByLabel('Merchant').fill(email);
+  await page.getByRole('option', { name: new RegExp(company) }).click();
+  await calculator.getByLabel('Website').click();
+  await page.getByRole('option', { name: /Main shop/ }).click();
+  await calculator.getByRole('button', { name: 'Calculate' }).click();
+  await expect(calculator.getByText(/1,001\.00/)).toBeVisible();
 });

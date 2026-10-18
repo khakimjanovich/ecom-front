@@ -20,7 +20,8 @@
     "apiClients": "API clients",
     "merchants": "Merchants",
     "approvals": "Approvals",
-    "salesPoints": "Websites"
+    "salesPoints": "Websites",
+    "fees": "Fees"
   },
   "status": {
     "PENDING_VERIFICATION": "Checking documents",
@@ -199,7 +200,11 @@
     "reject": "Reject",
     "yours": "You made this request. Another admin has to decide it.",
     "approved": "{{company}} is now active",
-    "rejected": "Request rejected"
+    "rejected": "Request rejected",
+    "activations": "Activations",
+    "feeChanges": "Fee changes",
+    "create": "New fee rule",
+    "endRule": "End a fee rule at {{when}}"
   },
   "role": {
     "title": "This area isn't for your account",
@@ -277,5 +282,47 @@
     "noWebsites": "This merchant has no websites yet.",
     "by": "{{name}} · {{when}}",
     "reason": "Reason"
+  },
+  "fees": {
+    "title": "Fees",
+    "description": "Fee rules: the most specific one wins. A new rule or an end applies after a second admin approves it.",
+    "new": "New rule",
+    "scope": "Applies to",
+    "anyMerchant": "Any merchant",
+    "anySalesPoint": "Any website",
+    "anyScheme": "Any card",
+    "merchant": "Merchant",
+    "salesPoint": "Website",
+    "scheme": "Card",
+    "percent": "Percent",
+    "fixed": "Fixed fee, so'm",
+    "min": "Minimum, so'm",
+    "max": "Maximum, so'm",
+    "validFrom": "From",
+    "validTo": "Until",
+    "noEnd": "No end",
+    "status": "Status",
+    "fee": "Fee",
+    "proposedBy": "Proposed by {{name}}",
+    "approvedBy": "approved by {{name}}",
+    "end": "End…",
+    "endTitle": "End this rule",
+    "endsAt": "Ends at",
+    "propose": "Send for approval",
+    "proposed": "Sent for approval. Another admin has to approve it.",
+    "empty": "No fee rules yet",
+    "emptyText": "Add a bank-wide rule first; more specific rules for merchants or websites override it.",
+    "calculator": "Fee calculator",
+    "calculatorHint": "What a payment would pay right now.",
+    "amount": "Amount, so'm",
+    "calculate": "Calculate",
+    "ruleUsed": "Rule used",
+    "net": "Merchant receives",
+    "bankWide": "Bank-wide"
+  },
+  "ruleStatus": {
+    "PROPOSED": "Waiting for approval",
+    "ACTIVE": "In force",
+    "REJECTED": "Rejected"
   }
 }

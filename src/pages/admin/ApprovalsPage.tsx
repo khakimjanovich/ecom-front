@@ -1,22 +1,22 @@
-import { Anchor, Badge, Button, Card, Group, Skeleton, Stack, Text, Tooltip } from '@mantine/core';
+import { Anchor, Badge, Button, Card, Group, Skeleton, Stack, Tabs, Text, Tooltip } from '@mantine/core';
 import { IconChecklist } from '@tabler/icons-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
 import type { Schemas } from '../../api/client';
 import { messageFor } from '../../api/errors';
-import { useApprovals, useDecideActivation } from '../../api/queries';
+import { useApprovals, useCommissionRequests, useDecideActivation } from '../../api/queries';
 import { useSession } from '../../auth/session';
 import { PromptModal } from '../../components/PromptModal';
 import { Empty } from '../../layout/Empty';
 import { PageTitle } from '../../layout/PageTitle';
+import { FeeChanges } from './FeeChanges';
 import { notifyError, notifySuccess } from '../../lib/notify';
 import { fromNow } from '../../lib/time';
 
 type Request = Schemas['ActivationRequestResponse'];
 
-/** Four eyes: activation requests wait here for a second admin. Your own requests can't be approved by you. */
-export function ApprovalsPage() {
+function Activations() {
   const { t } = useTranslation();
   const approvals = useApprovals();
   const decide = useDecideActivation();
@@ -46,7 +46,6 @@ export function ApprovalsPage() {
 
   return (
     <>
-      <PageTitle title={t('approvals.title')} description={t('approvals.description')} />
       {approvals.isPending && <Skeleton h={200} />}
       {approvals.isError && <Text c="red">{messageFor(approvals.error)}</Text>}
       {approvals.data?.length === 0 && (
@@ -100,6 +99,42 @@ export function ApprovalsPage() {
         loading={decide.isPending}
         onSubmit={reject}
       />
+    </>
+  );
+}
+
+/** Four eyes: everything waiting for a second admin. Nobody can approve their own request. */
+export function ApprovalsPage() {
+  const { t } = useTranslation();
+  const activations = useApprovals();
+  const fees = useCommissionRequests();
+  const count = (n?: number) =>
+    n ? (
+      <Badge size="xs" circle ml={6}>
+        {n}
+      </Badge>
+    ) : null;
+  return (
+    <>
+      <PageTitle title={t('approvals.title')} description={t('approvals.description')} />
+      <Tabs defaultValue="activations" keepMounted={false}>
+        <Tabs.List mb="md">
+          <Tabs.Tab value="activations">
+            {t('approvals.activations')}
+            {count(activations.data?.length)}
+          </Tabs.Tab>
+          <Tabs.Tab value="fees">
+            {t('approvals.feeChanges')}
+            {count(fees.data?.length)}
+          </Tabs.Tab>
+        </Tabs.List>
+        <Tabs.Panel value="activations">
+          <Activations />
+        </Tabs.Panel>
+        <Tabs.Panel value="fees">
+          <FeeChanges />
+        </Tabs.Panel>
+      </Tabs>
     </>
   );
 }
