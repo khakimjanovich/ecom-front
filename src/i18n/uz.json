@@ -324,5 +324,31 @@
     "PROPOSED": "Tasdiq kutmoqda",
     "ACTIVE": "Amalda",
     "REJECTED": "Rad etilgan"
+  },
+  "terminals": {
+    "title": "Terminallar",
+    "hint": "Har bir karta uchun protsessing markazidan bitta amaldagi terminal kerak, aks holda bunday toʻlovlar rad etiladi.",
+    "register": "Terminalni roʻyxatdan oʻtkazish",
+    "mid": "MID",
+    "tid": "TID",
+    "scheme": "Karta",
+    "none": "Hali terminallar yoʻq.",
+    "by": "roʻyxatdan oʻtkazdi: {{name}}",
+    "suspend": "Toʻxtatish",
+    "resume": "Davom ettirish",
+    "revoke": "Bekor qilish",
+    "history": "Tarix",
+    "registered": "Terminal roʻyxatdan oʻtkazildi",
+    "status": {
+      "ACTIVE": "Amalda",
+      "SUSPENDED": "Toʻxtatilgan",
+      "REVOKED": "Bekor qilingan"
+    },
+    "action": {
+      "REGISTERED": "Roʻyxatdan oʻtkazildi",
+      "SUSPENDED": "Toʻxtatildi",
+      "RESUMED": "Davom ettirildi",
+      "REVOKED": "Bekor qilindi"
+    }
   }
 }

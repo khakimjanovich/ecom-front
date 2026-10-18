@@ -3,6 +3,7 @@ import { accessToken } from '../auth/session';
 import { currentLanguage } from '../i18n';
 import type { paths as commissionPaths, components as commissionComponents } from './generated/commission';
 import type { components, paths } from './generated/partner';
+import type { components as terminalComponents, paths as terminalPaths } from './generated/terminal';
 
 export type Schemas = components['schemas'];
 export type Partner = Schemas['PartnerResponse'];
@@ -13,6 +14,7 @@ export type SalesPointStatus = Schemas['SalesPointStatus'];
 export type CommissionSchemas = commissionComponents['schemas'];
 export type CommissionRule = CommissionSchemas['CommissionRuleResponse'];
 export type CommissionChange = CommissionSchemas['ChangeRequestResponse'];
+export type Terminal = terminalComponents['schemas']['TerminalResponse'];
 
 /** A failed call, carrying the server's problem detail (RFC 9457) and its stable code. */
 export class ApiError extends Error {
@@ -58,3 +60,7 @@ export async function call<T>(
   }
   return data as T;
 }
+
+/** Typed from the terminal contract (terminal-v1.yaml). */
+export const terminalApi = createClient<terminalPaths>({ baseUrl: '' });
+terminalApi.use(withTokenAndLanguage);

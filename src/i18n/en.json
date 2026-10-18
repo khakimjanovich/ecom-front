@@ -324,5 +324,31 @@
     "PROPOSED": "Waiting for approval",
     "ACTIVE": "In force",
     "REJECTED": "Rejected"
+  },
+  "terminals": {
+    "title": "Terminals",
+    "hint": "Each card needs one live terminal from the processing center, or its payments are refused.",
+    "register": "Register terminal",
+    "mid": "MID",
+    "tid": "TID",
+    "scheme": "Card",
+    "none": "No terminals yet.",
+    "by": "registered by {{name}}",
+    "suspend": "Suspend",
+    "resume": "Resume",
+    "revoke": "Revoke",
+    "history": "History",
+    "registered": "Terminal registered",
+    "status": {
+      "ACTIVE": "Live",
+      "SUSPENDED": "Suspended",
+      "REVOKED": "Revoked"
+    },
+    "action": {
+      "REGISTERED": "Registered",
+      "SUSPENDED": "Suspended",
+      "RESUMED": "Resumed",
+      "REVOKED": "Revoked"
+    }
   }
 }

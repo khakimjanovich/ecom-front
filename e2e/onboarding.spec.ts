@@ -29,7 +29,7 @@ async function signOut(page: Page) {
   await expect(page).toHaveURL(/localhost:5180\/?$/);
 }
 
-test('a merchant signs up in Uzbek, two admins activate it, it creates an API client, gets a website switched on and a fee agreed by two admins', async ({
+test('a merchant signs up in Uzbek, two admins activate it, it creates an API client, gets a website switched on with a terminal and a fee agreed by two admins', async ({
   page,
 }) => {
   const email = `e2e-${Date.now()}@example.uz`;
@@ -156,6 +156,14 @@ test('a merchant signs up in Uzbek, two admins activate it, it creates an API cl
   await page.getByRole('button', { name: 'Switch on' }).click();
   await page.getByRole('dialog').getByRole('button', { name: 'Switch on' }).click();
   await expect(page.getByText('Taking payments').first()).toBeVisible();
+
+  // Its Uzcard terminal, from what the processing center issued; payments now have a route.
+  const mid = `${Date.now()}`.slice(-12);
+  await page.getByLabel('MID').fill(mid);
+  await page.getByLabel('TID').fill('T0000001');
+  await page.getByRole('button', { name: 'Register terminal' }).click();
+  await expect(page.getByRole('cell', { name: new RegExp(mid) })).toBeVisible();
+  await expect(page.getByRole('row', { name: new RegExp(mid) }).getByText('Live')).toBeVisible();
 
   // A fee for that website: aziz proposes it, can't approve it himself, malika approves.
   await page.getByRole('link', { name: 'Fees' }).click();

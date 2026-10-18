@@ -1,5 +1,13 @@
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { api, call, commissionApi, type CommissionSchemas, type PartnerStatus, type Schemas } from './client';
+import {
+  api,
+  call,
+  commissionApi,
+  terminalApi,
+  type CommissionSchemas,
+  type PartnerStatus,
+  type Schemas,
+} from './client';
 
 /** Every server read and write the pages use, in one place. Keys are shared so writes refresh the right reads. */
 const keys = {
@@ -315,3 +323,76 @@ export const useQuote = () =>
     mutationFn: (body: CommissionSchemas['QuoteRequest']) =>
       call(commissionApi.POST('/api/v1/admin/commissions/quote', { body })),
   });
+
+/* ------- terminals ------- */
+
+const terminalKeys = {
+  of: (salesPointId: string) => ['terminals', salesPointId] as const,
+  audit: (terminalId: string) => ['terminals', 'audit', terminalId] as const,
+};
+
+export const useTerminals = (salesPointId: string) =>
+  useQuery({
+    queryKey: terminalKeys.of(salesPointId),
+    queryFn: () =>
+      call(
+        terminalApi.GET('/api/v1/admin/sales-points/{salesPointId}/terminals', {
+          params: { path: { salesPointId } },
+        }),
+      ),
+  });
+
+export const useTerminalAudit = (terminalId: string, enabled: boolean) =>
+  useQuery({
+    queryKey: terminalKeys.audit(terminalId),
+    queryFn: () =>
+      call(
+        terminalApi.GET('/api/v1/admin/terminals/{terminalId}/audit', { params: { path: { terminalId } } }),
+      ),
+    enabled,
+  });
+
+export type TerminalAction = 'suspend' | 'resume' | 'revoke';
+
+/** Registering and every status change refresh the website's terminals and their audit trails. */
+export function useTerminalAdmin(salesPointId: string) {
+  const queries = useQueryClient();
+  const onSuccess = () => queries.invalidateQueries({ queryKey: ['terminals'] });
+  const register = useMutation({
+    mutationFn: (body: { scheme: 'UZCARD' | 'HUMO'; merchantId: string; terminalId: string }) =>
+      call(
+        terminalApi.POST('/api/v1/admin/sales-points/{salesPointId}/terminals', {
+          params: { path: { salesPointId } },
+          body,
+        }),
+      ),
+    onSuccess,
+  });
+  const act = useMutation({
+    mutationFn: ({
+      terminalId,
+      kind,
+      reason = '',
+    }: {
+      terminalId: string;
+      kind: TerminalAction;
+      reason?: string;
+    }) => {
+      const path = { params: { path: { terminalId } } };
+      switch (kind) {
+        case 'resume':
+          return call(terminalApi.POST('/api/v1/admin/terminals/{terminalId}/resume', path));
+        case 'suspend':
+          return call(
+            terminalApi.POST('/api/v1/admin/terminals/{terminalId}/suspend', { ...path, body: { reason } }),
+          );
+        case 'revoke':
+          return call(
+            terminalApi.POST('/api/v1/admin/terminals/{terminalId}/revoke', { ...path, body: { reason } }),
+          );
+      }
+    },
+    onSuccess,
+  });
+  return { register, act };
+}

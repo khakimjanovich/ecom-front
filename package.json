@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "api": "openapi-typescript ${ECOM_SPEC_BASE:-https://raw.githubusercontent.com/khakimjanovich/ecom/main/platform/openapi}/partner-api/src/main/openapi/partner-v1.yaml -o src/api/generated/partner.d.ts && openapi-typescript ${ECOM_SPEC_BASE:-https://raw.githubusercontent.com/khakimjanovich/ecom/main/platform/openapi}/commission-api/src/main/openapi/commission-v1.yaml -o src/api/generated/commission.d.ts",
+    "api": "openapi-typescript ${ECOM_SPEC_BASE:-https://raw.githubusercontent.com/khakimjanovich/ecom/main/platform/openapi}/partner-api/src/main/openapi/partner-v1.yaml -o src/api/generated/partner.d.ts && openapi-typescript ${ECOM_SPEC_BASE:-https://raw.githubusercontent.com/khakimjanovich/ecom/main/platform/openapi}/commission-api/src/main/openapi/commission-v1.yaml -o src/api/generated/commission.d.ts && openapi-typescript ${ECOM_SPEC_BASE:-https://raw.githubusercontent.com/khakimjanovich/ecom/main/platform/openapi}/terminal-api/src/main/openapi/terminal-v1.yaml -o src/api/generated/terminal.d.ts",
     "predev": "pnpm api",
     "dev": "vite",
     "prebuild": "pnpm api",
