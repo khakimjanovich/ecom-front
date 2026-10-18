@@ -13,5 +13,10 @@ export default defineConfig({
     screenshot: 'only-on-failure',
   },
   projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
-  webServer: { command: 'pnpm dev', url: 'http://localhost:5180', reuseExistingServer: true, timeout: 120_000 },
+  webServer: {
+    command: 'pnpm dev',
+    url: 'http://localhost:5180',
+    reuseExistingServer: true,
+    timeout: 120_000,
+  },
 });
