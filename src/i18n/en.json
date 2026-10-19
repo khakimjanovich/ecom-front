@@ -271,7 +271,9 @@
     "notChecked": "Not checked yet",
     "added": "Website added. The bank will check it.",
     "saved": "Saved",
-    "draftOnly": "Return addresses can change only before the bank checks the website."
+    "draftOnly": "Return addresses can change only before the bank checks the website.",
+    "limits": "Limits",
+    "limitsText": "{{payment}} a payment · {{day}} a day"
   },
   "salesPoint": {
     "back": "Back to merchant",
@@ -294,7 +296,10 @@
     "websitesOf": "Websites",
     "noWebsites": "This merchant has no websites yet.",
     "by": "{{name}} · {{when}}",
-    "reason": "Reason"
+    "reason": "Reason",
+    "maxPayment": "Most per payment",
+    "dailyLimit": "Most per day",
+    "noLimit": "Empty means no limit"
   },
   "fees": {
     "title": "Fees",
@@ -563,7 +568,7 @@
     "codeAttempts_other": "{{count}} code attempts left",
     "anotherCard": "Use another card",
     "failed": "Payment page closed",
-    "failedText": "There were too many attempts. Go back to the shop and start again.",
+    "failedText": "The payment page closed before any money moved. Ask the shop for a new link.",
     "expired": "This link has expired",
     "notFound": "Payment not found",
     "until": "Valid until {{time}}",

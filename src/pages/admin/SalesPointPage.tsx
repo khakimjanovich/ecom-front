@@ -33,6 +33,7 @@ import { WebsiteLogo } from '../../components/WebsiteLogo';
 import { notifyError, notifySuccess } from '../../lib/notify';
 import { SALES_POINT_ACTIONS, SALES_POINT_NEEDS_REASON } from '../../lib/salesPoint';
 import { formatDate } from '../../lib/time';
+import { toTiyin } from '../../lib/money';
 import { TerminalsCard } from './TerminalsCard';
 
 const SCHEMES: Schemas['CardScheme'][] = ['UZCARD', 'HUMO'];
@@ -187,8 +188,12 @@ function Settings({ salesPoint }: { salesPoint: SalesPoint }) {
       refundWindowDays: salesPoint.refundWindowDays,
       extendedRefundDays: salesPoint.extendedRefundDays ?? '',
       extendedRefundReason: salesPoint.extendedRefundReason ?? '',
+      maxPayment:
+        salesPoint.maxPaymentAmount == null ? ('' as number | '') : salesPoint.maxPaymentAmount / 100,
+      dailyLimit: salesPoint.dailyLimit == null ? ('' as number | '') : salesPoint.dailyLimit / 100,
     },
   });
+  const tiyin = (som: number | '') => (som === '' ? undefined : toTiyin(som));
   const submit = form.onSubmit((values) =>
     saveSettings.mutate(
       {
@@ -196,6 +201,8 @@ function Settings({ salesPoint }: { salesPoint: SalesPoint }) {
         refundWindowDays: Number(values.refundWindowDays),
         extendedRefundDays: values.extendedRefundDays === '' ? undefined : Number(values.extendedRefundDays),
         extendedRefundReason: values.extendedRefundReason.trim() || undefined,
+        maxPaymentAmount: tiyin(values.maxPayment),
+        dailyLimit: tiyin(values.dailyLimit),
       },
       { onSuccess: () => notifySuccess(t('salesPoints.saved')), onError: notifyError },
     ),
@@ -226,6 +233,24 @@ function Settings({ salesPoint }: { salesPoint: SalesPoint }) {
               min={1}
               allowDecimal={false}
               {...form.getInputProps('extendedRefundDays')}
+            />
+          </Group>
+          <Group grow align="flex-start">
+            <NumberInput
+              label={t('salesPoint.maxPayment')}
+              description={t('salesPoint.noLimit')}
+              suffix=" UZS"
+              min={1}
+              thousandSeparator=" "
+              {...form.getInputProps('maxPayment')}
+            />
+            <NumberInput
+              label={t('salesPoint.dailyLimit')}
+              description={t('salesPoint.noLimit')}
+              suffix=" UZS"
+              min={1}
+              thousandSeparator=" "
+              {...form.getInputProps('dailyLimit')}
             />
           </Group>
           {form.values.extendedRefundDays !== '' && (

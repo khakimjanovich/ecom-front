@@ -2,6 +2,7 @@ import { Anchor, Badge, Group, SimpleGrid, Stack, Text } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import type { SalesPoint } from '../api/client';
 import { SALES_POINT_COLOR } from '../lib/salesPoint';
+import { formatSom } from '../lib/money';
 import { formatDate } from '../lib/time';
 
 export function SalesPointBadge({ status }: { status: SalesPoint['status'] }) {
@@ -67,6 +68,14 @@ export function SalesPointFacts({ salesPoint }: { salesPoint: SalesPoint }) {
             })}
           </Text>
         )}
+      </Fact>
+      <Fact label={t('salesPoints.limits')}>
+        <Text size="sm">
+          {t('salesPoints.limitsText', {
+            payment: salesPoint.maxPaymentAmount == null ? '—' : formatSom(salesPoint.maxPaymentAmount),
+            day: salesPoint.dailyLimit == null ? '—' : formatSom(salesPoint.dailyLimit),
+          })}
+        </Text>
       </Fact>
       <Fact label={t('salesPoints.lastCheck')}>
         {check ? (

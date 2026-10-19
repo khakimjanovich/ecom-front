@@ -271,7 +271,9 @@
     "notChecked": "Hali tekshirilmagan",
     "added": "Sayt qoʻshildi. Bank uni tekshiradi.",
     "saved": "Saqlandi",
-    "draftOnly": "Qaytish manzillarini faqat bank saytni tekshirguncha oʻzgartirish mumkin."
+    "draftOnly": "Qaytish manzillarini faqat bank saytni tekshirguncha oʻzgartirish mumkin.",
+    "limits": "Limitlar",
+    "limitsText": "toʻlovga {{payment}} · kuniga {{day}}"
   },
   "salesPoint": {
     "back": "Merchantga qaytish",
@@ -294,7 +296,10 @@
     "websitesOf": "Saytlar",
     "noWebsites": "Bu merchantda hali saytlar yoʻq.",
     "by": "{{name}} · {{when}}",
-    "reason": "Sabab"
+    "reason": "Sabab",
+    "maxPayment": "Bitta toʻlovga koʻpi bilan",
+    "dailyLimit": "Bir kunga koʻpi bilan",
+    "noLimit": "Boʻsh — limitsiz"
   },
   "fees": {
     "title": "Komissiyalar",
@@ -563,7 +568,7 @@
     "codeAttempts_other": "Kod kiritish uchun {{count}} ta urinish qoldi",
     "anotherCard": "Boshqa karta",
     "failed": "Toʻlov sahifasi yopildi",
-    "failedText": "Urinishlar juda koʻp boʻldi. Doʻkonga qaytib, qaytadan boshlang.",
+    "failedText": "Toʻlov sahifasi pul yechilmasdan yopildi. Doʻkondan yangi havola soʻrang.",
     "expired": "Havola muddati tugadi",
     "notFound": "Toʻlov topilmadi",
     "until": "{{time}} gacha amal qiladi",
