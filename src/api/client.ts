@@ -2,6 +2,7 @@ import createClient, { type Middleware } from 'openapi-fetch';
 import { accessToken } from '../auth/session';
 import { currentLanguage } from '../i18n';
 import type { components as cardComponents, paths as cardPaths } from './generated/card';
+import type { components as paymentComponents, paths as paymentPaths } from './generated/payment';
 import type { paths as commissionPaths, components as commissionComponents } from './generated/commission';
 import type { components, paths } from './generated/partner';
 import type { components as terminalComponents, paths as terminalPaths } from './generated/terminal';
@@ -18,6 +19,7 @@ export type CommissionChange = CommissionSchemas['ChangeRequestResponse'];
 export type Terminal = terminalComponents['schemas']['TerminalResponse'];
 export type BinRange = cardComponents['schemas']['BinResponse'];
 export type StoredCard = cardComponents['schemas']['CardResponse'];
+export type AdminPayment = paymentComponents['schemas']['PaymentAdminResponse'];
 
 /** A failed call, carrying the server's problem detail (RFC 9457) and its stable code. */
 export class ApiError extends Error {
@@ -71,3 +73,7 @@ terminalApi.use(withTokenAndLanguage);
 /** Typed from the card contract (card-v1.yaml). */
 export const cardApi = createClient<cardPaths>({ baseUrl: '' });
 cardApi.use(withTokenAndLanguage);
+
+/** Typed from the payment contract (payment-v1.yaml). */
+export const paymentApi = createClient<paymentPaths>({ baseUrl: '' });
+paymentApi.use(withTokenAndLanguage);

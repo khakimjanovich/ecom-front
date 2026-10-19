@@ -21,6 +21,7 @@ const SalesPointsPage = page(() => import('./pages/merchant/SalesPointsPage'), '
 const SalesPointPage = page(() => import('./pages/admin/SalesPointPage'), 'SalesPointPage');
 const CommissionsPage = page(() => import('./pages/admin/CommissionsPage'), 'CommissionsPage');
 const CardsPage = page(() => import('./pages/admin/CardsPage'), 'CardsPage');
+const PaymentsPage = page(() => import('./pages/admin/PaymentsPage'), 'PaymentsPage');
 
 const loading = (
   <Center mih="40vh">
@@ -52,6 +53,7 @@ export function App() {
             <Route path="sales-points/:id" element={<SalesPointPage />} />
             <Route path="fees" element={<CommissionsPage />} />
             <Route path="cards" element={<CardsPage />} />
+            <Route path="payments" element={<PaymentsPage />} />
           </Route>
 
           <Route path="*" element={<NotFoundPage />} />

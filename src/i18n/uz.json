@@ -22,7 +22,8 @@
     "approvals": "Tasdiqlar",
     "salesPoints": "Saytlar",
     "fees": "Komissiyalar",
-    "cards": "Kartalar"
+    "cards": "Kartalar",
+    "payments": "Toʻlovlar"
   },
   "status": {
     "PENDING_VERIFICATION": "Hujjatlar tekshirilmoqda",
@@ -138,11 +139,13 @@
     "never": "Hech qachon",
     "rotate": "Kalitni almashtirish",
     "rotateTitle": "Kalit almashtirilsinmi?",
-    "rotateText": "Joriy kalit darhol ishlamay qoladi. Shundan soʻng serverlaringizni yangilang.",
+    "rotateText": "Joriy sir va imzo kaliti darhol ishlamay qoladi. Serverlaringizni darhol yangilang.",
     "newTitle": "Yangi API mijozingiz",
     "newSecretTitle": "Yangi kalit",
-    "onceWarning": "Bu kalit faqat bir marta koʻrsatiladi. Uni hoziroq serveringizning maxfiy kalitlar omboriga saqlang.",
-    "stored": "Kalitni xavfsiz saqladim"
+    "onceWarning": "Sir va imzo kaliti faqat hozir koʻrsatiladi. Ularni serveringizning sirlar omboriga saqlang.",
+    "stored": "Sir va imzo kalitini xavfsiz saqladim",
+    "signingKey": "Imzo kaliti",
+    "signingKeyHint": "Serveringiz har bir toʻlov soʻrovini u bilan imzolaydi (HMAC-SHA256, API hujjatlariga qarang). Bank uni Vault'da saqlaydi."
   },
   "partners": {
     "title": "Merchantlar",
@@ -385,6 +388,23 @@
       "BOUND": "Bogʻlandi",
       "DEBITED": "Yechildi",
       "LOOKED_UP": "Qidirildi"
+    }
+  },
+  "payments": {
+    "title": "Toʻlovlar",
+    "description": "Sotuvchilar serverlari yaratgan toʻlovlar, avval yangilari.",
+    "merchant": "Sotuvchi",
+    "allMerchants": "Barcha sotuvchilar",
+    "order": "Buyurtma",
+    "amount": "Summa",
+    "website": "Sayt",
+    "client": "API mijozi",
+    "created": "Yaratilgan",
+    "status": "Holat",
+    "empty": "Hali toʻlovlar yoʻq",
+    "emptyText": "Sotuvchi serveri ularni toʻlov API orqali imzolangan soʻrov bilan yaratadi.",
+    "statusName": {
+      "CREATED": "Xaridorni kutmoqda"
     }
   }
 }

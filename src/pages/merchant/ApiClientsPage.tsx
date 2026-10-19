@@ -21,7 +21,7 @@ export function ApiClientsPage() {
   const create = useCreateClient();
   const rotate = useRotateSecret();
 
-  const reveal = (title: string, issued: { clientId: string; clientSecret: string }) =>
+  const reveal = (title: string, issued: { clientId: string; clientSecret: string; signingKey: string }) =>
     modals.open({
       modalId: SECRET_MODAL,
       title,
@@ -32,6 +32,7 @@ export function ApiClientsPage() {
         <SecretReveal
           clientId={issued.clientId}
           secret={issued.clientSecret}
+          signingKey={issued.signingKey}
           onDone={() => modals.close(SECRET_MODAL)}
         />
       ),

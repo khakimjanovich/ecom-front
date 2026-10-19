@@ -3,6 +3,7 @@ import {
   api,
   call,
   cardApi,
+  paymentApi,
   commissionApi,
   terminalApi,
   type CommissionSchemas,
@@ -440,4 +441,18 @@ export const useCardAudit = (cardToken: string | undefined) =>
         cardApi.GET('/api/v1/admin/cards/{cardToken}/audit', { params: { path: { cardToken: cardToken! } } }),
       ),
     enabled: !!cardToken,
+  });
+
+/* ------- payments ------- */
+
+export const usePayments = (partnerId: string | null) =>
+  useQuery({
+    queryKey: ['payments', partnerId],
+    queryFn: () =>
+      call(
+        paymentApi.GET('/api/v1/admin/payments', {
+          params: { query: { partnerId: partnerId ?? undefined } },
+        }),
+      ),
+    placeholderData: keepPreviousData,
   });

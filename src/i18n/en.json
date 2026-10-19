@@ -22,7 +22,8 @@
     "approvals": "Approvals",
     "salesPoints": "Websites",
     "fees": "Fees",
-    "cards": "Cards"
+    "cards": "Cards",
+    "payments": "Payments"
   },
   "status": {
     "PENDING_VERIFICATION": "Checking documents",
@@ -138,11 +139,13 @@
     "never": "Never",
     "rotate": "Rotate secret",
     "rotateTitle": "Rotate the secret?",
-    "rotateText": "The current secret stops working immediately. Update your servers right after.",
+    "rotateText": "The current secret and signing key stop working immediately. Update your servers right after.",
     "newTitle": "Your new API client",
     "newSecretTitle": "New secret",
-    "onceWarning": "This is the only time you will see this secret. Store it in your server's secret manager now.",
-    "stored": "I have stored the secret safely"
+    "onceWarning": "This is the only time you will see the secret and the signing key. Store them in your server's secret manager now.",
+    "stored": "I have stored the secret and the signing key safely",
+    "signingKey": "Signing key",
+    "signingKeyHint": "Your server signs every payment request with it (HMAC-SHA256, see the API docs). The bank keeps it in Vault."
   },
   "partners": {
     "title": "Merchants",
@@ -385,6 +388,23 @@
       "BOUND": "Bound",
       "DEBITED": "Debited",
       "LOOKED_UP": "Looked up"
+    }
+  },
+  "payments": {
+    "title": "Payments",
+    "description": "Payments merchants' servers created, newest first.",
+    "merchant": "Merchant",
+    "allMerchants": "All merchants",
+    "order": "Order",
+    "amount": "Amount",
+    "website": "Website",
+    "client": "API client",
+    "created": "Created",
+    "status": "Status",
+    "empty": "No payments yet",
+    "emptyText": "A merchant's server creates them through the payment API with a signed request.",
+    "statusName": {
+      "CREATED": "Waiting for the buyer"
     }
   }
 }
