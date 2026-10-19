@@ -513,7 +513,8 @@
       "PASSPORT": "The ID page of the director who signs the contract.",
       "LICENSE": "Only for activities that need a licence.",
       "POWER_OF_ATTORNEY": "Only if someone other than the director acts for the company."
-    }
+    },
+    "download": "Download"
   },
   "logo": {
     "title": "Logo",

@@ -30,7 +30,6 @@ import {
 } from '../../api/queries';
 import { DocumentsPanel, KybBadge } from '../../components/DocumentsPanel';
 import { Journey } from '../../components/Journey';
-import { openBlob } from '../../lib/files';
 import { PromptModal } from '../../components/PromptModal';
 import { SalesPointBadge } from '../../components/SalesPointFacts';
 import { StatusBadge } from '../../components/StatusBadge';
@@ -140,11 +139,7 @@ function Documents({ partnerId }: { partnerId: string }) {
       {documents.data && (
         <DocumentsPanel
           data={documents.data}
-          open={(doc) =>
-            fetchPartnerDocument(partnerId, doc.id)
-              .then((blob) => openBlob(blob as Blob))
-              .catch(notifyError)
-          }
+          open={(doc) => fetchPartnerDocument(partnerId, doc.id)}
           review={{
             approve: (doc) => decide(doc.id, true),
             reject: (doc, reason) => decide(doc.id, false, reason),

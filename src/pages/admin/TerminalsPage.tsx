@@ -15,7 +15,6 @@ import {
   Table,
   Text,
   TextInput,
-  Title,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useDebouncedValue } from '@mantine/hooks';
@@ -199,7 +198,7 @@ export function TerminalsPage() {
         onClose={() => setOpen(null)}
         position="right"
         size="md"
-        title={<Title order={4}>{t('terminalsPage.details')}</Title>}
+        title={t('terminalsPage.details')}
       >
         {current && <TerminalDetails terminal={current} />}
       </Drawer>

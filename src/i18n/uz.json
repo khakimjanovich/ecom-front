@@ -513,7 +513,8 @@
       "PASSPORT": "Shartnomani imzolaydigan direktorning maʼlumotlar sahifasi.",
       "LICENSE": "Faqat litsenziya talab qilinadigan faoliyat uchun.",
       "POWER_OF_ATTORNEY": "Faqat kompaniya nomidan direktor emas, boshqa shaxs ish yuritsa."
-    }
+    },
+    "download": "Yuklab olish"
   },
   "logo": {
     "title": "Logotip",

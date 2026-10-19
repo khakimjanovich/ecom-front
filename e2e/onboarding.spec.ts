@@ -5,6 +5,11 @@ const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD ?? 'local-only';
 const PASSWORD = 'correct-horse-battery-42';
 const PDF = '%PDF-1.4\n1 0 obj << >> endobj\ntrailer << >>\n%%EOF\n';
 const REQUIRED = ['Company charter', "Director's passport"];
+/** A 1×1 PNG: the file service reads the type from the bytes and decodes the image. */
+const PNG = Buffer.from(
+  'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVR4nGP4z8AAAAMBAQDJ/pLvAAAAAElFTkSuQmCC',
+  'base64',
+);
 
 /** One document's card (the outer Documents card also contains every heading, so the inner one is last). */
 const documentCard = (page: Page, type: string) =>
@@ -85,6 +90,10 @@ test('a merchant signs up in Uzbek, gives its documents, two admins activate it,
     await expect(card.getByText('Waiting for review')).toBeVisible();
   }
   await expect(page.getByText('Being checked').first()).toBeVisible();
+  // An uploaded file opens in a preview on the page.
+  await documentCard(page, REQUIRED[0]).getByText('document.pdf').click();
+  await expect(page.getByRole('dialog').locator('iframe[title="document.pdf"]')).toBeVisible();
+  await page.keyboard.press('Escape');
   await signOut(page);
 
   // Admin aziz: verifies each document, approves the company, signs the contract, asks for activation.
@@ -164,6 +173,12 @@ test('a merchant signs up in Uzbek, gives its documents, two admins activate it,
   await add.getByLabel('Return addresses').press('Enter');
   await add.getByRole('button', { name: 'Add website' }).click();
   await expect(page.getByText('Draft')).toBeVisible();
+  // The logo buyers will see on the payment page.
+  const logoChooser = page.waitForEvent('filechooser');
+  await page.getByRole('button', { name: 'Upload logo' }).click();
+  await (await logoChooser).setFiles({ name: 'logo.png', mimeType: 'image/png', buffer: PNG });
+  await expect(page.getByRole('img', { name: 'Main shop logo' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Change logo' })).toBeVisible();
   await signOut(page);
 
   // The bank: a failed check blocks switching on; a passed check, the terms, then it takes payments.

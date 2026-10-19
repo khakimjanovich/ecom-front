@@ -198,7 +198,7 @@ export function CommissionsPage() {
         onClose={() => setOpen(null)}
         position="right"
         size="md"
-        title={<Title order={4}>{t('fees.details')}</Title>}
+        title={t('fees.details')}
       >
         {current && <RuleDetails rule={current} onEnd={() => setEnding(current)} />}
       </Drawer>

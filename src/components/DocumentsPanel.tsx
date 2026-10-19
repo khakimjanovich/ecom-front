@@ -6,6 +6,8 @@ import {
   Card,
   FileButton,
   Group,
+  Image,
+  Modal,
   Stack,
   Text,
   Textarea,
@@ -38,7 +40,8 @@ type Upload = {
 
 /**
  * Know your business, the same for both sides: each document type with its latest upload and where it
- * stands. The merchant uploads (upload), the bank verifies or rejects (review); anyone can open a file.
+ * stands. The merchant uploads (upload), the bank verifies or rejects (review); anyone can open a file,
+ * which shows here, in a preview, so no popup blocker gets in the way.
  */
 export function DocumentsPanel({
   data,
@@ -47,11 +50,20 @@ export function DocumentsPanel({
   review,
 }: {
   data: PartnerDocuments;
-  open: (doc: PartnerDocument) => void;
+  open: (doc: PartnerDocument) => Promise<unknown>;
   upload?: Upload;
   review?: Review;
 }) {
   const { t } = useTranslation();
+  const [preview, setPreview] = useState<Preview | null>(null);
+  const show = (doc: PartnerDocument) =>
+    open(doc)
+      .then((blob) => setPreview({ doc, type: (blob as Blob).type, url: URL.createObjectURL(blob as Blob) }))
+      .catch(notifyError);
+  const close = () => {
+    if (preview) URL.revokeObjectURL(preview.url);
+    setPreview(null);
+  };
   const latest = (type: DocumentType) =>
     data.documents.find((d) => d.type === type && d.status !== 'REPLACED');
   const earlier = (type: DocumentType) =>
@@ -66,11 +78,12 @@ export function DocumentsPanel({
           required={data.kyb.required.includes(type)}
           current={latest(type)}
           history={earlier(type)}
-          open={open}
+          open={show}
           upload={upload}
           review={review}
         />
       ))}
+      <FilePreview preview={preview} onClose={close} />
       <Text size="xs" c="dimmed">
         {t('documents.formats')}
       </Text>
@@ -101,6 +114,35 @@ function KybAlert({ data }: { data: PartnerDocuments }) {
       {kyb.status === 'IN_REVIEW' && t('documents.kybInReview', { types: names(kyb.waiting) })}
       {kyb.status === 'ACTION_REQUIRED' && t('documents.kybMissing', { types: names(kyb.missing) })}
     </Alert>
+  );
+}
+
+type Preview = { doc: PartnerDocument; type: string; url: string };
+
+/** A PDF in the browser's own viewer, or an image; the object URL lives only while the preview is open. */
+function FilePreview({ preview, onClose }: { preview: Preview | null; onClose: () => void }) {
+  const { t } = useTranslation();
+  return (
+    <Modal opened={!!preview} onClose={onClose} size="xl" title={preview?.doc.fileName}>
+      {preview && (
+        <Stack>
+          {preview.type === 'application/pdf' ? (
+            <iframe
+              src={preview.url}
+              title={preview.doc.fileName}
+              style={{ width: '100%', height: '75vh', border: 0 }}
+            />
+          ) : (
+            <Image src={preview.url} alt={preview.doc.fileName} fit="contain" mah="75vh" />
+          )}
+          <Group justify="flex-end">
+            <Anchor href={preview.url} download={preview.doc.fileName} size="sm">
+              {t('documents.download')}
+            </Anchor>
+          </Group>
+        </Stack>
+      )}
+    </Modal>
   );
 }
 
