@@ -460,7 +460,10 @@
       "DECLINED": "Rad etilgan",
       "UNKNOWN": "Bankda aniqlanmoqda",
       "MANUAL_REVIEW": "Xodim tekshirmoqda",
-      "EXPIRED": "Muddati tugagan"
+      "EXPIRED": "Muddati tugagan",
+      "RETURNING": "Pul qaytarilmoqda",
+      "REVERSED": "Bekor qilingan",
+      "REFUNDED": "Qaytarilgan"
     },
     "fee": "Komissiya {{fee}}",
     "card": "Karta",
@@ -576,7 +579,11 @@
       "CARD_EXPIRED": "Karta muddati tugagan.",
       "CARD_LIMIT_EXCEEDED": "Karta limiti tugagan.",
       "other": "Karta banki toʻlovni rad etdi."
-    }
+    },
+    "returned": "Pul qaytarildi",
+    "returnedText": "Doʻkon bu toʻlovni kartangizga qaytardi.",
+    "returning": "Pul qaytarilmoqda",
+    "returningText": "Doʻkon bu toʻlovni kartangizga qaytarmoqda."
   },
   "links": {
     "title": "Toʻlov havolalari",
@@ -600,6 +607,9 @@
     "pickWebsite": "Ishlayotgan saytni tanlang",
     "amountRule": "Kamida 1 UZS",
     "whatRule": "Nima uchun ekanini yozing",
-    "noLive": "Saytlaringizdan hech biri hali toʻlov qabul qilmaydi."
+    "noLive": "Saytlaringizdan hech biri hali toʻlov qabul qilmaydi.",
+    "giveBack": "Qaytarish",
+    "giveBackTitle": "Pul qaytarilsinmi?",
+    "giveBackText": "Butun summa xaridorning kartasiga qaytadi. Toʻlov kuni u bekor qilinadi; keyinroq saytingizning qaytarish muddati ichida qaytariladi."
   }
 }

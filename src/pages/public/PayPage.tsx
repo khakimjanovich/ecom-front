@@ -17,7 +17,14 @@ import {
   TextInput,
   Title,
 } from '@mantine/core';
-import { IconCircleCheck, IconCircleX, IconClockHour4, IconCreditCard, IconLock } from '@tabler/icons-react';
+import {
+  IconArrowBackUp,
+  IconCircleCheck,
+  IconCircleX,
+  IconClockHour4,
+  IconCreditCard,
+  IconLock,
+} from '@tabler/icons-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router';
@@ -116,6 +123,13 @@ function PageBody({ token, page }: { token: string; page: PaymentPage }) {
           icon={<IconCircleX size={44} color="var(--mantine-color-red-6)" />}
           title={t('pay.declined')}
           text={t(`pay.decline.${page.declineCode}`, { defaultValue: t('pay.decline.other') })}
+        />
+      )}
+      {(page.status === 'REVERSED' || page.status === 'REFUNDED' || page.status === 'RETURNING') && (
+        <Done
+          icon={<IconArrowBackUp size={44} color="var(--mantine-color-teal-6)" />}
+          title={t(page.status === 'RETURNING' ? 'pay.returning' : 'pay.returned')}
+          text={t(page.status === 'RETURNING' ? 'pay.returningText' : 'pay.returnedText')}
         />
       )}
       {(page.status === 'UNKNOWN' || page.status === 'MANUAL_REVIEW') && (

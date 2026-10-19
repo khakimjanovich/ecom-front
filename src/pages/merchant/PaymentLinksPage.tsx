@@ -15,14 +15,16 @@ import {
   TextInput,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import { modals } from '@mantine/modals';
 import { IconCopy, IconLink, IconPlus } from '@tabler/icons-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { messageFor } from '../../api/errors';
-import { useCreatePaymentLink, useMySalesPoints, usePaymentLinks } from '../../api/queries';
+import { useCreatePaymentLink, useGiveBackLink, useMySalesPoints, usePaymentLinks } from '../../api/queries';
 import { Empty } from '../../layout/Empty';
 import { PageTitle } from '../../layout/PageTitle';
 import { formatSom, toTiyin } from '../../lib/money';
+import { notifyError, notifySuccess } from '../../lib/notify';
 import { PAYMENT_STATUS_COLOR } from '../../lib/payment';
 import { formatDate } from '../../lib/time';
 
@@ -36,6 +38,18 @@ export function PaymentLinksPage() {
   const [created, setCreated] = useState<string | null>(null);
   const salesPoints = useMySalesPoints();
   const links = usePaymentLinks(website);
+  const giveBack = useGiveBackLink();
+  const onGiveBack = (paymentId: string) =>
+    modals.openConfirmModal({
+      title: t('links.giveBackTitle'),
+      children: <Text size="sm">{t('links.giveBackText')}</Text>,
+      labels: { confirm: t('links.giveBack'), cancel: t('common.cancel') },
+      onConfirm: () =>
+        giveBack.mutate(paymentId, {
+          onSuccess: (link) => notifySuccess(t(`payments.statusName.${link.status}`)),
+          onError: notifyError,
+        }),
+    });
   const names = new Map((salesPoints.data ?? []).map((s) => [s.id, s.name]));
 
   return (
@@ -74,6 +88,7 @@ export function PaymentLinksPage() {
                   <Table.Th>{t('links.amount')}</Table.Th>
                   <Table.Th>{t('fees.status')}</Table.Th>
                   <Table.Th>{t('links.expires')}</Table.Th>
+                  <Table.Th />
                 </Table.Tr>
               </Table.Thead>
               <Table.Tbody>
@@ -94,7 +109,14 @@ export function PaymentLinksPage() {
                       </Badge>
                     </Table.Td>
                     <Table.Td>
-                      <Text size="sm">{formatDate(link.paidAt ?? link.expiresAt)}</Text>
+                      <Text size="sm">{formatDate(link.returnedAt ?? link.paidAt ?? link.expiresAt)}</Text>
+                    </Table.Td>
+                    <Table.Td>
+                      {link.status === 'PAID' && (
+                        <Button size="xs" variant="default" onClick={() => onGiveBack(link.id)}>
+                          {t('links.giveBack')}
+                        </Button>
+                      )}
                     </Table.Td>
                   </Table.Tr>
                 ))}

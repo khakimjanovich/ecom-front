@@ -11,4 +11,7 @@ export const PAYMENT_STATUS_COLOR: Record<PaymentStatus, string> = {
   MANUAL_REVIEW: 'grape',
   FAILED: 'gray',
   EXPIRED: 'gray',
+  RETURNING: 'orange',
+  REVERSED: 'teal',
+  REFUNDED: 'teal',
 };

@@ -460,7 +460,10 @@
       "DECLINED": "Declined",
       "UNKNOWN": "Checking with the bank",
       "MANUAL_REVIEW": "Being checked by a person",
-      "EXPIRED": "Expired"
+      "EXPIRED": "Expired",
+      "RETURNING": "Giving the money back",
+      "REVERSED": "Reversed",
+      "REFUNDED": "Refunded"
     },
     "fee": "Fee {{fee}}",
     "card": "Card",
@@ -576,7 +579,11 @@
       "CARD_EXPIRED": "The card has expired.",
       "CARD_LIMIT_EXCEEDED": "The card's limit is reached.",
       "other": "The card's bank declined the payment."
-    }
+    },
+    "returned": "Money returned",
+    "returnedText": "The shop gave this payment back to your card.",
+    "returning": "Returning the money",
+    "returningText": "The shop is giving this payment back to your card."
   },
   "links": {
     "title": "Payment links",
@@ -600,6 +607,9 @@
     "pickWebsite": "Pick a live website",
     "amountRule": "At least 1 UZS",
     "whatRule": "Say what it is for",
-    "noLive": "None of your websites takes payments yet."
+    "noLive": "None of your websites takes payments yet.",
+    "giveBack": "Give back",
+    "giveBackTitle": "Give the money back?",
+    "giveBackText": "The whole amount goes back to the buyer's card. On the day of payment it is reversed; later it is refunded, within your website's refund window."
   }
 }

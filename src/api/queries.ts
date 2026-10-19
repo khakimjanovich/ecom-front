@@ -537,6 +537,19 @@ export function useCreatePaymentLink() {
   });
 }
 
+export function useGiveBackLink() {
+  const queries = useQueryClient();
+  return useMutation({
+    mutationFn: (paymentId: string) =>
+      call(
+        paymentApi.POST('/api/v1/partner/payment-links/{paymentId}/refund', {
+          params: { path: { paymentId } },
+        }),
+      ),
+    onSuccess: () => queries.invalidateQueries({ queryKey: ['paymentLinks'] }),
+  });
+}
+
 /* ------- the payment page (the buyer, no login: the link's token is the credential) ------- */
 
 const pageOf = (token: string) => ({ params: { path: { token } } });
