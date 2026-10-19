@@ -449,8 +449,14 @@
       "CREATED": "Waiting for the buyer",
       "AWAITING_CODE": "Waiting for the code",
       "CARD_CONFIRMED": "Card confirmed",
-      "FAILED": "Page closed"
-    }
+      "FAILED": "Page closed",
+      "DEBITING": "Debiting",
+      "PAID": "Paid",
+      "DECLINED": "Declined",
+      "UNKNOWN": "Checking with the bank"
+    },
+    "fee": "Fee {{fee}}",
+    "card": "Card"
   },
   "terminalsPage": {
     "title": "Terminals",
@@ -544,13 +550,24 @@
     "codeAttempts_one": "{{count}} code attempt left",
     "codeAttempts_other": "{{count}} code attempts left",
     "anotherCard": "Use another card",
-    "confirmed": "Card confirmed",
-    "confirmedText": "Your card is confirmed. The payment continues.",
     "failed": "Payment page closed",
     "failedText": "There were too many attempts. Go back to the shop and start again.",
     "expired": "This link has expired",
     "notFound": "Payment not found",
     "until": "Valid until {{time}}",
-    "back": "Back to the shop"
+    "back": "Back to the shop",
+    "debiting": "Taking the payment…",
+    "debitingText": "Your bank is being asked. This takes a few seconds.",
+    "paid": "Paid",
+    "paidText": "The payment went through. Reference number: {{rrn}}.",
+    "declined": "Payment declined",
+    "unknown": "We are checking the payment with your bank",
+    "unknownText": "Your bank didn't answer in time. Don't pay again: the shop will be told how it ended.",
+    "decline": {
+      "CARD_INSUFFICIENT_FUNDS": "There isn't enough money on the card.",
+      "CARD_EXPIRED": "The card has expired.",
+      "CARD_LIMIT_EXCEEDED": "The card's limit is reached.",
+      "other": "The card's bank declined the payment."
+    }
   }
 }

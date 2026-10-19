@@ -449,8 +449,14 @@
       "CREATED": "Xaridorni kutmoqda",
       "AWAITING_CODE": "Kod kutilmoqda",
       "CARD_CONFIRMED": "Karta tasdiqlandi",
-      "FAILED": "Sahifa yopildi"
-    }
+      "FAILED": "Sahifa yopildi",
+      "DEBITING": "Yechilmoqda",
+      "PAID": "Toʻlangan",
+      "DECLINED": "Rad etilgan",
+      "UNKNOWN": "Bankda aniqlanmoqda"
+    },
+    "fee": "Komissiya {{fee}}",
+    "card": "Karta"
   },
   "terminalsPage": {
     "title": "Terminallar",
@@ -544,13 +550,24 @@
     "codeAttempts_one": "Kod kiritish uchun {{count}} ta urinish qoldi",
     "codeAttempts_other": "Kod kiritish uchun {{count}} ta urinish qoldi",
     "anotherCard": "Boshqa karta",
-    "confirmed": "Karta tasdiqlandi",
-    "confirmedText": "Kartangiz tasdiqlandi. Toʻlov davom etmoqda.",
     "failed": "Toʻlov sahifasi yopildi",
     "failedText": "Urinishlar juda koʻp boʻldi. Doʻkonga qaytib, qaytadan boshlang.",
     "expired": "Havola muddati tugadi",
     "notFound": "Toʻlov topilmadi",
     "until": "{{time}} gacha amal qiladi",
-    "back": "Doʻkonga qaytish"
+    "back": "Doʻkonga qaytish",
+    "debiting": "Toʻlov amalga oshirilmoqda…",
+    "debitingText": "Bankingizga soʻrov yuborildi. Bu bir necha soniya oladi.",
+    "paid": "Toʻlandi",
+    "paidText": "Toʻlov oʻtdi. Operatsiya raqami: {{rrn}}.",
+    "declined": "Toʻlov rad etildi",
+    "unknown": "Toʻlovni bankingiz bilan tekshirmoqdamiz",
+    "unknownText": "Bankingiz oʻz vaqtida javob bermadi. Qayta toʻlamang: doʻkonga natija xabar qilinadi.",
+    "decline": {
+      "CARD_INSUFFICIENT_FUNDS": "Kartada mablagʻ yetarli emas.",
+      "CARD_EXPIRED": "Karta muddati tugagan.",
+      "CARD_LIMIT_EXCEEDED": "Karta limiti tugagan.",
+      "other": "Karta banki toʻlovni rad etdi."
+    }
   }
 }

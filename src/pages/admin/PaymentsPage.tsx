@@ -13,8 +13,12 @@ import { formatDate } from '../../lib/time';
 const STATUS_COLOR = {
   CREATED: 'blue',
   AWAITING_CODE: 'yellow',
-  CARD_CONFIRMED: 'green',
-  FAILED: 'red',
+  CARD_CONFIRMED: 'cyan',
+  DEBITING: 'cyan',
+  PAID: 'green',
+  DECLINED: 'red',
+  UNKNOWN: 'orange',
+  FAILED: 'gray',
 } as const;
 
 /** Every payment merchants' servers created, newest first, optionally for one merchant. */
@@ -54,7 +58,7 @@ export function PaymentsPage() {
                   <Table.Th>{t('payments.order')}</Table.Th>
                   <Table.Th ta="right">{t('payments.amount')}</Table.Th>
                   <Table.Th>{t('payments.website')}</Table.Th>
-                  <Table.Th>{t('payments.client')}</Table.Th>
+                  <Table.Th>{t('payments.card')}</Table.Th>
                   <Table.Th>{t('payments.status')}</Table.Th>
                 </Table.Tr>
               </Table.Thead>
@@ -78,6 +82,11 @@ export function PaymentsPage() {
                       <Text size="sm" fw={600}>
                         {formatSom(payment.amount)}
                       </Text>
+                      {payment.fee != null && (
+                        <Text size="xs" c="dimmed">
+                          {t('payments.fee', { fee: formatSom(payment.fee) })}
+                        </Text>
+                      )}
                     </Table.Td>
                     <Table.Td>
                       <Text size="sm">
@@ -88,12 +97,34 @@ export function PaymentsPage() {
                       </Text>
                     </Table.Td>
                     <Table.Td>
-                      <Code>{payment.clientId}</Code>
+                      {payment.cardMask ? (
+                        <>
+                          <Text size="sm" ff="monospace">
+                            {payment.cardMask}
+                          </Text>
+                          <Text size="xs" c="dimmed">
+                            {[
+                              payment.cardScheme && t(`scheme.${payment.cardScheme}`),
+                              payment.merchantId,
+                              payment.terminalId,
+                            ]
+                              .filter(Boolean)
+                              .join(' · ')}
+                          </Text>
+                        </>
+                      ) : (
+                        <Code>{payment.clientId}</Code>
+                      )}
                     </Table.Td>
                     <Table.Td>
                       <Badge variant="light" color={STATUS_COLOR[payment.status]}>
                         {t(`payments.statusName.${payment.status}`)}
                       </Badge>
+                      {(payment.rrn || payment.declineCode) && (
+                        <Text size="xs" c="dimmed" ff="monospace" mt={4}>
+                          {payment.rrn ? `RRN ${payment.rrn}` : payment.declineCode}
+                        </Text>
+                      )}
                     </Table.Td>
                   </Table.Tr>
                 ))}

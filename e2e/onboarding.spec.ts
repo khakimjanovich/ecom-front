@@ -90,7 +90,7 @@ async function signOut(page: Page) {
   await expect(page).toHaveURL(/localhost:5180\/?$/);
 }
 
-test('a merchant signs up in Uzbek, gives its documents, two admins activate it, it creates an API client, gets a website switched on with a terminal and a fee agreed by two admins, and the bank checks card schemes, and a buyer confirms a card on the payment page', async ({
+test('a merchant signs up in Uzbek, gives its documents, two admins activate it, it creates an API client, gets a website switched on with a terminal and a fee agreed by two admins, and the bank checks card schemes, and a buyer pays on the payment page', async ({
   page,
 }) => {
   const email = `e2e-${Date.now()}@example.uz`;
@@ -348,11 +348,14 @@ test('a merchant signs up in Uzbek, gives its documents, two admins activate it,
   await page.getByRole('button', { name: 'Send a code to my phone' }).click();
   await expect(page.getByText('Asaka Bank · Uzcard', { exact: false })).toBeVisible();
   await page.locator('.mantine-PinInput-input').first().pressSequentially('111111');
-  await expect(page.getByText('Card confirmed').first()).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Paid' })).toBeVisible();
+  await expect(page.getByText('Reference number:', { exact: false })).toBeVisible();
 
-  // The bank sees it.
+  // The bank sees it: paid through the Uzcard terminal, with the fee agreed by two admins (1% + 1 so'm).
   await page.goto('/admin/payments');
   await page.getByPlaceholder('All merchants').fill(email);
   await page.getByRole('option', { name: new RegExp(company) }).click();
-  await expect(page.getByText('Card confirmed')).toBeVisible();
+  await expect(page.getByText('Paid', { exact: true })).toBeVisible();
+  await expect(page.getByText(/^RRN \d+/)).toBeVisible();
+  await expect(page.getByText('Fee UZS 1,251.00')).toBeVisible();
 });

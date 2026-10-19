@@ -17,7 +17,7 @@ import {
   TextInput,
   Title,
 } from '@mantine/core';
-import { IconCircleCheck, IconCreditCard, IconLock, IconCircleX } from '@tabler/icons-react';
+import { IconCircleCheck, IconCircleX, IconClockHour4, IconCreditCard, IconLock } from '@tabler/icons-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router';
@@ -101,11 +101,28 @@ function PageBody({ token, page }: { token: string; page: PaymentPage }) {
       <Divider />
       {page.status === 'CREATED' && <CardStep token={token} page={page} />}
       {page.status === 'AWAITING_CODE' && <CodeStep token={token} page={page} />}
-      {page.status === 'CARD_CONFIRMED' && (
+      {(page.status === 'CARD_CONFIRMED' || page.status === 'DEBITING') && (
+        <Done icon={<Loader />} title={t('pay.debiting')} text={t('pay.debitingText')} />
+      )}
+      {page.status === 'PAID' && (
         <Done
           icon={<IconCircleCheck size={44} color="var(--mantine-color-green-6)" />}
-          title={t('pay.confirmed')}
-          text={t('pay.confirmedText')}
+          title={t('pay.paid')}
+          text={t('pay.paidText', { rrn: page.rrn })}
+        />
+      )}
+      {page.status === 'DECLINED' && (
+        <Done
+          icon={<IconCircleX size={44} color="var(--mantine-color-red-6)" />}
+          title={t('pay.declined')}
+          text={t(`pay.decline.${page.declineCode}`, { defaultValue: t('pay.decline.other') })}
+        />
+      )}
+      {page.status === 'UNKNOWN' && (
+        <Done
+          icon={<IconClockHour4 size={44} color="var(--mantine-color-yellow-6)" />}
+          title={t('pay.unknown')}
+          text={t('pay.unknownText')}
         />
       )}
       {page.status === 'FAILED' && (
