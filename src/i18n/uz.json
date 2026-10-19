@@ -139,13 +139,15 @@
     "never": "Hech qachon",
     "rotate": "Kalitni almashtirish",
     "rotateTitle": "Kalit almashtirilsinmi?",
-    "rotateText": "Joriy sir va imzo kaliti darhol ishlamay qoladi. Serverlaringizni darhol yangilang.",
+    "rotateText": "Joriy sir darhol ishlamay qoladi. Serverlaringizni darhol yangilang.",
     "newTitle": "Yangi API mijozingiz",
     "newSecretTitle": "Yangi kalit",
-    "onceWarning": "Sir va imzo kaliti faqat hozir koʻrsatiladi. Ularni serveringizning sirlar omboriga saqlang.",
-    "stored": "Sir va imzo kalitini xavfsiz saqladim",
+    "onceWarning": "Sir faqat hozir koʻrsatiladi. Uni serveringizning sirlar omboriga saqlang.",
+    "stored": "Sirni xavfsiz saqladim",
     "signingKey": "Imzo kaliti",
-    "signingKeyHint": "Serveringiz har bir toʻlov soʻrovini u bilan imzolaydi (HMAC-SHA256, API hujjatlariga qarang). Bank uni Vault'da saqlaydi."
+    "keySet": "Bank oʻrnatgan",
+    "keyMissing": "Hali oʻrnatilmagan",
+    "keyMissingHint": "Toʻlovlar uchun soʻrovlarni imzolash kaliti kerak. Bank uni shu mijoz uchun sirlar omboriga qoʻyadi va sizga toʻgʻridan-toʻgʻri beradi; ungacha imzolangan soʻrovlar rad etiladi."
   },
   "partners": {
     "title": "Merchantlar",

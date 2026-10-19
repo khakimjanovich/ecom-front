@@ -139,13 +139,15 @@
     "never": "Never",
     "rotate": "Rotate secret",
     "rotateTitle": "Rotate the secret?",
-    "rotateText": "The current secret and signing key stop working immediately. Update your servers right after.",
+    "rotateText": "The current secret stops working immediately. Update your servers right after.",
     "newTitle": "Your new API client",
     "newSecretTitle": "New secret",
-    "onceWarning": "This is the only time you will see the secret and the signing key. Store them in your server's secret manager now.",
-    "stored": "I have stored the secret and the signing key safely",
+    "onceWarning": "This is the only time you will see this secret. Store it in your server's secret manager now.",
+    "stored": "I have stored the secret safely",
     "signingKey": "Signing key",
-    "signingKeyHint": "Your server signs every payment request with it (HMAC-SHA256, see the API docs). The bank keeps it in Vault."
+    "keySet": "Set by the bank",
+    "keyMissing": "Not set yet",
+    "keyMissingHint": "Payments need a request-signing key. The bank puts it into its secret store for this client and gives it to you directly; until then signed requests are refused."
   },
   "partners": {
     "title": "Merchants",

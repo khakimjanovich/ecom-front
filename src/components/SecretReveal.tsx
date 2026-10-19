@@ -44,16 +44,14 @@ function Copyable({ label, value }: { label: string; value: string }) {
   );
 }
 
-/** A client's secret and signing key, shown exactly once. The person must confirm they stored them before closing. */
+/** A client secret, shown exactly once. The person must confirm they stored it before closing. */
 export function SecretReveal({
   clientId,
   secret,
-  signingKey,
   onDone,
 }: {
   clientId: string;
   secret: string;
-  signingKey: string;
   onDone: () => void;
 }) {
   const { t } = useTranslation();
@@ -65,10 +63,6 @@ export function SecretReveal({
       </Alert>
       <Copyable label={t('clients.clientId')} value={clientId} />
       <Copyable label={t('clients.secret')} value={secret} />
-      <Copyable label={t('clients.signingKey')} value={signingKey} />
-      <Text size="xs" c="dimmed">
-        {t('clients.signingKeyHint')}
-      </Text>
       <Checkbox
         checked={stored}
         onChange={(e) => setStored(e.currentTarget.checked)}

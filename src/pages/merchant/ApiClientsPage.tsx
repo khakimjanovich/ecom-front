@@ -1,4 +1,4 @@
-import { Alert, Button, Card, Code, Group, Skeleton, Table, Text } from '@mantine/core';
+import { Alert, Badge, Button, Card, Code, Group, Skeleton, Table, Text, Tooltip } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { IconKey, IconPlus, IconRefresh } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
@@ -21,7 +21,7 @@ export function ApiClientsPage() {
   const create = useCreateClient();
   const rotate = useRotateSecret();
 
-  const reveal = (title: string, issued: { clientId: string; clientSecret: string; signingKey: string }) =>
+  const reveal = (title: string, issued: { clientId: string; clientSecret: string }) =>
     modals.open({
       modalId: SECRET_MODAL,
       title,
@@ -32,7 +32,6 @@ export function ApiClientsPage() {
         <SecretReveal
           clientId={issued.clientId}
           secret={issued.clientSecret}
-          signingKey={issued.signingKey}
           onDone={() => modals.close(SECRET_MODAL)}
         />
       ),
@@ -74,13 +73,14 @@ export function ApiClientsPage() {
       )}
       {!!clients.data?.length && (
         <Card withBorder padding={0}>
-          <Table.ScrollContainer minWidth={560}>
+          <Table.ScrollContainer minWidth={680}>
             <Table verticalSpacing="sm" horizontalSpacing="lg">
               <Table.Thead>
                 <Table.Tr>
                   <Table.Th>{t('clients.clientId')}</Table.Th>
                   <Table.Th>{t('clients.created')}</Table.Th>
                   <Table.Th>{t('clients.rotated')}</Table.Th>
+                  <Table.Th>{t('clients.signingKey')}</Table.Th>
                   <Table.Th />
                 </Table.Tr>
               </Table.Thead>
@@ -93,6 +93,19 @@ export function ApiClientsPage() {
                     <Table.Td>{formatDate(client.createdAt)}</Table.Td>
                     <Table.Td>
                       {client.secretRotatedAt ? formatDate(client.secretRotatedAt) : t('clients.never')}
+                    </Table.Td>
+                    <Table.Td>
+                      {client.signingKeyConfigured ? (
+                        <Badge color="green" variant="light">
+                          {t('clients.keySet')}
+                        </Badge>
+                      ) : (
+                        <Tooltip label={t('clients.keyMissingHint')} multiline w={260}>
+                          <Badge color="yellow" variant="light">
+                            {t('clients.keyMissing')}
+                          </Badge>
+                        </Tooltip>
+                      )}
                     </Table.Td>
                     <Table.Td>
                       <Group justify="flex-end">

@@ -96,7 +96,8 @@ test('a merchant signs up in Uzbek, two admins activate it, it creates an API cl
   await expect(page.getByText(`${company} is now active`)).toBeVisible();
   await signOut(page);
 
-  // The merchant is live and creates an API client; the secret and the signing key are shown once.
+  // The merchant is live and creates an API client; the secret is shown once, and the signing key
+  // waits for the bank to put it into Vault.
   await page.goto('/merchant');
   await signIn(page, email, PASSWORD);
   await expect(page.getByText('Active').first()).toBeVisible();
@@ -104,13 +105,13 @@ test('a merchant signs up in Uzbek, two admins activate it, it creates an API cl
   await page.getByRole('button', { name: 'New client' }).click();
   const secret = page.getByRole('dialog');
   await expect(
-    secret.getByText('This is the only time you will see the secret and the signing key.', { exact: false }),
+    secret.getByText('This is the only time you will see this secret.', { exact: false }),
   ).toBeVisible();
-  await expect(secret.getByText('Signing key', { exact: true })).toBeVisible();
   await expect(secret.getByRole('button', { name: 'Done' })).toBeDisabled();
   await secret.getByRole('checkbox').check();
   await secret.getByRole('button', { name: 'Done' }).click();
   await expect(page.getByRole('cell', { name: /partner-/ })).toBeVisible();
+  await expect(page.getByText('Not set yet')).toBeVisible();
 
   await page.getByRole('button', { name: 'Rotate secret' }).click();
   await page.getByRole('dialog').getByRole('button', { name: 'Rotate secret' }).click();
