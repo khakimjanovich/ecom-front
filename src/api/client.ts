@@ -6,7 +6,7 @@ import type { components as cardComponents, paths as cardPaths } from './generat
 import type { components as paymentComponents, paths as paymentPaths } from './generated/payment';
 import type { paths as commissionPaths, components as commissionComponents } from './generated/commission';
 import type { components, paths } from './generated/partner';
-import type { components as terminalComponents, paths as terminalPaths } from './generated/terminal';
+import type { components as eposComponents, paths as eposPaths } from './generated/epos';
 
 export type Schemas = components['schemas'];
 export type Partner = Schemas['PartnerResponse'];
@@ -20,7 +20,7 @@ export type PartnerDocuments = Schemas['PartnerDocumentsResponse'];
 export type CommissionSchemas = commissionComponents['schemas'];
 export type CommissionRule = CommissionSchemas['CommissionRuleResponse'];
 export type CommissionChange = CommissionSchemas['ChangeRequestResponse'];
-export type Terminal = terminalComponents['schemas']['TerminalResponse'];
+export type Epos = eposComponents['schemas']['EposResponse'];
 export type BinRange = binComponents['schemas']['BinResponse'];
 export type StoredCard = cardComponents['schemas']['CardResponse'];
 export type AdminPayment = paymentComponents['schemas']['PaymentAdminResponse'];
@@ -77,9 +77,9 @@ export async function call<T>(
   return data as T;
 }
 
-/** Typed from the terminal contract (terminal-v1.yaml). */
-export const terminalApi = createClient<terminalPaths>({ baseUrl: '' });
-terminalApi.use(withTokenAndLanguage);
+/** Typed from the e-POS contract (epos-v1.yaml). */
+export const eposApi = createClient<eposPaths>({ baseUrl: '' });
+eposApi.use(withTokenAndLanguage);
 
 /** Typed from the BIN contract (bin-v1.yaml). */
 export const binApi = createClient<binPaths>({ baseUrl: '' });

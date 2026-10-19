@@ -7,7 +7,7 @@ import {
   cardApi,
   paymentApi,
   commissionApi,
-  terminalApi,
+  eposApi,
   type CommissionSchemas,
   type PartnerStatus,
   type PaymentLinkRequest,
@@ -363,9 +363,9 @@ export const useQuote = () =>
       call(commissionApi.POST('/api/v1/admin/commissions/quote', { body })),
   });
 
-/* ------- terminals ------- */
+/* ------- e-POS terminals ------- */
 
-export type TerminalFilter = {
+export type EposFilter = {
   salesPointId?: string;
   scheme?: 'UZCARD' | 'HUMO';
   status?: 'ACTIVE' | 'SUSPENDED' | 'REVOKED';
@@ -374,38 +374,35 @@ export type TerminalFilter = {
   size: number;
 };
 
-export const useTerminals = (salesPointId: string) =>
+export const useEposList = (salesPointId: string) =>
   useQuery({
-    queryKey: ['terminals', 'of', salesPointId],
+    queryKey: ['epos', 'of', salesPointId],
     queryFn: () =>
       call(
-        terminalApi.GET('/api/v1/admin/sales-points/{salesPointId}/terminals', {
+        eposApi.GET('/api/v1/admin/sales-points/{salesPointId}/epos', {
           params: { path: { salesPointId } },
         }),
       ),
   });
 
-export const useTerminalSearch = (filter: TerminalFilter) =>
+export const useEposSearch = (filter: EposFilter) =>
   useQuery({
-    queryKey: ['terminals', 'search', filter],
-    queryFn: () => call(terminalApi.GET('/api/v1/admin/terminals', { params: { query: filter } })),
+    queryKey: ['epos', 'search', filter],
+    queryFn: () => call(eposApi.GET('/api/v1/admin/epos', { params: { query: filter } })),
     placeholderData: keepPreviousData,
   });
 
-export const useTerminalAudit = (terminalId: string, enabled = true) =>
+export const useEposAudit = (eposId: string, enabled = true) =>
   useQuery({
-    queryKey: ['terminals', 'audit', terminalId],
-    queryFn: () =>
-      call(
-        terminalApi.GET('/api/v1/admin/terminals/{terminalId}/audit', { params: { path: { terminalId } } }),
-      ),
+    queryKey: ['epos', 'audit', eposId],
+    queryFn: () => call(eposApi.GET('/api/v1/admin/epos/{eposId}/audit', { params: { path: { eposId } } })),
     enabled,
   });
 
-export type TerminalAction = 'suspend' | 'resume' | 'revoke';
+export type EposAction = 'suspend' | 'resume' | 'revoke';
 
-/** Registering and every status change refresh every terminal list and audit trail. */
-export function useRegisterTerminal() {
+/** Registering and every status change refresh every epos list and audit trail. */
+export function useRegisterEpos() {
   const queries = useQueryClient();
   return useMutation({
     mutationFn: ({
@@ -418,42 +415,30 @@ export function useRegisterTerminal() {
       terminalId: string;
     }) =>
       call(
-        terminalApi.POST('/api/v1/admin/sales-points/{salesPointId}/terminals', {
+        eposApi.POST('/api/v1/admin/sales-points/{salesPointId}/epos', {
           params: { path: { salesPointId } },
           body,
         }),
       ),
-    onSuccess: () => queries.invalidateQueries({ queryKey: ['terminals'] }),
+    onSuccess: () => queries.invalidateQueries({ queryKey: ['epos'] }),
   });
 }
 
-export function useTerminalAction() {
+export function useEposAction() {
   const queries = useQueryClient();
   return useMutation({
-    mutationFn: ({
-      terminalId,
-      kind,
-      reason = '',
-    }: {
-      terminalId: string;
-      kind: TerminalAction;
-      reason?: string;
-    }) => {
-      const path = { params: { path: { terminalId } } };
+    mutationFn: ({ eposId, kind, reason = '' }: { eposId: string; kind: EposAction; reason?: string }) => {
+      const path = { params: { path: { eposId } } };
       switch (kind) {
         case 'resume':
-          return call(terminalApi.POST('/api/v1/admin/terminals/{terminalId}/resume', path));
+          return call(eposApi.POST('/api/v1/admin/epos/{eposId}/resume', path));
         case 'suspend':
-          return call(
-            terminalApi.POST('/api/v1/admin/terminals/{terminalId}/suspend', { ...path, body: { reason } }),
-          );
+          return call(eposApi.POST('/api/v1/admin/epos/{eposId}/suspend', { ...path, body: { reason } }));
         case 'revoke':
-          return call(
-            terminalApi.POST('/api/v1/admin/terminals/{terminalId}/revoke', { ...path, body: { reason } }),
-          );
+          return call(eposApi.POST('/api/v1/admin/epos/{eposId}/revoke', { ...path, body: { reason } }));
       }
     },
-    onSuccess: () => queries.invalidateQueries({ queryKey: ['terminals'] }),
+    onSuccess: () => queries.invalidateQueries({ queryKey: ['epos'] }),
   });
 }
 

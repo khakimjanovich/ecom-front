@@ -34,7 +34,7 @@ import { notifyError, notifySuccess } from '../../lib/notify';
 import { SALES_POINT_ACTIONS, SALES_POINT_NEEDS_REASON } from '../../lib/salesPoint';
 import { formatDate } from '../../lib/time';
 import { toTiyin } from '../../lib/money';
-import { TerminalsCard } from './TerminalsCard';
+import { EposCard } from './EposCard';
 
 const SCHEMES: Schemas['CardScheme'][] = ['UZCARD', 'HUMO'];
 
@@ -73,7 +73,7 @@ export function SalesPointPage() {
           <Stack>
             <Actions salesPoint={salesPoint.data} />
             {open && <Settings key={salesPoint.data.id} salesPoint={salesPoint.data} />}
-            <TerminalsCard key={salesPoint.data.schemes.join()} salesPoint={salesPoint.data} />
+            <EposCard key={salesPoint.data.schemes.join()} salesPoint={salesPoint.data} />
           </Stack>
         </Grid.Col>
         <Grid.Col span={{ base: 12, md: 6 }}>

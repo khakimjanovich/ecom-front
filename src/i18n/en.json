@@ -24,10 +24,10 @@
     "fees": "Fees",
     "cards": "Cards",
     "payments": "Payments",
-    "terminals": "Terminals",
     "documents": "Documents",
     "paymentLinks": "Payment links",
-    "reports": "Reports"
+    "reports": "Reports",
+    "epos": "e-POS terminals"
   },
   "status": {
     "PENDING_VERIFICATION": "Checking documents",
@@ -380,20 +380,20 @@
     "ACTIVE": "In force",
     "REJECTED": "Rejected"
   },
-  "terminals": {
-    "title": "Terminals",
-    "hint": "Each card needs one live terminal from the processing center, or its payments are refused.",
-    "register": "Register terminal",
+  "epos": {
+    "title": "e-POS terminals",
+    "hint": "Each card needs one live e-POS terminal from the processing center, or its payments are refused.",
+    "register": "Register e-POS terminal",
     "mid": "MID",
     "tid": "TID",
     "scheme": "Card",
-    "none": "No terminals yet.",
+    "none": "No e-POS terminals yet.",
     "by": "registered by {{name}}",
     "suspend": "Suspend",
     "resume": "Resume",
     "revoke": "Revoke",
     "history": "History",
-    "registered": "Terminal registered",
+    "registered": "e-POS terminal registered",
     "status": {
       "ACTIVE": "Live",
       "SUSPENDED": "Suspended",
@@ -475,21 +475,21 @@
     "card": "Card",
     "link": "Payment link"
   },
-  "terminalsPage": {
-    "title": "Terminals",
-    "description": "Every terminal (MID/TID) the processing center issued. Each website has at most one live terminal per card scheme.",
+  "eposPage": {
+    "title": "e-POS terminals",
+    "description": "Every e-POS terminal (MID/TID) the processing center issued. Each website has at most one live e-POS terminal per card scheme.",
     "allWebsites": "All websites",
     "anyStatus": "Any status",
     "search": "Search MID or TID",
-    "empty": "No terminals found",
-    "emptyText": "Change the filters, or register a terminal the processing center issued.",
+    "empty": "No e-POS terminals found",
+    "emptyText": "Change the filters, or register a e-POS terminal the processing center issued.",
     "registered": "Registered",
-    "count_one": "{{count}} terminal",
-    "count_other": "{{count}} terminals",
-    "details": "Terminal",
+    "count_one": "{{count}} e-POS terminal",
+    "count_other": "{{count}} e-POS terminals",
+    "details": "e-POS terminal",
     "idRule": "Letters and digits, up to 30",
     "noSchemes": "This website accepts no cards yet. Set its card schemes first.",
-    "registerHint": "Use the MID and TID exactly as the processing center issued them. The terminal is live at once, so payments for this card go through it."
+    "registerHint": "Use the MID and TID exactly as the processing center issued them. The e-POS terminal is live at once, so payments for this card go through it."
   },
   "documents": {
     "title": "Company documents",

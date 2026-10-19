@@ -90,7 +90,7 @@ async function signOut(page: Page) {
   await expect(page).toHaveURL(/localhost:5180\/?$/);
 }
 
-test('a merchant signs up in Uzbek, gives its documents, two admins activate it, it creates an API client, gets a website switched on with a terminal and a fee agreed by two admins, and the bank checks card schemes, and a buyer pays on the payment page', async ({
+test('a merchant signs up in Uzbek, gives its documents, two admins activate it, it creates an API client, gets a website switched on with an e-POS terminal and a fee agreed by two admins, and the bank checks card schemes, and a buyer pays on the payment page', async ({
   page,
 }) => {
   const email = `e2e-${Date.now()}@example.uz`;
@@ -258,20 +258,20 @@ test('a merchant signs up in Uzbek, gives its documents, two admins activate it,
   await page.getByRole('dialog').getByRole('button', { name: 'Switch on' }).click();
   await expect(page.getByText('Taking payments').first()).toBeVisible();
 
-  // Its Uzcard terminal, from what the processing center issued; payments now have a route.
+  // Its Uzcard e-POS terminal, from what the processing center issued; payments now have a route.
   const mid = `${Date.now()}`.slice(-12);
   await page.getByLabel('MID').fill(mid);
   await page.getByLabel('TID').fill('T0000001');
-  await page.getByRole('button', { name: 'Register terminal' }).click();
+  await page.getByRole('button', { name: 'Register e-POS terminal' }).click();
   await expect(page.getByRole('cell', { name: new RegExp(mid) })).toBeVisible();
   await expect(page.getByRole('row', { name: new RegExp(mid) }).getByText('Live')).toBeVisible();
 
-  // The bank's Terminals page finds it by part of its MID, with its history.
-  await page.getByRole('link', { name: 'Terminals' }).click();
+  // The bank's e-POS terminals page finds it by part of its MID, with its history.
+  await page.getByRole('link', { name: 'e-POS terminals' }).click();
   await page.getByPlaceholder('Search MID or TID').fill(mid.slice(2, 9));
   await page.getByRole('row', { name: new RegExp(mid) }).click();
   const drawer = page.getByRole('dialog');
-  await expect(drawer.getByText('Terminal', { exact: true })).toBeVisible();
+  await expect(drawer.getByText('e-POS terminal', { exact: true })).toBeVisible();
   await expect(drawer.getByText('Registered').last()).toBeVisible();
   await page.keyboard.press('Escape');
 
@@ -351,7 +351,7 @@ test('a merchant signs up in Uzbek, gives its documents, two admins activate it,
   await expect(page.getByRole('heading', { name: 'Paid' })).toBeVisible();
   await expect(page.getByText('Reference number:', { exact: false })).toBeVisible();
 
-  // The bank sees it: paid through the Uzcard terminal, with the fee agreed by two admins (1% + 1 so'm).
+  // The bank sees it: paid through the Uzcard e-POS terminal, with the fee agreed by two admins (1% + 1 so'm).
   await page.goto('/admin/payments');
   await page.getByPlaceholder('All merchants').fill(email);
   await page.getByRole('option', { name: new RegExp(company) }).click();

@@ -24,10 +24,10 @@
     "fees": "Komissiyalar",
     "cards": "Kartalar",
     "payments": "Toʻlovlar",
-    "terminals": "Terminallar",
     "documents": "Hujjatlar",
     "paymentLinks": "Toʻlov havolalari",
-    "reports": "Hisobotlar"
+    "reports": "Hisobotlar",
+    "epos": "e-POS terminallar"
   },
   "status": {
     "PENDING_VERIFICATION": "Hujjatlar tekshirilmoqda",
@@ -380,20 +380,20 @@
     "ACTIVE": "Amalda",
     "REJECTED": "Rad etilgan"
   },
-  "terminals": {
-    "title": "Terminallar",
-    "hint": "Har bir karta uchun protsessing markazidan bitta amaldagi terminal kerak, aks holda bunday toʻlovlar rad etiladi.",
-    "register": "Terminalni roʻyxatdan oʻtkazish",
+  "epos": {
+    "title": "e-POS terminallar",
+    "hint": "Har bir karta uchun protsessing markazidan bitta amaldagi e-POS terminal kerak, aks holda bunday toʻlovlar rad etiladi.",
+    "register": "e-POS terminalni roʻyxatdan oʻtkazish",
     "mid": "MID",
     "tid": "TID",
     "scheme": "Karta",
-    "none": "Hali terminallar yoʻq.",
+    "none": "Hali e-POS terminallar yoʻq.",
     "by": "roʻyxatdan oʻtkazdi: {{name}}",
     "suspend": "Toʻxtatish",
     "resume": "Davom ettirish",
     "revoke": "Bekor qilish",
     "history": "Tarix",
-    "registered": "Terminal roʻyxatdan oʻtkazildi",
+    "registered": "e-POS terminal roʻyxatdan oʻtkazildi",
     "status": {
       "ACTIVE": "Amalda",
       "SUSPENDED": "Toʻxtatilgan",
@@ -475,21 +475,21 @@
     "card": "Karta",
     "link": "Toʻlov havolasi"
   },
-  "terminalsPage": {
-    "title": "Terminallar",
-    "description": "Protsessing markazi bergan barcha terminallar (MID/TID). Har bir saytda har bir toʻlov tizimi uchun koʻpi bilan bitta faol terminal boʻladi.",
+  "eposPage": {
+    "title": "e-POS terminallar",
+    "description": "Protsessing markazi bergan barcha e-POS terminallar (MID/TID). Har bir saytda har bir toʻlov tizimi uchun koʻpi bilan bitta faol e-POS terminal boʻladi.",
     "allWebsites": "Barcha saytlar",
     "anyStatus": "Istalgan holat",
     "search": "MID yoki TID boʻyicha qidirish",
-    "empty": "Terminal topilmadi",
-    "emptyText": "Filtrlarni oʻzgartiring yoki protsessing markazi bergan terminalni roʻyxatdan oʻtkazing.",
+    "empty": "e-POS terminal topilmadi",
+    "emptyText": "Filtrlarni oʻzgartiring yoki protsessing markazi bergan e-POS terminalni roʻyxatdan oʻtkazing.",
     "registered": "Roʻyxatdan oʻtgan",
-    "count_one": "{{count}} ta terminal",
-    "count_other": "{{count}} ta terminal",
-    "details": "Terminal",
+    "count_one": "{{count}} ta e-POS terminal",
+    "count_other": "{{count}} ta e-POS terminal",
+    "details": "e-POS terminal",
     "idRule": "Harf va raqamlar, 30 tagacha",
     "noSchemes": "Bu sayt hali karta qabul qilmaydi. Avval toʻlov tizimlarini belgilang.",
-    "registerHint": "MID va TIDni protsessing markazi bergandek kiriting. Terminal darhol ishlaydi, shu karta bilan toʻlovlar u orqali oʻtadi."
+    "registerHint": "MID va TIDni protsessing markazi bergandek kiriting. e-POS terminal darhol ishlaydi, shu karta bilan toʻlovlar u orqali oʻtadi."
   },
   "documents": {
     "title": "Kompaniya hujjatlari",

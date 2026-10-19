@@ -35,7 +35,7 @@ const ADMIN_NAV: NavItem[] = [
   { to: '/admin/partners', label: 'nav.merchants', icon: IconUsers },
   { to: '/admin/payments', label: 'nav.payments', icon: IconReceipt },
   { to: '/admin/fees', label: 'nav.fees', icon: IconPercentage },
-  { to: '/admin/terminals', label: 'nav.terminals', icon: IconDeviceDesktopAnalytics },
+  { to: '/admin/epos', label: 'nav.epos', icon: IconDeviceDesktopAnalytics },
   { to: '/admin/cards', label: 'nav.cards', icon: IconCreditCard },
   { to: '/admin/approvals', label: 'nav.approvals', icon: IconChecklist },
 ];

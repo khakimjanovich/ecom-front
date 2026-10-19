@@ -21,17 +21,17 @@ import { useDebouncedValue } from '@mantine/hooks';
 import { IconDeviceDesktopAnalytics, IconPlus, IconSearch } from '@tabler/icons-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { Terminal } from '../../api/client';
+import type { Epos } from '../../api/client';
 import { messageFor } from '../../api/errors';
 import {
-  type TerminalFilter,
+  type EposFilter,
   usePartnerSalesPoints,
-  useRegisterTerminal,
+  useRegisterEpos,
   useSalesPoint,
-  useTerminalSearch,
+  useEposSearch,
 } from '../../api/queries';
 import { MerchantName, MerchantSelect, SalesPointSelect } from '../../components/MerchantPicker';
-import { TerminalActions, TerminalHistory, TerminalStatusBadge } from '../../components/TerminalControls';
+import { EposActions, EposHistory, EposStatusBadge } from '../../components/EposControls';
 import { Empty } from '../../layout/Empty';
 import { PageTitle } from '../../layout/PageTitle';
 import { notifyError, notifySuccess } from '../../lib/notify';
@@ -42,8 +42,8 @@ const STATUSES = ['ACTIVE', 'SUSPENDED', 'REVOKED'] as const;
 const ID = /^[A-Za-z0-9]{1,30}$/;
 const PAGE_SIZE = 20;
 
-/** Every terminal the processing center issued, across all websites: find one, see its history, act on it. */
-export function TerminalsPage() {
+/** Every epos the processing center issued, across all websites: find one, see its history, act on it. */
+export function EposPage() {
   const { t } = useTranslation();
   const [partnerId, setPartnerId] = useState<string | null>(null);
   const [salesPointId, setSalesPointId] = useState<string | null>(null);
@@ -52,35 +52,35 @@ export function TerminalsPage() {
   const [search, setSearch] = useState('');
   const [q] = useDebouncedValue(search.trim(), 300);
   const [page, setPage] = useState(1);
-  const [open, setOpen] = useState<Terminal | null>(null);
+  const [open, setOpen] = useState<Epos | null>(null);
   const [registering, setRegistering] = useState(false);
 
-  const filter: TerminalFilter = {
+  const filter: EposFilter = {
     salesPointId: salesPointId ?? undefined,
-    scheme: (scheme as TerminalFilter['scheme']) ?? undefined,
-    status: (status as TerminalFilter['status']) ?? undefined,
+    scheme: (scheme as EposFilter['scheme']) ?? undefined,
+    status: (status as EposFilter['status']) ?? undefined,
     q: q || undefined,
     page: page - 1,
     size: PAGE_SIZE,
   };
-  const terminals = useTerminalSearch(filter);
+  const eposList = useEposSearch(filter);
   const reset =
     <T,>(set: (v: T) => void) =>
     (v: T) => {
       set(v);
       setPage(1);
     };
-  // The open drawer shows the latest copy of its terminal after an action.
-  const current = open && (terminals.data?.items.find((x) => x.id === open.id) ?? open);
+  // The open drawer shows the latest copy of its epos after an action.
+  const current = open && (eposList.data?.items.find((x) => x.id === open.id) ?? open);
 
   return (
     <>
       <PageTitle
-        title={t('terminalsPage.title')}
-        description={t('terminalsPage.description')}
+        title={t('eposPage.title')}
+        description={t('eposPage.description')}
         actions={
           <Button leftSection={<IconPlus size={16} />} onClick={() => setRegistering(true)}>
-            {t('terminals.register')}
+            {t('epos.register')}
           </Button>
         }
       />
@@ -98,7 +98,7 @@ export function TerminalsPage() {
           />
           <SalesPointSelect
             partnerId={partnerId}
-            placeholder={t('terminalsPage.allWebsites')}
+            placeholder={t('eposPage.allWebsites')}
             aria-label={t('fees.salesPoint')}
             value={salesPointId}
             onChange={reset(setSalesPointId)}
@@ -106,22 +106,22 @@ export function TerminalsPage() {
           <Select
             clearable
             placeholder={t('fees.anyScheme')}
-            aria-label={t('terminals.scheme')}
+            aria-label={t('epos.scheme')}
             data={SCHEMES.map((s) => ({ value: s, label: t(`scheme.${s}`) }))}
             value={scheme}
             onChange={reset(setScheme)}
           />
           <Select
             clearable
-            placeholder={t('terminalsPage.anyStatus')}
+            placeholder={t('eposPage.anyStatus')}
             aria-label={t('fees.status')}
-            data={STATUSES.map((s) => ({ value: s, label: t(`terminals.status.${s}`) }))}
+            data={STATUSES.map((s) => ({ value: s, label: t(`epos.status.${s}`) }))}
             value={status}
             onChange={reset(setStatus)}
           />
           <TextInput
-            placeholder={t('terminalsPage.search')}
-            aria-label={t('terminalsPage.search')}
+            placeholder={t('eposPage.search')}
+            aria-label={t('eposPage.search')}
             leftSection={<IconSearch size={16} />}
             value={search}
             onChange={(e) => {
@@ -132,49 +132,45 @@ export function TerminalsPage() {
         </SimpleGrid>
       </Card>
 
-      {terminals.isPending && <Skeleton h={240} />}
-      {terminals.isError && <Alert color="red">{messageFor(terminals.error)}</Alert>}
-      {terminals.data?.items.length === 0 && (
-        <Empty
-          icon={IconDeviceDesktopAnalytics}
-          title={t('terminalsPage.empty')}
-          text={t('terminalsPage.emptyText')}
-        />
+      {eposList.isPending && <Skeleton h={240} />}
+      {eposList.isError && <Alert color="red">{messageFor(eposList.error)}</Alert>}
+      {eposList.data?.items.length === 0 && (
+        <Empty icon={IconDeviceDesktopAnalytics} title={t('eposPage.empty')} text={t('eposPage.emptyText')} />
       )}
-      {!!terminals.data?.items.length && (
+      {!!eposList.data?.items.length && (
         <Card withBorder padding={0}>
           <Table.ScrollContainer minWidth={820}>
             <Table verticalSpacing="sm" horizontalSpacing="md" highlightOnHover>
               <Table.Thead>
                 <Table.Tr>
                   <Table.Th>{t('fees.salesPoint')}</Table.Th>
-                  <Table.Th>{t('terminals.scheme')}</Table.Th>
-                  <Table.Th>{t('terminals.mid')}</Table.Th>
-                  <Table.Th>{t('terminals.tid')}</Table.Th>
+                  <Table.Th>{t('epos.scheme')}</Table.Th>
+                  <Table.Th>{t('epos.mid')}</Table.Th>
+                  <Table.Th>{t('epos.tid')}</Table.Th>
                   <Table.Th>{t('fees.status')}</Table.Th>
-                  <Table.Th>{t('terminalsPage.registered')}</Table.Th>
+                  <Table.Th>{t('eposPage.registered')}</Table.Th>
                 </Table.Tr>
               </Table.Thead>
               <Table.Tbody>
-                {terminals.data.items.map((terminal) => (
-                  <Table.Tr key={terminal.id} style={{ cursor: 'pointer' }} onClick={() => setOpen(terminal)}>
+                {eposList.data.items.map((epos) => (
+                  <Table.Tr key={epos.id} style={{ cursor: 'pointer' }} onClick={() => setOpen(epos)}>
                     <Table.Td>
-                      <Website id={terminal.salesPointId} />
+                      <Website id={epos.salesPointId} />
                     </Table.Td>
-                    <Table.Td>{t(`scheme.${terminal.scheme}`)}</Table.Td>
+                    <Table.Td>{t(`scheme.${epos.scheme}`)}</Table.Td>
                     <Table.Td>
-                      <Code>{terminal.merchantId}</Code>
-                    </Table.Td>
-                    <Table.Td>
-                      <Code>{terminal.terminalId}</Code>
+                      <Code>{epos.merchantId}</Code>
                     </Table.Td>
                     <Table.Td>
-                      <TerminalStatusBadge status={terminal.status} />
+                      <Code>{epos.terminalId}</Code>
                     </Table.Td>
                     <Table.Td>
-                      <Text size="sm">{formatDate(terminal.createdAt)}</Text>
+                      <EposStatusBadge status={epos.status} />
+                    </Table.Td>
+                    <Table.Td>
+                      <Text size="sm">{formatDate(epos.createdAt)}</Text>
                       <Text size="xs" c="dimmed">
-                        {terminal.registeredBy}
+                        {epos.registeredBy}
                       </Text>
                     </Table.Td>
                   </Table.Tr>
@@ -184,12 +180,12 @@ export function TerminalsPage() {
           </Table.ScrollContainer>
         </Card>
       )}
-      {!!terminals.data && terminals.data.totalItems > 0 && (
+      {!!eposList.data && eposList.data.totalItems > 0 && (
         <Group justify="space-between" mt="md">
           <Text size="sm" c="dimmed">
-            {t('terminalsPage.count', { count: terminals.data.totalItems })}
+            {t('eposPage.count', { count: eposList.data.totalItems })}
           </Text>
-          <Pagination value={page} onChange={setPage} total={terminals.data.totalPages} size="sm" />
+          <Pagination value={page} onChange={setPage} total={eposList.data.totalPages} size="sm" />
         </Group>
       )}
 
@@ -198,11 +194,11 @@ export function TerminalsPage() {
         onClose={() => setOpen(null)}
         position="right"
         size="md"
-        title={t('terminalsPage.details')}
+        title={t('eposPage.details')}
       >
-        {current && <TerminalDetails terminal={current} />}
+        {current && <EposDetails epos={current} />}
       </Drawer>
-      <RegisterTerminal opened={registering} onClose={() => setRegistering(false)} />
+      <RegisterEpos opened={registering} onClose={() => setRegistering(false)} />
     </>
   );
 }
@@ -222,7 +218,7 @@ function Website({ id }: { id: string }) {
   );
 }
 
-function TerminalDetails({ terminal }: { terminal: Terminal }) {
+function EposDetails({ epos }: { epos: Epos }) {
   const { t } = useTranslation();
   const fact = (label: string, value: React.ReactNode) => (
     <Group justify="space-between" wrap="nowrap">
@@ -237,27 +233,27 @@ function TerminalDetails({ terminal }: { terminal: Terminal }) {
   return (
     <Stack>
       <Group justify="space-between">
-        <TerminalStatusBadge status={terminal.status} />
-        <TerminalActions terminal={terminal} size="xs" />
+        <EposStatusBadge status={epos.status} />
+        <EposActions epos={epos} size="xs" />
       </Group>
-      {fact(t('fees.salesPoint'), <Website id={terminal.salesPointId} />)}
-      {fact(t('terminals.scheme'), t(`scheme.${terminal.scheme}`))}
-      {fact(t('terminals.mid'), <Code>{terminal.merchantId}</Code>)}
-      {fact(t('terminals.tid'), <Code>{terminal.terminalId}</Code>)}
-      {fact(t('terminalsPage.registered'), `${formatDate(terminal.createdAt)} · ${terminal.registeredBy}`)}
+      {fact(t('fees.salesPoint'), <Website id={epos.salesPointId} />)}
+      {fact(t('epos.scheme'), t(`scheme.${epos.scheme}`))}
+      {fact(t('epos.mid'), <Code>{epos.merchantId}</Code>)}
+      {fact(t('epos.tid'), <Code>{epos.terminalId}</Code>)}
+      {fact(t('eposPage.registered'), `${formatDate(epos.createdAt)} · ${epos.registeredBy}`)}
       <Text size="xs" c="dimmed">
-        {t('terminals.hint')}
+        {t('epos.hint')}
       </Text>
-      <Divider label={t('terminals.history')} labelPosition="left" />
-      <TerminalHistory terminalId={terminal.id} />
+      <Divider label={t('epos.history')} labelPosition="left" />
+      <EposHistory eposId={epos.id} />
     </Stack>
   );
 }
 
 /** Pick the merchant, then its website, then a card the website accepts; MID and TID come from the processing center. */
-function RegisterTerminal({ opened, onClose }: { opened: boolean; onClose: () => void }) {
+function RegisterEpos({ opened, onClose }: { opened: boolean; onClose: () => void }) {
   const { t } = useTranslation();
-  const register = useRegisterTerminal();
+  const register = useRegisterEpos();
   const form = useForm({
     initialValues: {
       partnerId: null as string | null,
@@ -268,9 +264,9 @@ function RegisterTerminal({ opened, onClose }: { opened: boolean; onClose: () =>
     },
     validate: {
       salesPointId: (v) => (v ? null : t('fees.salesPoint')),
-      scheme: (v) => (v ? null : t('terminals.scheme')),
-      merchantId: (v) => (ID.test(v.trim()) ? null : t('terminalsPage.idRule')),
-      terminalId: (v) => (ID.test(v.trim()) ? null : t('terminalsPage.idRule')),
+      scheme: (v) => (v ? null : t('epos.scheme')),
+      merchantId: (v) => (ID.test(v.trim()) ? null : t('eposPage.idRule')),
+      terminalId: (v) => (ID.test(v.trim()) ? null : t('eposPage.idRule')),
     },
   });
   const websites = usePartnerSalesPoints(form.values.partnerId ?? '');
@@ -289,7 +285,7 @@ function RegisterTerminal({ opened, onClose }: { opened: boolean; onClose: () =>
       },
       {
         onSuccess: () => {
-          notifySuccess(t('terminals.registered'));
+          notifySuccess(t('epos.registered'));
           close();
         },
         onError: notifyError,
@@ -297,7 +293,7 @@ function RegisterTerminal({ opened, onClose }: { opened: boolean; onClose: () =>
     ),
   );
   return (
-    <Modal opened={opened} onClose={close} title={t('terminals.register')} centered>
+    <Modal opened={opened} onClose={close} title={t('epos.register')} centered>
       <form onSubmit={submit}>
         <Stack>
           <MerchantSelect
@@ -312,25 +308,25 @@ function RegisterTerminal({ opened, onClose }: { opened: boolean; onClose: () =>
             onChange={(v) => form.setValues({ salesPointId: v, scheme: null })}
           />
           <Select
-            label={t('terminals.scheme')}
-            description={website && !website.schemes.length ? t('terminalsPage.noSchemes') : undefined}
+            label={t('epos.scheme')}
+            description={website && !website.schemes.length ? t('eposPage.noSchemes') : undefined}
             disabled={!website}
             data={(website?.schemes ?? []).map((s) => ({ value: s, label: t(`scheme.${s}`) }))}
             {...form.getInputProps('scheme')}
           />
           <Group grow align="flex-start">
-            <TextInput label={t('terminals.mid')} {...form.getInputProps('merchantId')} />
-            <TextInput label={t('terminals.tid')} {...form.getInputProps('terminalId')} />
+            <TextInput label={t('epos.mid')} {...form.getInputProps('merchantId')} />
+            <TextInput label={t('epos.tid')} {...form.getInputProps('terminalId')} />
           </Group>
           <Text size="xs" c="dimmed">
-            {t('terminalsPage.registerHint')}
+            {t('eposPage.registerHint')}
           </Text>
           <Group justify="flex-end">
             <Button variant="default" onClick={close}>
               {t('common.cancel')}
             </Button>
             <Button type="submit" loading={register.isPending}>
-              {t('terminals.register')}
+              {t('epos.register')}
             </Button>
           </Group>
         </Stack>

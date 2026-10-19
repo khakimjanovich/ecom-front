@@ -1,31 +1,31 @@
 import { Badge, Button, Group, Stack, Text, Timeline } from '@mantine/core';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { Terminal } from '../api/client';
-import { type TerminalAction, useTerminalAction, useTerminalAudit } from '../api/queries';
+import type { Epos } from '../api/client';
+import { type EposAction, useEposAction, useEposAudit } from '../api/queries';
 import { notifyError, notifySuccess } from '../lib/notify';
 import { formatDate } from '../lib/time';
 import { PromptModal } from './PromptModal';
 
-export const TERMINAL_STATUS_COLOR = { ACTIVE: 'green', SUSPENDED: 'yellow', REVOKED: 'gray' } as const;
+export const EPOS_STATUS_COLOR = { ACTIVE: 'green', SUSPENDED: 'yellow', REVOKED: 'gray' } as const;
 
-export function TerminalStatusBadge({ status }: { status: Terminal['status'] }) {
+export function EposStatusBadge({ status }: { status: Epos['status'] }) {
   const { t } = useTranslation();
   return (
-    <Badge variant="light" color={TERMINAL_STATUS_COLOR[status]}>
-      {t(`terminals.status.${status}`)}
+    <Badge variant="light" color={EPOS_STATUS_COLOR[status]}>
+      {t(`epos.status.${status}`)}
     </Badge>
   );
 }
 
-/** What can happen to a terminal next: suspend and revoke need a reason; revoked is final. */
-export function TerminalActions({ terminal, size = 'compact-xs' }: { terminal: Terminal; size?: string }) {
+/** What can happen to a epos next: suspend and revoke need a reason; revoked is final. */
+export function EposActions({ epos, size = 'compact-xs' }: { epos: Epos; size?: string }) {
   const { t } = useTranslation();
-  const act = useTerminalAction();
-  const [asking, setAsking] = useState<TerminalAction | null>(null);
-  const run = (kind: TerminalAction, reason?: string) =>
+  const act = useEposAction();
+  const [asking, setAsking] = useState<EposAction | null>(null);
+  const run = (kind: EposAction, reason?: string) =>
     act.mutate(
-      { terminalId: terminal.id, kind, reason },
+      { eposId: epos.id, kind, reason },
       {
         onSuccess: () => {
           setAsking(null);
@@ -36,29 +36,29 @@ export function TerminalActions({ terminal, size = 'compact-xs' }: { terminal: T
     );
   return (
     <Group gap={4} wrap="nowrap">
-      {terminal.status === 'ACTIVE' && (
+      {epos.status === 'ACTIVE' && (
         <Button size={size} variant="subtle" color="yellow" onClick={() => setAsking('suspend')}>
-          {t('terminals.suspend')}
+          {t('epos.suspend')}
         </Button>
       )}
-      {terminal.status === 'SUSPENDED' && (
+      {epos.status === 'SUSPENDED' && (
         <Button size={size} variant="subtle" loading={act.isPending} onClick={() => run('resume')}>
-          {t('terminals.resume')}
+          {t('epos.resume')}
         </Button>
       )}
-      {terminal.status !== 'REVOKED' && (
+      {epos.status !== 'REVOKED' && (
         <Button size={size} variant="subtle" color="red" onClick={() => setAsking('revoke')}>
-          {t('terminals.revoke')}
+          {t('epos.revoke')}
         </Button>
       )}
       <PromptModal
         opened={asking !== null}
         onClose={() => setAsking(null)}
-        title={asking ? t(`terminals.${asking}`) : ''}
+        title={asking ? t(`epos.${asking}`) : ''}
         label={t('partner.reason')}
-        hint={asking === 'revoke' ? t('terminals.revokeHint') : t('partner.reasonHint')}
+        hint={asking === 'revoke' ? t('epos.revokeHint') : t('partner.reasonHint')}
         multiline
-        confirmLabel={asking ? t(`terminals.${asking}`) : ''}
+        confirmLabel={asking ? t(`epos.${asking}`) : ''}
         color="red"
         loading={act.isPending}
         onSubmit={(reason) => asking && run(asking, reason)}
@@ -67,14 +67,14 @@ export function TerminalActions({ terminal, size = 'compact-xs' }: { terminal: T
   );
 }
 
-/** Every change to the terminal, oldest first, with who and why. */
-export function TerminalHistory({ terminalId }: { terminalId: string }) {
+/** Every change to the epos, oldest first, with who and why. */
+export function EposHistory({ eposId }: { eposId: string }) {
   const { t } = useTranslation();
-  const audit = useTerminalAudit(terminalId);
+  const audit = useEposAudit(eposId);
   return (
     <Timeline bulletSize={10} lineWidth={2}>
       {audit.data?.map((entry) => (
-        <Timeline.Item key={entry.occurredAt + entry.action} title={t(`terminals.action.${entry.action}`)}>
+        <Timeline.Item key={entry.occurredAt + entry.action} title={t(`epos.action.${entry.action}`)}>
           <Stack gap={0}>
             <Text size="xs" c="dimmed">
               {entry.actor} · {formatDate(entry.occurredAt)}
