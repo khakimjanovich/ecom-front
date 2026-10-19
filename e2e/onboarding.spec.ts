@@ -3,6 +3,12 @@ import { expect, type Page, test } from '@playwright/test';
 const MAILPIT = process.env.MAILPIT_URL ?? 'http://localhost:8025';
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD ?? 'local-only';
 const PASSWORD = 'correct-horse-battery-42';
+const PDF = '%PDF-1.4\n1 0 obj << >> endobj\ntrailer << >>\n%%EOF\n';
+const REQUIRED = ['Company charter', "Director's passport"];
+
+/** One document's card (the outer Documents card also contains every heading, so the inner one is last). */
+const documentCard = (page: Page, type: string) =>
+  page.locator('.mantine-Card-root', { has: page.getByRole('heading', { name: type }) }).last();
 
 /** The newest one-time code Mailpit received for this address. */
 async function codeFor(page: Page, email: string): Promise<string> {
@@ -29,7 +35,7 @@ async function signOut(page: Page) {
   await expect(page).toHaveURL(/localhost:5180\/?$/);
 }
 
-test('a merchant signs up in Uzbek, two admins activate it, it creates an API client, gets a website switched on with a terminal and a fee agreed by two admins, and the bank checks card schemes', async ({
+test('a merchant signs up in Uzbek, gives its documents, two admins activate it, it creates an API client, gets a website switched on with a terminal and a fee agreed by two admins, and the bank checks card schemes', async ({
   page,
 }) => {
   const email = `e2e-${Date.now()}@example.uz`;
@@ -65,11 +71,33 @@ test('a merchant signs up in Uzbek, two admins activate it, it creates an API cl
   await page.getByRole('button', { name: 'Til' }).click();
   await page.getByRole('menuitem', { name: 'English' }).click();
 
-  // Admin aziz: documents, contract, activation request.
+  // The merchant gives the bank its company documents (KYB).
+  await page.goto('/merchant/documents');
+  await signIn(page, email, PASSWORD);
+  for (const type of REQUIRED) {
+    const card = documentCard(page, type);
+    const chooser = page.waitForEvent('filechooser');
+    await card.getByRole('button', { name: 'Choose file' }).click();
+    await (
+      await chooser
+    ).setFiles({ name: 'document.pdf', mimeType: 'application/pdf', buffer: Buffer.from(PDF) });
+    await card.getByRole('button', { name: 'Upload', exact: true }).click();
+    await expect(card.getByText('Waiting for review')).toBeVisible();
+  }
+  await expect(page.getByText('Being checked').first()).toBeVisible();
+  await signOut(page);
+
+  // Admin aziz: verifies each document, approves the company, signs the contract, asks for activation.
   await page.goto('/admin/partners');
   await signIn(page, 'aziz', ADMIN_PASSWORD);
   await page.getByPlaceholder('Search by company or email').fill(email);
   await page.getByRole('link', { name: company }).click();
+  for (const type of REQUIRED) {
+    const card = documentCard(page, type);
+    await card.getByRole('button', { name: 'Verify' }).click();
+    await expect(card.getByText('Verified by aziz')).toBeVisible();
+  }
+  await expect(page.getByText('Every required document is verified.', { exact: false })).toBeVisible();
   await page.getByRole('button', { name: 'Approve documents' }).click();
   await page.getByRole('dialog').getByRole('button', { name: 'Approve documents' }).click();
   await expect(page.getByText('Waiting for contract').first()).toBeVisible();

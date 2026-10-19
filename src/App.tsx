@@ -14,6 +14,7 @@ const page = <T extends string>(load: () => Promise<Record<T, React.ComponentTyp
   lazy(() => load().then((module) => ({ default: module[name] })));
 const OverviewPage = page(() => import('./pages/merchant/OverviewPage'), 'OverviewPage');
 const ApiClientsPage = page(() => import('./pages/merchant/ApiClientsPage'), 'ApiClientsPage');
+const DocumentsPage = page(() => import('./pages/merchant/DocumentsPage'), 'DocumentsPage');
 const PartnersPage = page(() => import('./pages/admin/PartnersPage'), 'PartnersPage');
 const PartnerPage = page(() => import('./pages/admin/PartnerPage'), 'PartnerPage');
 const ApprovalsPage = page(() => import('./pages/admin/ApprovalsPage'), 'ApprovalsPage');
@@ -42,6 +43,7 @@ export function App() {
 
           <Route path="merchant" element={<RequireRole role="partner" />}>
             <Route index element={<OverviewPage />} />
+            <Route path="documents" element={<DocumentsPage />} />
             <Route path="sales-points" element={<SalesPointsPage />} />
             <Route path="api-clients" element={<ApiClientsPage />} />
           </Route>

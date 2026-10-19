@@ -497,3 +497,119 @@ export const usePayments = (partnerId: string | null) =>
       ),
     placeholderData: keepPreviousData,
   });
+
+/* ------- documents (KYB) and logos ------- */
+
+/** Multipart bodies: openapi-fetch sends the FormData as is. */
+const formData = (fields: Record<string, string | Blob | undefined>) => {
+  const data = new FormData();
+  Object.entries(fields).forEach(([key, value]) => value !== undefined && data.append(key, value));
+  return data;
+};
+
+export const useMyDocuments = () =>
+  useQuery({
+    queryKey: ['documents', 'mine'],
+    queryFn: () => call(api.GET('/api/v1/partner/documents')),
+  });
+
+export const usePartnerDocuments = (partnerId: string) =>
+  useQuery({
+    queryKey: ['documents', partnerId],
+    queryFn: () =>
+      call(api.GET('/api/v1/admin/partners/{id}/documents', { params: { path: { id: partnerId } } })),
+  });
+
+export function useUploadDocument() {
+  const queries = useQueryClient();
+  return useMutation({
+    mutationFn: ({ type, file, description }: { type: string; file: File; description?: string }) =>
+      call(
+        api.POST('/api/v1/partner/documents', {
+          body: {} as never,
+          bodySerializer: () => formData({ type, file, description: description || undefined }),
+        }),
+      ),
+    onSuccess: () => queries.invalidateQueries({ queryKey: ['documents'] }),
+  });
+}
+
+export function useReviewDocument(partnerId: string) {
+  const queries = useQueryClient();
+  return useMutation({
+    mutationFn: ({
+      documentId,
+      approve,
+      reason = '',
+    }: {
+      documentId: string;
+      approve: boolean;
+      reason?: string;
+    }) => {
+      const path = { params: { path: { id: partnerId, documentId } } };
+      return approve
+        ? call(api.POST('/api/v1/admin/partners/{id}/documents/{documentId}/verify', path))
+        : call(
+            api.POST('/api/v1/admin/partners/{id}/documents/{documentId}/reject', {
+              ...path,
+              body: { reason },
+            }),
+          );
+    },
+    onSuccess: () => queries.invalidateQueries({ queryKey: ['documents'] }),
+  });
+}
+
+/** A stored file, with the access token: the browser can't add it to a plain link. */
+export const fetchMyDocument = (documentId: string) =>
+  call(
+    api.GET('/api/v1/partner/documents/{documentId}/file', {
+      params: { path: { documentId } },
+      parseAs: 'blob',
+    }),
+  );
+
+export const fetchPartnerDocument = (partnerId: string, documentId: string) =>
+  call(
+    api.GET('/api/v1/admin/partners/{id}/documents/{documentId}/file', {
+      params: { path: { id: partnerId, documentId } },
+      parseAs: 'blob',
+    }),
+  );
+
+export function useUploadLogo() {
+  const queries = useQueryClient();
+  return useMutation({
+    mutationFn: ({ salesPointId, file }: { salesPointId: string; file: File }) =>
+      call(
+        api.PUT('/api/v1/partner/sales-points/{salesPointId}/logo', {
+          params: { path: { salesPointId } },
+          body: {} as never,
+          bodySerializer: () => formData({ file }),
+        }),
+      ),
+    onSuccess: () => queries.invalidateQueries({ queryKey: ['salesPoints'] }),
+  });
+}
+
+/** The logo as an object URL, refreshed whenever it changes (logoUpdatedAt). */
+export const useLogo = (salesPointId: string, updatedAt: string | undefined, admin = false) =>
+  useQuery({
+    queryKey: ['logo', salesPointId, updatedAt],
+    queryFn: async () =>
+      URL.createObjectURL(
+        (await call(
+          admin
+            ? api.GET('/api/v1/admin/sales-points/{salesPointId}/logo', {
+                params: { path: { salesPointId } },
+                parseAs: 'blob',
+              })
+            : api.GET('/api/v1/partner/sales-points/{salesPointId}/logo', {
+                params: { path: { salesPointId } },
+                parseAs: 'blob',
+              }),
+        )) as Blob,
+      ),
+    enabled: !!updatedAt,
+    staleTime: Infinity,
+  });

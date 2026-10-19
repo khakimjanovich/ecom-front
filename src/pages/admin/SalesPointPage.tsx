@@ -5,6 +5,7 @@ import {
   Button,
   Card,
   Checkbox,
+  Divider,
   Grid,
   Group,
   NumberInput,
@@ -12,8 +13,8 @@ import {
   Skeleton,
   Stack,
   Text,
-  Textarea,
   TextInput,
+  Textarea,
   Timeline,
   Title,
 } from '@mantine/core';
@@ -28,6 +29,7 @@ import { messageFor } from '../../api/errors';
 import { type SalesPointAction, useSalesPoint, useSalesPointAdmin, useSiteChecks } from '../../api/queries';
 import { PromptModal } from '../../components/PromptModal';
 import { SalesPointBadge, SalesPointFacts } from '../../components/SalesPointFacts';
+import { WebsiteLogo } from '../../components/WebsiteLogo';
 import { notifyError, notifySuccess } from '../../lib/notify';
 import { SALES_POINT_ACTIONS, SALES_POINT_NEEDS_REASON } from '../../lib/salesPoint';
 import { formatDate } from '../../lib/time';
@@ -61,6 +63,8 @@ export function SalesPointPage() {
 
       <Card withBorder padding="lg">
         <SalesPointFacts salesPoint={salesPoint.data} />
+        <Divider my="md" />
+        <WebsiteLogo salesPoint={salesPoint.data} editable={false} />
       </Card>
 
       <Grid gap="lg">

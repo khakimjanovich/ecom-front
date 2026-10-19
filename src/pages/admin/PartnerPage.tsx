@@ -19,8 +19,18 @@ import { useTranslation } from 'react-i18next';
 import { Link, useParams } from 'react-router';
 import type { Partner } from '../../api/client';
 import { messageFor } from '../../api/errors';
-import { useHistory, usePartner, usePartnerAction, usePartnerSalesPoints } from '../../api/queries';
+import {
+  useHistory,
+  usePartner,
+  usePartnerAction,
+  usePartnerSalesPoints,
+  fetchPartnerDocument,
+  usePartnerDocuments,
+  useReviewDocument,
+} from '../../api/queries';
+import { DocumentsPanel, KybBadge } from '../../components/DocumentsPanel';
 import { Journey } from '../../components/Journey';
+import { openBlob } from '../../lib/files';
 import { PromptModal } from '../../components/PromptModal';
 import { SalesPointBadge } from '../../components/SalesPointFacts';
 import { StatusBadge } from '../../components/StatusBadge';
@@ -62,6 +72,8 @@ export function PartnerPage() {
       <Card withBorder padding="lg">
         <Journey status={partner.data.status} />
       </Card>
+
+      <Documents partnerId={partner.data.id} />
 
       <Grid gap="lg">
         <Grid.Col span={{ base: 12, md: 5 }}>
@@ -105,6 +117,42 @@ export function PartnerPage() {
         </Grid.Col>
       </Grid>
     </Stack>
+  );
+}
+
+/** Know your business: the bank opens each document and verifies or rejects it. */
+function Documents({ partnerId }: { partnerId: string }) {
+  const { t } = useTranslation();
+  const documents = usePartnerDocuments(partnerId);
+  const review = useReviewDocument(partnerId);
+  const decide = (documentId: string, approve: boolean, reason?: string) =>
+    review.mutate(
+      { documentId, approve, reason },
+      { onSuccess: () => notifySuccess(t('partner.done')), onError: notifyError },
+    );
+  return (
+    <Card withBorder padding="lg">
+      <Group justify="space-between" mb="md">
+        <Title order={4}>{t('documents.title')}</Title>
+        {documents.data && <KybBadge data={documents.data} />}
+      </Group>
+      {documents.isPending && <Skeleton h={160} />}
+      {documents.data && (
+        <DocumentsPanel
+          data={documents.data}
+          open={(doc) =>
+            fetchPartnerDocument(partnerId, doc.id)
+              .then((blob) => openBlob(blob as Blob))
+              .catch(notifyError)
+          }
+          review={{
+            approve: (doc) => decide(doc.id, true),
+            reject: (doc, reason) => decide(doc.id, false, reason),
+            busy: review.isPending,
+          }}
+        />
+      )}
+    </Card>
   );
 }
 

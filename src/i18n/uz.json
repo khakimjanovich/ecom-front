@@ -24,7 +24,8 @@
     "fees": "Komissiyalar",
     "cards": "Kartalar",
     "payments": "Toʻlovlar",
-    "terminals": "Terminallar"
+    "terminals": "Terminallar",
+    "documents": "Hujjatlar"
   },
   "status": {
     "PENDING_VERIFICATION": "Hujjatlar tekshirilmoqda",
@@ -463,5 +464,65 @@
     "idRule": "Harf va raqamlar, 30 tagacha",
     "noSchemes": "Bu sayt hali karta qabul qilmaydi. Avval toʻlov tizimlarini belgilang.",
     "registerHint": "MID va TIDni protsessing markazi bergandek kiriting. Terminal darhol ishlaydi, shu karta bilan toʻlovlar u orqali oʻtadi."
+  },
+  "documents": {
+    "title": "Kompaniya hujjatlari",
+    "description": "Bank sotuvchini ulashdan oldin kim bilan ishlashini tekshiradi (KYB).",
+    "formats": "PDF, PNG yoki JPEG, har biri 10 MB gacha. Fayl turi faylning oʻzidan tekshiriladi.",
+    "required": "Majburiy",
+    "optional": "Agar tegishli boʻlsa",
+    "choose": "Fayl tanlash",
+    "replace": "Yangisini yuklash",
+    "upload": "Yuklash",
+    "note": "Bank uchun izoh (ixtiyoriy)",
+    "tooBig": "10 MB dan katta",
+    "uploaded": "Yuklandi. Bank uni koʻrib chiqadi.",
+    "verify": "Tasdiqlash",
+    "reject": "Rad etish",
+    "rejectHint": "Sotuvchi tuzata olishi uchun nima notoʻgʻriligini yozing.",
+    "earlier_one": "{{count}} ta oldingi yuklash",
+    "earlier_other": "{{count}} ta oldingi yuklash",
+    "kybApproved": "Barcha majburiy hujjatlar tasdiqlangan. Hisobni ulash mumkin.",
+    "kybInReview": "Bank tekshirmoqda: {{types}}.",
+    "kybMissing": "Hali kerak: {{types}}.",
+    "kyb": {
+      "ACTION_REQUIRED": "Hujjatlar kerak",
+      "IN_REVIEW": "Tekshirilmoqda",
+      "APPROVED": "Tasdiqlangan"
+    },
+    "status": {
+      "UPLOADED": "Koʻrib chiqish kutilmoqda",
+      "VERIFIED": "Tasdiqlangan",
+      "REJECTED": "Rad etilgan",
+      "REPLACED": "Almashtirilgan"
+    },
+    "reviewed": {
+      "VERIFIED": "{{name}} tasdiqladi",
+      "REJECTED": "{{name}} rad etdi",
+      "UPLOADED": "",
+      "REPLACED": ""
+    },
+    "type": {
+      "CHARTER": "Kompaniya ustavi",
+      "PASSPORT": "Direktor pasporti",
+      "LICENSE": "Litsenziya",
+      "POWER_OF_ATTORNEY": "Ishonchnoma"
+    },
+    "hint": {
+      "CHARTER": "Kompaniyaning taʼsis hujjati, roʻyxatdan oʻtganlik muhri bilan.",
+      "PASSPORT": "Shartnomani imzolaydigan direktorning maʼlumotlar sahifasi.",
+      "LICENSE": "Faqat litsenziya talab qilinadigan faoliyat uchun.",
+      "POWER_OF_ATTORNEY": "Faqat kompaniya nomidan direktor emas, boshqa shaxs ish yuritsa."
+    }
+  },
+  "logo": {
+    "title": "Logotip",
+    "hint": "Xaridorlar uni toʻlov sahifasida koʻradi.",
+    "none": "Hali logotip yoʻq. Xaridorlar sayt nomini koʻradi.",
+    "upload": "Logotip yuklash",
+    "change": "Logotipni almashtirish",
+    "saved": "Logotip saqlandi.",
+    "tooBig": "Logotip 1 MB dan oshmasligi kerak.",
+    "alt": "{{name}} logotipi"
   }
 }

@@ -5,6 +5,7 @@ import {
   IconChecklist,
   IconCreditCard,
   IconDeviceDesktopAnalytics,
+  IconFileText,
   IconKey,
   IconLayoutDashboard,
   IconLogout,
@@ -22,6 +23,7 @@ type NavItem = { to: string; label: string; icon: typeof IconKey; exact?: boolea
 
 const MERCHANT_NAV: NavItem[] = [
   { to: '/merchant', label: 'nav.overview', icon: IconLayoutDashboard, exact: true },
+  { to: '/merchant/documents', label: 'nav.documents', icon: IconFileText },
   { to: '/merchant/sales-points', label: 'nav.salesPoints', icon: IconWorldWww },
   { to: '/merchant/api-clients', label: 'nav.apiClients', icon: IconKey },
 ];

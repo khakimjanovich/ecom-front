@@ -2,6 +2,7 @@ import {
   Alert,
   Button,
   Card,
+  Divider,
   Group,
   Modal,
   Skeleton,
@@ -19,6 +20,7 @@ import type { SalesPoint } from '../../api/client';
 import { fieldErrors, messageFor } from '../../api/errors';
 import { useCreateSalesPoint, useMySalesPoints, useUpdateReturnUrls } from '../../api/queries';
 import { SalesPointBadge, SalesPointFacts } from '../../components/SalesPointFacts';
+import { WebsiteLogo } from '../../components/WebsiteLogo';
 import { Empty } from '../../layout/Empty';
 import { PageTitle } from '../../layout/PageTitle';
 import { notifyError, notifySuccess } from '../../lib/notify';
@@ -68,6 +70,8 @@ export function SalesPointsPage() {
               </Group>
             </Group>
             <SalesPointFacts salesPoint={salesPoint} />
+            <Divider my="md" />
+            <WebsiteLogo salesPoint={salesPoint} editable />
           </Card>
         ))}
       </Stack>

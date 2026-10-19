@@ -24,7 +24,8 @@
     "fees": "Fees",
     "cards": "Cards",
     "payments": "Payments",
-    "terminals": "Terminals"
+    "terminals": "Terminals",
+    "documents": "Documents"
   },
   "status": {
     "PENDING_VERIFICATION": "Checking documents",
@@ -463,5 +464,65 @@
     "idRule": "Letters and digits, up to 30",
     "noSchemes": "This website accepts no cards yet. Set its card schemes first.",
     "registerHint": "Use the MID and TID exactly as the processing center issued them. The terminal is live at once, so payments for this card go through it."
+  },
+  "documents": {
+    "title": "Company documents",
+    "description": "The bank checks who it works with (KYB) before switching a merchant on.",
+    "formats": "PDF, PNG or JPEG, up to 10 MB each. The file type is checked from the file itself.",
+    "required": "Required",
+    "optional": "If it applies",
+    "choose": "Choose file",
+    "replace": "Upload a new one",
+    "upload": "Upload",
+    "note": "A note for the bank (optional)",
+    "tooBig": "larger than 10 MB",
+    "uploaded": "Uploaded. The bank will review it.",
+    "verify": "Verify",
+    "reject": "Reject",
+    "rejectHint": "Say what is wrong, so the merchant can fix it.",
+    "earlier_one": "{{count}} earlier upload",
+    "earlier_other": "{{count}} earlier uploads",
+    "kybApproved": "Every required document is verified. The account can be switched on.",
+    "kybInReview": "The bank is checking: {{types}}.",
+    "kybMissing": "Still needed: {{types}}.",
+    "kyb": {
+      "ACTION_REQUIRED": "Documents needed",
+      "IN_REVIEW": "Being checked",
+      "APPROVED": "Verified"
+    },
+    "status": {
+      "UPLOADED": "Waiting for review",
+      "VERIFIED": "Verified",
+      "REJECTED": "Rejected",
+      "REPLACED": "Replaced"
+    },
+    "reviewed": {
+      "VERIFIED": "Verified by {{name}}",
+      "REJECTED": "Rejected by {{name}}",
+      "UPLOADED": "",
+      "REPLACED": ""
+    },
+    "type": {
+      "CHARTER": "Company charter",
+      "PASSPORT": "Director's passport",
+      "LICENSE": "Licence",
+      "POWER_OF_ATTORNEY": "Power of attorney"
+    },
+    "hint": {
+      "CHARTER": "The company's founding document, with its registration stamp.",
+      "PASSPORT": "The ID page of the director who signs the contract.",
+      "LICENSE": "Only for activities that need a licence.",
+      "POWER_OF_ATTORNEY": "Only if someone other than the director acts for the company."
+    }
+  },
+  "logo": {
+    "title": "Logo",
+    "hint": "Buyers see it on the payment page.",
+    "none": "No logo yet. Buyers will see the website's name.",
+    "upload": "Upload logo",
+    "change": "Change logo",
+    "saved": "Logo saved.",
+    "tooBig": "The logo must be at most 1 MB.",
+    "alt": "{{name}} logo"
   }
 }
