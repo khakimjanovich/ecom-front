@@ -26,7 +26,8 @@
     "payments": "Payments",
     "terminals": "Terminals",
     "documents": "Documents",
-    "paymentLinks": "Payment links"
+    "paymentLinks": "Payment links",
+    "reports": "Reports"
   },
   "status": {
     "PENDING_VERIFICATION": "Checking documents",
@@ -611,5 +612,18 @@
     "giveBack": "Give back",
     "giveBackTitle": "Give the money back?",
     "giveBackText": "The whole amount goes back to the buyer's card. On the day of payment it is reversed; later it is refunded, within your website's refund window."
+  },
+  "reports": {
+    "title": "Daily reports",
+    "description": "Each night the bank adds up the day before for every website: what was paid, its fee, what was refunded, and what you receive.",
+    "empty": "No reports yet",
+    "emptyText": "A report appears the morning after the first day with payments.",
+    "day": "Business day",
+    "paid": "Paid",
+    "fee": "Bank fee",
+    "refunded": "Refunded",
+    "payout": "You receive",
+    "count_one": "{{count}} payment",
+    "count_other": "{{count}} payments"
   }
 }

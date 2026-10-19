@@ -550,6 +550,23 @@ export function useGiveBackLink() {
   });
 }
 
+/* ------- daily reports (the merchant's portal) ------- */
+
+export const useDailyReports = () =>
+  useQuery({
+    queryKey: ['dailyReports'],
+    queryFn: () => call(paymentApi.GET('/api/v1/partner/reports', {})),
+  });
+
+/** One business day's payments and refunds as CSV, with the access token. */
+export const fetchDailyPayments = (day: string) =>
+  call(
+    paymentApi.GET('/api/v1/partner/reports/{day}/payments.csv', {
+      params: { path: { day } },
+      parseAs: 'blob',
+    }),
+  );
+
 /* ------- the payment page (the buyer, no login: the link's token is the credential) ------- */
 
 const pageOf = (token: string) => ({ params: { path: { token } } });

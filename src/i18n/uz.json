@@ -26,7 +26,8 @@
     "payments": "Toʻlovlar",
     "terminals": "Terminallar",
     "documents": "Hujjatlar",
-    "paymentLinks": "Toʻlov havolalari"
+    "paymentLinks": "Toʻlov havolalari",
+    "reports": "Hisobotlar"
   },
   "status": {
     "PENDING_VERIFICATION": "Hujjatlar tekshirilmoqda",
@@ -611,5 +612,18 @@
     "giveBack": "Qaytarish",
     "giveBackTitle": "Pul qaytarilsinmi?",
     "giveBackText": "Butun summa xaridorning kartasiga qaytadi. Toʻlov kuni u bekor qilinadi; keyinroq saytingizning qaytarish muddati ichida qaytariladi."
+  },
+  "reports": {
+    "title": "Kunlik hisobotlar",
+    "description": "Har kecha bank har bir sayt boʻyicha oʻtgan kunni hisoblaydi: toʻlangan, komissiya, qaytarilgan va siz oladigan summa.",
+    "empty": "Hali hisobotlar yoʻq",
+    "emptyText": "Hisobot toʻlovli birinchi kundan keyingi ertalab paydo boʻladi.",
+    "day": "Operatsion kun",
+    "paid": "Toʻlangan",
+    "fee": "Bank komissiyasi",
+    "refunded": "Qaytarilgan",
+    "payout": "Siz olasiz",
+    "count_one": "{{count}} ta toʻlov",
+    "count_other": "{{count}} ta toʻlov"
   }
 }
