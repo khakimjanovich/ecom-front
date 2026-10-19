@@ -118,7 +118,7 @@ function PageBody({ token, page }: { token: string; page: PaymentPage }) {
           text={t(`pay.decline.${page.declineCode}`, { defaultValue: t('pay.decline.other') })}
         />
       )}
-      {page.status === 'UNKNOWN' && (
+      {(page.status === 'UNKNOWN' || page.status === 'MANUAL_REVIEW') && (
         <Done
           icon={<IconClockHour4 size={44} color="var(--mantine-color-yellow-6)" />}
           title={t('pay.unknown')}

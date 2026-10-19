@@ -429,7 +429,8 @@
       "BINDING_STARTED": "Bogʻlash boshlandi",
       "BOUND": "Bogʻlandi",
       "DEBITED": "Yechildi",
-      "LOOKED_UP": "Qidirildi"
+      "LOOKED_UP": "Qidirildi",
+      "STATUS_ASKED": "Holat soʻraldi"
     }
   },
   "payments": {
@@ -453,7 +454,8 @@
       "DEBITING": "Yechilmoqda",
       "PAID": "Toʻlangan",
       "DECLINED": "Rad etilgan",
-      "UNKNOWN": "Bankda aniqlanmoqda"
+      "UNKNOWN": "Bankda aniqlanmoqda",
+      "MANUAL_REVIEW": "Xodim tekshirmoqda"
     },
     "fee": "Komissiya {{fee}}",
     "card": "Karta"

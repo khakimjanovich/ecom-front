@@ -429,7 +429,8 @@
       "BINDING_STARTED": "Binding started",
       "BOUND": "Bound",
       "DEBITED": "Debited",
-      "LOOKED_UP": "Looked up"
+      "LOOKED_UP": "Looked up",
+      "STATUS_ASKED": "Status asked"
     }
   },
   "payments": {
@@ -453,7 +454,8 @@
       "DEBITING": "Debiting",
       "PAID": "Paid",
       "DECLINED": "Declined",
-      "UNKNOWN": "Checking with the bank"
+      "UNKNOWN": "Checking with the bank",
+      "MANUAL_REVIEW": "Being checked by a person"
     },
     "fee": "Fee {{fee}}",
     "card": "Card"

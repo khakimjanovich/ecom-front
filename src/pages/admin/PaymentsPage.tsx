@@ -18,6 +18,7 @@ const STATUS_COLOR = {
   PAID: 'green',
   DECLINED: 'red',
   UNKNOWN: 'orange',
+  MANUAL_REVIEW: 'grape',
   FAILED: 'gray',
 } as const;
 

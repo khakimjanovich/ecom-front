@@ -510,6 +510,9 @@ export const usePaymentPage = (token: string) =>
     queryKey: ['pay', token, currentLanguage()],
     queryFn: () => call(paymentApi.GET('/api/v1/pay/{token}', pageOf(token))),
     retry: false,
+    // While the bank is still asking the scheme, the page checks again on its own.
+    refetchInterval: (query) =>
+      ['DEBITING', 'UNKNOWN'].includes(query.state.data?.status ?? '') ? 5_000 : false,
   });
 
 export function useSubmitCard(token: string) {

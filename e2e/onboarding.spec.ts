@@ -355,7 +355,8 @@ test('a merchant signs up in Uzbek, gives its documents, two admins activate it,
   await page.goto('/admin/payments');
   await page.getByPlaceholder('All merchants').fill(email);
   await page.getByRole('option', { name: new RegExp(company) }).click();
-  await expect(page.getByText('Paid', { exact: true })).toBeVisible();
-  await expect(page.getByText(/^RRN \d+/)).toBeVisible();
-  await expect(page.getByText('Fee UZS 1,251.00')).toBeVisible();
+  await expect(page.getByRole('row')).toHaveCount(2); // the header and this merchant's one payment
+  const paid = page.getByRole('row', { name: /Fee UZS 1,251\.00/ });
+  await expect(paid.getByText('Paid', { exact: true })).toBeVisible();
+  await expect(paid.getByText(/^RRN \d+/)).toBeVisible();
 });
