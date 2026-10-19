@@ -13,12 +13,17 @@ import {
   Title,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { IconPencil, IconPlus, IconWorldWww } from '@tabler/icons-react';
+import { IconPencil, IconPlus, IconWebhook, IconWorldWww } from '@tabler/icons-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { SalesPoint } from '../../api/client';
 import { fieldErrors, messageFor } from '../../api/errors';
-import { useCreateSalesPoint, useMySalesPoints, useUpdateReturnUrls } from '../../api/queries';
+import {
+  useCreateSalesPoint,
+  useMySalesPoints,
+  useUpdateReturnUrls,
+  useUpdateWebhook,
+} from '../../api/queries';
 import { SalesPointBadge, SalesPointFacts } from '../../components/SalesPointFacts';
 import { WebsiteLogo } from '../../components/WebsiteLogo';
 import { Empty } from '../../layout/Empty';
@@ -33,6 +38,7 @@ export function SalesPointsPage() {
   const salesPoints = useMySalesPoints();
   const [adding, setAdding] = useState(false);
   const [editing, setEditing] = useState<SalesPoint | null>(null);
+  const [hooking, setHooking] = useState<SalesPoint | null>(null);
 
   return (
     <>
@@ -66,6 +72,14 @@ export function SalesPointsPage() {
                     {t('salesPoints.editReturnUrls')}
                   </Button>
                 )}
+                <Button
+                  size="xs"
+                  variant="default"
+                  leftSection={<IconWebhook size={14} />}
+                  onClick={() => setHooking(salesPoint)}
+                >
+                  {t('salesPoints.webhook')}
+                </Button>
                 <SalesPointBadge status={salesPoint.status} />
               </Group>
             </Group>
@@ -77,6 +91,7 @@ export function SalesPointsPage() {
       </Stack>
       <AddWebsite opened={adding} onClose={() => setAdding(false)} />
       <EditReturnUrls key={editing?.id} salesPoint={editing} onClose={() => setEditing(null)} />
+      <EditWebhook key={hooking?.id} salesPoint={hooking} onClose={() => setHooking(null)} />
     </>
   );
 }
@@ -186,6 +201,54 @@ function EditReturnUrls({ salesPoint, onClose }: { salesPoint: SalesPoint | null
               salesPoint &&
               update.mutate(
                 { salesPointId: salesPoint.id, returnUrls: urls },
+                {
+                  onSuccess: () => {
+                    notifySuccess(t('salesPoints.saved'));
+                    onClose();
+                  },
+                },
+              )
+            }
+          >
+            {t('salesPoint.save')}
+          </Button>
+        </Group>
+      </Stack>
+    </Modal>
+  );
+}
+
+/** Where the bank tells the website how each payment ended; empty stops it. */
+function EditWebhook({ salesPoint, onClose }: { salesPoint: SalesPoint | null; onClose: () => void }) {
+  const { t } = useTranslation();
+  const update = useUpdateWebhook();
+  const [url, setUrl] = useState(salesPoint?.webhookUrl ?? '');
+
+  return (
+    <Modal opened={salesPoint !== null} onClose={onClose} title={t('salesPoints.webhook')} centered>
+      <Stack>
+        <TextInput
+          label={t('salesPoints.webhook')}
+          description={t('salesPoints.webhookHint')}
+          placeholder="https://"
+          value={url}
+          onChange={(e) => setUrl(e.currentTarget.value)}
+        />
+        {update.isError && (
+          <Alert color="red" variant="light">
+            {messageFor(update.error)}
+          </Alert>
+        )}
+        <Group justify="flex-end">
+          <Button variant="default" onClick={onClose}>
+            {t('common.cancel')}
+          </Button>
+          <Button
+            loading={update.isPending}
+            onClick={() =>
+              salesPoint &&
+              update.mutate(
+                { salesPointId: salesPoint.id, url: url.trim() },
                 {
                   onSuccess: () => {
                     notifySuccess(t('salesPoints.saved'));

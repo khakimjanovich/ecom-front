@@ -196,6 +196,20 @@ export function useUpdateReturnUrls() {
   });
 }
 
+export function useUpdateWebhook() {
+  const queries = useQueryClient();
+  return useMutation({
+    mutationFn: ({ salesPointId, url }: { salesPointId: string; url: string }) =>
+      call(
+        api.PUT('/api/v1/partner/sales-points/{salesPointId}/webhook', {
+          params: { path: { salesPointId } },
+          body: { url },
+        }),
+      ),
+    onSuccess: () => queries.invalidateQueries({ queryKey: salesPointKeys.mine }),
+  });
+}
+
 export const usePartnerSalesPoints = (partnerId: string) =>
   useQuery({
     queryKey: salesPointKeys.ofPartner(partnerId),

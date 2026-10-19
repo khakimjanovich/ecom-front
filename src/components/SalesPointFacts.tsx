@@ -31,6 +31,17 @@ export function SalesPointFacts({ salesPoint }: { salesPoint: SalesPoint }) {
           </Text>
         ))}
       </Fact>
+      <Fact label={t('salesPoints.webhook')}>
+        {salesPoint.webhookUrl ? (
+          <Text size="sm" ff="monospace" style={{ wordBreak: 'break-all' }}>
+            {salesPoint.webhookUrl}
+          </Text>
+        ) : (
+          <Text size="sm" c="dimmed">
+            {t('salesPoints.noWebhook')}
+          </Text>
+        )}
+      </Fact>
       <Fact label={t('salesPoints.schemes')}>
         {salesPoint.schemes.length ? (
           <Group gap={6}>
