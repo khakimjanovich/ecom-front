@@ -7,10 +7,14 @@ const keys = (tree: object, prefix = ''): string[] =>
     typeof value === 'object' ? keys(value, `${prefix}${key}.`) : [`${prefix}${key}`],
   );
 
+// Plural forms differ by language (Russian has one/few/many), so `count_one` and `count_few` are both `count`.
+const base = (key: string) => key.replace(/_(zero|one|two|few|many|other)$/, '');
+const baseKeys = (tree: object) => [...new Set(keys(tree).map(base))].sort();
+
 describe('translations', () => {
   it('have the same keys in every language, so nothing falls back to English unnoticed', () => {
-    expect(keys(ru).sort()).toEqual(keys(en).sort());
-    expect(keys(uz).sort()).toEqual(keys(en).sort());
+    expect(baseKeys(ru)).toEqual(baseKeys(en));
+    expect(baseKeys(uz)).toEqual(baseKeys(en));
   });
 
   it('use the same placeholders in every language', () => {
@@ -19,7 +23,7 @@ describe('translations', () => {
     const placeholders = (tree: object) =>
       Object.fromEntries(
         keys(tree).map((k) => [
-          k,
+          base(k),
           text(tree, k)
             .match(/{{\w+}}/g)
             ?.sort() ?? [],

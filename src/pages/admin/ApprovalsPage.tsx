@@ -125,7 +125,7 @@ export function ApprovalsPage() {
           </Tabs.Tab>
           <Tabs.Tab value="fees">
             {t('approvals.feeChanges')}
-            {count(fees.data?.length)}
+            {count(fees.data?.totalItems)}
           </Tabs.Tab>
         </Tabs.List>
         <Tabs.Panel value="activations">

@@ -1,4 +1,4 @@
-import { Badge, Button, Card, Group, Skeleton, Stack, Text, Tooltip } from '@mantine/core';
+import { Badge, Button, Card, Group, Pagination, Skeleton, Stack, Text, Tooltip } from '@mantine/core';
 import { IconChecklist } from '@tabler/icons-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -16,7 +16,8 @@ import { formatDate, fromNow } from '../../lib/time';
 /** Fee rules to add or end, waiting for a second admin. */
 export function FeeChanges() {
   const { t } = useTranslation();
-  const changes = useCommissionRequests();
+  const [page, setPage] = useState(1);
+  const changes = useCommissionRequests(page - 1);
   const decide = useDecideCommission();
   const { name } = useSession();
   const [rejecting, setRejecting] = useState<CommissionChange | null>(null);
@@ -24,11 +25,11 @@ export function FeeChanges() {
   const done = () => notifySuccess(t('partner.done'));
   if (changes.isPending) return <Skeleton h={200} />;
   if (changes.isError) return <Text c="red">{messageFor(changes.error)}</Text>;
-  if (!changes.data.length) return <Empty icon={IconChecklist} title={t('approvals.emptyTitle')} />;
+  if (!changes.data.items.length) return <Empty icon={IconChecklist} title={t('approvals.emptyTitle')} />;
 
   return (
     <Stack maw={760}>
-      {changes.data.map((change) => {
+      {changes.data.items.map((change) => {
         const mine = change.requestedBy === name;
         const rule = change.rule;
         return (
@@ -52,6 +53,20 @@ export function FeeChanges() {
                   {' · '}
                   {rule.scheme ? t(`scheme.${rule.scheme}`) : t('fees.anyScheme')}
                 </Text>
+                {change.kind === 'END' && (
+                  <Text size="sm" mt={4}>
+                    <Text span c="dimmed">
+                      {t('fees.validTo')}:{' '}
+                    </Text>
+                    <Text span td="line-through" c="dimmed">
+                      {rule.validTo ? formatDate(rule.validTo) : t('fees.noEnd')}
+                    </Text>
+                    {' → '}
+                    <Text span fw={600}>
+                      {formatDate(change.endsAt!)}
+                    </Text>
+                  </Text>
+                )}
                 <Text size="xs" c="dimmed">
                   {t('approvals.requestedBy', { name: change.requestedBy })} · {fromNow(change.createdAt)}
                 </Text>
@@ -82,6 +97,9 @@ export function FeeChanges() {
           </Card>
         );
       })}
+      {changes.data.totalPages > 1 && (
+        <Pagination value={page} onChange={setPage} total={changes.data.totalPages} size="sm" />
+      )}
       <PromptModal
         opened={rejecting !== null}
         onClose={() => setRejecting(null)}

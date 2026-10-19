@@ -23,7 +23,8 @@
     "salesPoints": "Saytlar",
     "fees": "Komissiyalar",
     "cards": "Kartalar",
-    "payments": "Toʻlovlar"
+    "payments": "Toʻlovlar",
+    "terminals": "Terminallar"
   },
   "status": {
     "PENDING_VERIFICATION": "Hujjatlar tekshirilmoqda",
@@ -324,7 +325,44 @@
     "calculate": "Hisoblash",
     "ruleUsed": "Qoʻllangan qoida",
     "net": "Merchant oladi",
-    "bankWide": "Butun bank uchun"
+    "bankWide": "Butun bank uchun",
+    "show": {
+      "inForce": "Hozir amalda",
+      "waiting": "Tasdiq kutmoqda",
+      "all": "Hammasi"
+    },
+    "count_one": "{{count}} ta qoida",
+    "count_other": "{{count}} ta qoida",
+    "details": "Komissiya qoidasi",
+    "atLeast": "kamida",
+    "atMost": "koʻpi bilan",
+    "level": {
+      "SALES_POINT": "Sayt",
+      "PARTNER": "Sotuvchi",
+      "SCHEME": "Toʻlov tizimi",
+      "BANK": "Bank boʻyicha standart"
+    },
+    "levelHint": {
+      "SALES_POINT": "Bitta sayt uchun amal qiladi va shu sayt uchun boshqa barcha qoidalardan ustun.",
+      "PARTNER": "Sotuvchining barcha saytlari uchun amal qiladi, agar saytning oʻz qoidasi boʻlmasa.",
+      "SCHEME": "Shu karta bilan barcha toʻlovlar uchun amal qiladi, agar sotuvchi yoki saytning oʻz qoidasi boʻlmasa.",
+      "BANK": "Bankning standart qoidasi: aniqroq qoida boʻlmaganda qoʻllanadi."
+    },
+    "state": {
+      "waiting": "Tasdiq kutmoqda",
+      "rejected": "Rad etilgan",
+      "upcoming": "Keyinroq boshlanadi",
+      "inForce": "Amalda",
+      "ended": "Tugagan"
+    },
+    "history": "Tarix",
+    "historyCreate": "Qoida taklif qilindi",
+    "historyEnd": "{{when}} da tugatish taklif qilindi",
+    "decision": {
+      "APPROVED": "{{name}} tasdiqladi",
+      "REJECTED": "{{name}} rad etdi",
+      "PENDING": "Ikkinchi administratorni kutmoqda"
+    }
   },
   "ruleStatus": {
     "PROPOSED": "Tasdiq kutmoqda",
@@ -355,7 +393,8 @@
       "SUSPENDED": "Toʻxtatildi",
       "RESUMED": "Davom ettirildi",
       "REVOKED": "Bekor qilindi"
-    }
+    },
+    "revokeHint": "Bekor qilingan MID/TID qaytmaydi. Audit uchun sababini yozing."
   },
   "cards": {
     "title": "Kartalar",
@@ -408,5 +447,21 @@
     "statusName": {
       "CREATED": "Xaridorni kutmoqda"
     }
+  },
+  "terminalsPage": {
+    "title": "Terminallar",
+    "description": "Protsessing markazi bergan barcha terminallar (MID/TID). Har bir saytda har bir toʻlov tizimi uchun koʻpi bilan bitta faol terminal boʻladi.",
+    "allWebsites": "Barcha saytlar",
+    "anyStatus": "Istalgan holat",
+    "search": "MID yoki TID boʻyicha qidirish",
+    "empty": "Terminal topilmadi",
+    "emptyText": "Filtrlarni oʻzgartiring yoki protsessing markazi bergan terminalni roʻyxatdan oʻtkazing.",
+    "registered": "Roʻyxatdan oʻtgan",
+    "count_one": "{{count}} ta terminal",
+    "count_other": "{{count}} ta terminal",
+    "details": "Terminal",
+    "idRule": "Harf va raqamlar, 30 tagacha",
+    "noSchemes": "Bu sayt hali karta qabul qilmaydi. Avval toʻlov tizimlarini belgilang.",
+    "registerHint": "MID va TIDni protsessing markazi bergandek kiriting. Terminal darhol ishlaydi, shu karta bilan toʻlovlar u orqali oʻtadi."
   }
 }

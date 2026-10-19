@@ -23,7 +23,8 @@
     "salesPoints": "Websites",
     "fees": "Fees",
     "cards": "Cards",
-    "payments": "Payments"
+    "payments": "Payments",
+    "terminals": "Terminals"
   },
   "status": {
     "PENDING_VERIFICATION": "Checking documents",
@@ -324,7 +325,44 @@
     "calculate": "Calculate",
     "ruleUsed": "Rule used",
     "net": "Merchant receives",
-    "bankWide": "Bank-wide"
+    "bankWide": "Bank-wide",
+    "show": {
+      "inForce": "In force now",
+      "waiting": "Waiting for approval",
+      "all": "All"
+    },
+    "count_one": "{{count}} rule",
+    "count_other": "{{count}} rules",
+    "details": "Fee rule",
+    "atLeast": "at least",
+    "atMost": "at most",
+    "level": {
+      "SALES_POINT": "Website",
+      "PARTNER": "Merchant",
+      "SCHEME": "Card scheme",
+      "BANK": "Bank default"
+    },
+    "levelHint": {
+      "SALES_POINT": "Applies to one website. It beats every other rule for that website.",
+      "PARTNER": "Applies to all of a merchant's websites, unless a website has its own rule.",
+      "SCHEME": "Applies to every payment with this card, unless the merchant or website has its own rule.",
+      "BANK": "The bank's default: used when no more specific rule applies."
+    },
+    "state": {
+      "waiting": "Waiting for approval",
+      "rejected": "Rejected",
+      "upcoming": "Starts later",
+      "inForce": "In force",
+      "ended": "Ended"
+    },
+    "history": "History",
+    "historyCreate": "Rule proposed",
+    "historyEnd": "End proposed for {{when}}",
+    "decision": {
+      "APPROVED": "Approved by {{name}}",
+      "REJECTED": "Rejected by {{name}}",
+      "PENDING": "Waiting for a second admin"
+    }
   },
   "ruleStatus": {
     "PROPOSED": "Waiting for approval",
@@ -355,7 +393,8 @@
       "SUSPENDED": "Suspended",
       "RESUMED": "Resumed",
       "REVOKED": "Revoked"
-    }
+    },
+    "revokeHint": "A revoked MID/TID never comes back. Say why, for the audit."
   },
   "cards": {
     "title": "Cards",
@@ -408,5 +447,21 @@
     "statusName": {
       "CREATED": "Waiting for the buyer"
     }
+  },
+  "terminalsPage": {
+    "title": "Terminals",
+    "description": "Every terminal (MID/TID) the processing center issued. Each website has at most one live terminal per card scheme.",
+    "allWebsites": "All websites",
+    "anyStatus": "Any status",
+    "search": "Search MID or TID",
+    "empty": "No terminals found",
+    "emptyText": "Change the filters, or register a terminal the processing center issued.",
+    "registered": "Registered",
+    "count_one": "{{count}} terminal",
+    "count_other": "{{count}} terminals",
+    "details": "Terminal",
+    "idRule": "Letters and digits, up to 30",
+    "noSchemes": "This website accepts no cards yet. Set its card schemes first.",
+    "registerHint": "Use the MID and TID exactly as the processing center issued them. The terminal is live at once, so payments for this card go through it."
   }
 }

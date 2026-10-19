@@ -264,21 +264,41 @@ export type SalesPointAction = 'activate' | 'suspend' | 'restore' | 'close';
 
 /* ------- commission ------- */
 
-const commissionKeys = {
-  rules: (partnerId?: string) => ['commission', 'rules', partnerId ?? 'all'] as const,
-  requests: ['commission', 'requests'] as const,
+export type RuleFilter = {
+  partnerId?: string;
+  salesPointId?: string;
+  scheme?: 'UZCARD' | 'HUMO';
+  status?: 'PROPOSED' | 'ACTIVE' | 'REJECTED';
+  activeAt?: string;
+  page: number;
+  size: number;
 };
 
-export const useCommissionRules = (partnerId?: string) =>
+export const useCommissionRules = (filter: RuleFilter) =>
   useQuery({
-    queryKey: commissionKeys.rules(partnerId),
-    queryFn: () => call(commissionApi.GET('/api/v1/admin/commissions', { params: { query: { partnerId } } })),
+    queryKey: ['commission', 'rules', filter],
+    queryFn: () => call(commissionApi.GET('/api/v1/admin/commissions', { params: { query: filter } })),
+    placeholderData: keepPreviousData,
   });
 
-export const useCommissionRequests = () =>
+export const useRuleHistory = (ruleId: string | undefined) =>
   useQuery({
-    queryKey: commissionKeys.requests,
-    queryFn: () => call(commissionApi.GET('/api/v1/admin/commission-requests')),
+    queryKey: ['commission', 'history', ruleId],
+    queryFn: () =>
+      call(
+        commissionApi.GET('/api/v1/admin/commissions/{ruleId}/history', {
+          params: { path: { ruleId: ruleId! } },
+        }),
+      ),
+    enabled: !!ruleId,
+  });
+
+export const useCommissionRequests = (page = 0, size = 20) =>
+  useQuery({
+    queryKey: ['commission', 'requests', page, size],
+    queryFn: () =>
+      call(commissionApi.GET('/api/v1/admin/commission-requests', { params: { query: { page, size } } })),
+    placeholderData: keepPreviousData,
   });
 
 /** Proposals, ends and decisions all change what's pending and what's in force. */
@@ -328,14 +348,18 @@ export const useQuote = () =>
 
 /* ------- terminals ------- */
 
-const terminalKeys = {
-  of: (salesPointId: string) => ['terminals', salesPointId] as const,
-  audit: (terminalId: string) => ['terminals', 'audit', terminalId] as const,
+export type TerminalFilter = {
+  salesPointId?: string;
+  scheme?: 'UZCARD' | 'HUMO';
+  status?: 'ACTIVE' | 'SUSPENDED' | 'REVOKED';
+  q?: string;
+  page: number;
+  size: number;
 };
 
 export const useTerminals = (salesPointId: string) =>
   useQuery({
-    queryKey: terminalKeys.of(salesPointId),
+    queryKey: ['terminals', 'of', salesPointId],
     queryFn: () =>
       call(
         terminalApi.GET('/api/v1/admin/sales-points/{salesPointId}/terminals', {
@@ -344,9 +368,16 @@ export const useTerminals = (salesPointId: string) =>
       ),
   });
 
-export const useTerminalAudit = (terminalId: string, enabled: boolean) =>
+export const useTerminalSearch = (filter: TerminalFilter) =>
   useQuery({
-    queryKey: terminalKeys.audit(terminalId),
+    queryKey: ['terminals', 'search', filter],
+    queryFn: () => call(terminalApi.GET('/api/v1/admin/terminals', { params: { query: filter } })),
+    placeholderData: keepPreviousData,
+  });
+
+export const useTerminalAudit = (terminalId: string, enabled = true) =>
+  useQuery({
+    queryKey: ['terminals', 'audit', terminalId],
     queryFn: () =>
       call(
         terminalApi.GET('/api/v1/admin/terminals/{terminalId}/audit', { params: { path: { terminalId } } }),
@@ -356,21 +387,32 @@ export const useTerminalAudit = (terminalId: string, enabled: boolean) =>
 
 export type TerminalAction = 'suspend' | 'resume' | 'revoke';
 
-/** Registering and every status change refresh the website's terminals and their audit trails. */
-export function useTerminalAdmin(salesPointId: string) {
+/** Registering and every status change refresh every terminal list and audit trail. */
+export function useRegisterTerminal() {
   const queries = useQueryClient();
-  const onSuccess = () => queries.invalidateQueries({ queryKey: ['terminals'] });
-  const register = useMutation({
-    mutationFn: (body: { scheme: 'UZCARD' | 'HUMO'; merchantId: string; terminalId: string }) =>
+  return useMutation({
+    mutationFn: ({
+      salesPointId,
+      ...body
+    }: {
+      salesPointId: string;
+      scheme: 'UZCARD' | 'HUMO';
+      merchantId: string;
+      terminalId: string;
+    }) =>
       call(
         terminalApi.POST('/api/v1/admin/sales-points/{salesPointId}/terminals', {
           params: { path: { salesPointId } },
           body,
         }),
       ),
-    onSuccess,
+    onSuccess: () => queries.invalidateQueries({ queryKey: ['terminals'] }),
   });
-  const act = useMutation({
+}
+
+export function useTerminalAction() {
+  const queries = useQueryClient();
+  return useMutation({
     mutationFn: ({
       terminalId,
       kind,
@@ -394,9 +436,8 @@ export function useTerminalAdmin(salesPointId: string) {
           );
       }
     },
-    onSuccess,
+    onSuccess: () => queries.invalidateQueries({ queryKey: ['terminals'] }),
   });
-  return { register, act };
 }
 
 /* ------- cards: BIN registry and vault ------- */

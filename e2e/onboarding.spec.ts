@@ -167,6 +167,15 @@ test('a merchant signs up in Uzbek, two admins activate it, it creates an API cl
   await expect(page.getByRole('cell', { name: new RegExp(mid) })).toBeVisible();
   await expect(page.getByRole('row', { name: new RegExp(mid) }).getByText('Live')).toBeVisible();
 
+  // The bank's Terminals page finds it by part of its MID, with its history.
+  await page.getByRole('link', { name: 'Terminals' }).click();
+  await page.getByPlaceholder('Search MID or TID').fill(mid.slice(2, 9));
+  await page.getByRole('row', { name: new RegExp(mid) }).click();
+  const drawer = page.getByRole('dialog');
+  await expect(drawer.getByText('Terminal', { exact: true })).toBeVisible();
+  await expect(drawer.getByText('Registered').last()).toBeVisible();
+  await page.keyboard.press('Escape');
+
   // A fee for that website: aziz proposes it, can't approve it himself, malika approves.
   await page.getByRole('link', { name: 'Fees' }).click();
   await page.getByRole('button', { name: 'New rule' }).click();
@@ -179,6 +188,13 @@ test('a merchant signs up in Uzbek, two admins activate it, it creates an API cl
   await rule.getByLabel("Fixed fee, so'm").fill('1');
   await rule.getByRole('button', { name: 'Send for approval' }).click();
   await expect(page.getByText('Waiting for approval').first()).toBeVisible();
+  await page.getByText('Waiting for approval', { exact: true }).first().click(); // the filter
+  await page
+    .getByRole('row', { name: new RegExp(company) })
+    .first()
+    .click();
+  await expect(page.getByRole('dialog').getByText('Rule proposed')).toBeVisible();
+  await page.keyboard.press('Escape');
 
   await page.getByRole('link', { name: 'Approvals' }).click();
   await page.getByRole('tab', { name: /Fee changes/ }).click();
