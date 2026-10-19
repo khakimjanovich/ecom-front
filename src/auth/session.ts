@@ -42,6 +42,7 @@ export function sessionEnded() {
 export function useSession() {
   const auth = useAuth();
   const roles = rolesOf(auth.user?.access_token);
+  const username = (auth.user?.profile.preferred_username as string | undefined) ?? '';
   const { signinRedirect, signoutRedirect, removeUser } = auth;
   const signIn = useCallback(
     (loginHint?: string, returnTo?: string) =>
@@ -70,11 +71,20 @@ export function useSession() {
     roles,
     isAdmin: roles.includes('admin'),
     isPartner: roles.includes('partner'),
-    /** Where this person's own area starts. */
-    home: roles.includes('admin') ? '/admin/partners' : roles.includes('partner') ? '/merchant' : '/',
+    /**
+     * Where this person's own area starts. A merchant who signed up but hasn't confirmed the email
+     * has no role yet: the verification page, where a new code can be sent.
+     */
+    home: roles.includes('admin')
+      ? '/admin/partners'
+      : roles.includes('partner')
+        ? '/merchant'
+        : auth.isAuthenticated
+          ? `/verify?email=${encodeURIComponent(username)}`
+          : '/',
     /** The page the person wanted before signing in, if any. */
     returnTo: (auth.user?.state as { returnTo?: string } | undefined)?.returnTo,
-    name: (auth.user?.profile.preferred_username as string | undefined) ?? '',
+    name: username,
     /** Keycloak's login page opens in the screen language; afterwards the person returns to {@code returnTo}. */
     signIn,
     signOut,
