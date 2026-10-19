@@ -6,9 +6,11 @@ import { authority, config } from '../lib/config';
 
 export type Role = 'admin' | 'partner';
 
+const USER_KEY = `oidc.user:${authority}:${config.clientId}`;
+
 /** The current access token, read where oidc-client-ts keeps it, for API calls made outside React. */
 export function accessToken(): string | undefined {
-  const stored = sessionStorage.getItem(`oidc.user:${authority}:${config.clientId}`);
+  const stored = sessionStorage.getItem(USER_KEY);
   const user = stored ? User.fromStorageString(stored) : null;
   return user && !user.expired ? user.access_token : undefined;
 }
@@ -25,10 +27,22 @@ export function rolesOf(token: string | undefined): Role[] {
   }
 }
 
+/**
+ * The server refused our token: Keycloak no longer knows this session (it ended, or Keycloak was
+ * restarted). Forget it here too and start again signed out, instead of showing pages that can't load.
+ */
+/** Whether this tab holds a session, even one whose token has expired. */
+export const hasSession = () => sessionStorage.getItem(USER_KEY) !== null;
+
+export function sessionEnded() {
+  sessionStorage.removeItem(USER_KEY);
+  location.assign('/');
+}
+
 export function useSession() {
   const auth = useAuth();
   const roles = rolesOf(auth.user?.access_token);
-  const { signinRedirect } = auth;
+  const { signinRedirect, signoutRedirect, removeUser } = auth;
   const signIn = useCallback(
     (loginHint?: string, returnTo?: string) =>
       signinRedirect({
@@ -38,6 +52,18 @@ export function useSession() {
       }),
     [signinRedirect],
   );
+  /**
+   * Ends the session at Keycloak (its end-session endpoint, a full-page redirect) and comes back
+   * signed out. If Keycloak can't be reached, the session is forgotten here at least.
+   */
+  const signOut = useCallback(async () => {
+    try {
+      await signoutRedirect();
+    } catch {
+      await removeUser();
+      location.assign('/');
+    }
+  }, [signoutRedirect, removeUser]);
   return {
     auth,
     signedIn: auth.isAuthenticated,
@@ -51,5 +77,6 @@ export function useSession() {
     name: (auth.user?.profile.preferred_username as string | undefined) ?? '',
     /** Keycloak's login page opens in the screen language; afterwards the person returns to {@code returnTo}. */
     signIn,
+    signOut,
   };
 }

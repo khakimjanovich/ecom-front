@@ -43,7 +43,7 @@ const ADMIN_NAV: NavItem[] = [
 /** The frame of every page: brand, language, account and, once signed in, the navigation for the person's role. */
 export function Shell() {
   const { t } = useTranslation();
-  const { auth, signedIn, isAdmin, isPartner, name, home, signIn } = useSession();
+  const { signedIn, isAdmin, isPartner, name, home, signIn, signOut } = useSession();
   const [opened, { toggle, close }] = useDisclosure();
   const { pathname } = useLocation();
   const nav = isAdmin ? ADMIN_NAV : isPartner ? MERCHANT_NAV : [];
@@ -92,10 +92,7 @@ export function Shell() {
                   </UnstyledButton>
                 </Menu.Target>
                 <Menu.Dropdown>
-                  <Menu.Item
-                    leftSection={<IconLogout size={16} />}
-                    onClick={() => void auth.signoutRedirect()}
-                  >
+                  <Menu.Item leftSection={<IconLogout size={16} />} onClick={() => void signOut()}>
                     {t('common.signOut')}
                   </Menu.Item>
                 </Menu.Dropdown>

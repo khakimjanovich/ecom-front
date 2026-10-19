@@ -1,5 +1,5 @@
 import createClient, { type Middleware } from 'openapi-fetch';
-import { accessToken } from '../auth/session';
+import { accessToken, hasSession, sessionEnded } from '../auth/session';
 import { currentLanguage } from '../i18n';
 import type { components as binComponents, paths as binPaths } from './generated/bin';
 import type { components as cardComponents, paths as cardPaths } from './generated/card';
@@ -48,6 +48,10 @@ const withTokenAndLanguage: Middleware = {
     if (token) request.headers.set('Authorization', `Bearer ${token}`);
     request.headers.set('Accept-Language', currentLanguage());
     return request;
+  },
+  onResponse({ response }) {
+    if (response.status === 401 && hasSession()) sessionEnded();
+    return response;
   },
 };
 
