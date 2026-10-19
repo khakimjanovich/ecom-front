@@ -25,7 +25,8 @@
     "cards": "Kartalar",
     "payments": "Toʻlovlar",
     "terminals": "Terminallar",
-    "documents": "Hujjatlar"
+    "documents": "Hujjatlar",
+    "paymentLinks": "Toʻlov havolalari"
   },
   "status": {
     "PENDING_VERIFICATION": "Hujjatlar tekshirilmoqda",
@@ -458,10 +459,12 @@
       "PAID": "Toʻlangan",
       "DECLINED": "Rad etilgan",
       "UNKNOWN": "Bankda aniqlanmoqda",
-      "MANUAL_REVIEW": "Xodim tekshirmoqda"
+      "MANUAL_REVIEW": "Xodim tekshirmoqda",
+      "EXPIRED": "Muddati tugagan"
     },
     "fee": "Komissiya {{fee}}",
-    "card": "Karta"
+    "card": "Karta",
+    "link": "Toʻlov havolasi"
   },
   "terminalsPage": {
     "title": "Terminallar",
@@ -574,5 +577,29 @@
       "CARD_LIMIT_EXCEEDED": "Karta limiti tugagan.",
       "other": "Karta banki toʻlovni rad etdi."
     }
+  },
+  "links": {
+    "title": "Toʻlov havolalari",
+    "description": "Chatda soting: xaridorga bankning toʻlov sahifasiga havola yuboring. Saytda savat shart emas.",
+    "create": "Yangi havola",
+    "allWebsites": "Barcha saytlar",
+    "empty": "Hali havolalar yoʻq",
+    "emptyText": "Havola yarating va xaridorga istalgan chatda yuboring.",
+    "what": "Xaridor nima uchun toʻlaydi",
+    "amount": "Summa",
+    "expires": "Amal qilish muddati",
+    "ready": "Havola tayyor",
+    "readyText": "Hozir nusxa oling va xaridorga yuboring. U faqat bir marta koʻrsatiladi; bank faqat uning izini saqlaydi.",
+    "url": "Havola",
+    "copy": "Nusxa olish",
+    "copied": "Nusxa olindi",
+    "done": "Tayyor",
+    "validFor": "Amal qiladi",
+    "hours_one": "{{count}} soat",
+    "hours_other": "{{count}} soat",
+    "pickWebsite": "Ishlayotgan saytni tanlang",
+    "amountRule": "Kamida 1 UZS",
+    "whatRule": "Nima uchun ekanini yozing",
+    "noLive": "Saytlaringizdan hech biri hali toʻlov qabul qilmaydi."
   }
 }

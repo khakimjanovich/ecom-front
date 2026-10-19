@@ -25,6 +25,8 @@ export type BinRange = binComponents['schemas']['BinResponse'];
 export type StoredCard = cardComponents['schemas']['CardResponse'];
 export type AdminPayment = paymentComponents['schemas']['PaymentAdminResponse'];
 export type PaymentPage = paymentComponents['schemas']['PaymentPage'];
+export type PaymentStatus = paymentComponents['schemas']['PaymentStatus'];
+export type PaymentLinkRequest = paymentComponents['schemas']['PaymentLinkRequest'];
 
 /** A failed call, carrying the server's problem detail (RFC 9457) and its stable code. */
 export class ApiError extends Error {

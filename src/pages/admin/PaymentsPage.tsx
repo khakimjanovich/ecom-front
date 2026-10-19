@@ -7,20 +7,9 @@ import { usePayments } from '../../api/queries';
 import { MerchantName, MerchantSelect, SalesPointName } from '../../components/MerchantPicker';
 import { Empty } from '../../layout/Empty';
 import { PageTitle } from '../../layout/PageTitle';
+import { PAYMENT_STATUS_COLOR } from '../../lib/payment';
 import { formatSom } from '../../lib/money';
 import { formatDate } from '../../lib/time';
-
-const STATUS_COLOR = {
-  CREATED: 'blue',
-  AWAITING_CODE: 'yellow',
-  CARD_CONFIRMED: 'cyan',
-  DEBITING: 'cyan',
-  PAID: 'green',
-  DECLINED: 'red',
-  UNKNOWN: 'orange',
-  MANUAL_REVIEW: 'grape',
-  FAILED: 'gray',
-} as const;
 
 /** Every payment merchants' servers created, newest first, optionally for one merchant. */
 export function PaymentsPage() {
@@ -113,12 +102,16 @@ export function PaymentsPage() {
                               .join(' · ')}
                           </Text>
                         </>
-                      ) : (
+                      ) : payment.clientId ? (
                         <Code>{payment.clientId}</Code>
+                      ) : (
+                        <Badge variant="outline" color="gray">
+                          {t('payments.link')}
+                        </Badge>
                       )}
                     </Table.Td>
                     <Table.Td>
-                      <Badge variant="light" color={STATUS_COLOR[payment.status]}>
+                      <Badge variant="light" color={PAYMENT_STATUS_COLOR[payment.status]}>
                         {t(`payments.statusName.${payment.status}`)}
                       </Badge>
                       {(payment.rrn || payment.declineCode) && (

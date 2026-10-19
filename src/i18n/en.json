@@ -25,7 +25,8 @@
     "cards": "Cards",
     "payments": "Payments",
     "terminals": "Terminals",
-    "documents": "Documents"
+    "documents": "Documents",
+    "paymentLinks": "Payment links"
   },
   "status": {
     "PENDING_VERIFICATION": "Checking documents",
@@ -458,10 +459,12 @@
       "PAID": "Paid",
       "DECLINED": "Declined",
       "UNKNOWN": "Checking with the bank",
-      "MANUAL_REVIEW": "Being checked by a person"
+      "MANUAL_REVIEW": "Being checked by a person",
+      "EXPIRED": "Expired"
     },
     "fee": "Fee {{fee}}",
-    "card": "Card"
+    "card": "Card",
+    "link": "Payment link"
   },
   "terminalsPage": {
     "title": "Terminals",
@@ -574,5 +577,29 @@
       "CARD_LIMIT_EXCEEDED": "The card's limit is reached.",
       "other": "The card's bank declined the payment."
     }
+  },
+  "links": {
+    "title": "Payment links",
+    "description": "Sell in a chat: send a buyer a link to the bank's payment page. No website checkout needed.",
+    "create": "New link",
+    "allWebsites": "All websites",
+    "empty": "No payment links yet",
+    "emptyText": "Make one, and send it to a buyer in any chat.",
+    "what": "What the buyer pays for",
+    "amount": "Amount",
+    "expires": "Works until",
+    "ready": "Your link is ready",
+    "readyText": "Copy it now and send it to the buyer. It is shown only once; the bank keeps only its fingerprint.",
+    "url": "Link",
+    "copy": "Copy link",
+    "copied": "Copied",
+    "done": "Done",
+    "validFor": "Works for",
+    "hours_one": "{{count}} hour",
+    "hours_other": "{{count}} hours",
+    "pickWebsite": "Pick a live website",
+    "amountRule": "At least 1 UZS",
+    "whatRule": "Say what it is for",
+    "noLive": "None of your websites takes payments yet."
   }
 }

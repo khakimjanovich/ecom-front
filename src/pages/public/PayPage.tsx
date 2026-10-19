@@ -136,9 +136,11 @@ function PageBody({ token, page }: { token: string; page: PaymentPage }) {
         <Text size="xs" c="dimmed">
           {t('pay.until', { time: formatDate(page.expiresAt) })}
         </Text>
-        <Anchor href={page.returnUrl} size="xs">
-          {t('pay.back')}
-        </Anchor>
+        {page.returnUrl && (
+          <Anchor href={page.returnUrl} size="xs">
+            {t('pay.back')}
+          </Anchor>
+        )}
       </Group>
     </Stack>
   );

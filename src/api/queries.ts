@@ -10,6 +10,7 @@ import {
   terminalApi,
   type CommissionSchemas,
   type PartnerStatus,
+  type PaymentLinkRequest,
   type Schemas,
 } from './client';
 
@@ -513,6 +514,28 @@ export const usePayments = (partnerId: string | null) =>
       ),
     placeholderData: keepPreviousData,
   });
+
+/* ------- payment links (the merchant's portal) ------- */
+
+export const usePaymentLinks = (salesPointId: string | null) =>
+  useQuery({
+    queryKey: ['paymentLinks', salesPointId],
+    queryFn: () =>
+      call(
+        paymentApi.GET('/api/v1/partner/payment-links', {
+          params: { query: { salesPointId: salesPointId ?? undefined } },
+        }),
+      ),
+  });
+
+export function useCreatePaymentLink() {
+  const queries = useQueryClient();
+  return useMutation({
+    mutationFn: (body: PaymentLinkRequest) =>
+      call(paymentApi.POST('/api/v1/partner/payment-links', { body })),
+    onSuccess: () => queries.invalidateQueries({ queryKey: ['paymentLinks'] }),
+  });
+}
 
 /* ------- the payment page (the buyer, no login: the link's token is the credential) ------- */
 

@@ -7,6 +7,7 @@ import {
   IconDeviceDesktopAnalytics,
   IconFileText,
   IconKey,
+  IconLink,
   IconLayoutDashboard,
   IconLogout,
   IconPercentage,
@@ -25,6 +26,7 @@ const MERCHANT_NAV: NavItem[] = [
   { to: '/merchant', label: 'nav.overview', icon: IconLayoutDashboard, exact: true },
   { to: '/merchant/documents', label: 'nav.documents', icon: IconFileText },
   { to: '/merchant/sales-points', label: 'nav.salesPoints', icon: IconWorldWww },
+  { to: '/merchant/payment-links', label: 'nav.paymentLinks', icon: IconLink },
   { to: '/merchant/api-clients', label: 'nav.apiClients', icon: IconKey },
 ];
 const ADMIN_NAV: NavItem[] = [
