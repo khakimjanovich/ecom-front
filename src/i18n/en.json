@@ -446,7 +446,10 @@
     "empty": "No payments yet",
     "emptyText": "A merchant's server creates them through the payment API with a signed request.",
     "statusName": {
-      "CREATED": "Waiting for the buyer"
+      "CREATED": "Waiting for the buyer",
+      "AWAITING_CODE": "Waiting for the code",
+      "CARD_CONFIRMED": "Card confirmed",
+      "FAILED": "Page closed"
     }
   },
   "terminalsPage": {
@@ -525,5 +528,29 @@
     "saved": "Logo saved.",
     "tooBig": "The logo must be at most 1 MB.",
     "alt": "{{name}} logo"
+  },
+  "pay": {
+    "secure": "Secure payment page of the bank",
+    "order": "Order {{order}}",
+    "amount": "To pay",
+    "number": "Card number",
+    "expiry": "Valid until",
+    "sendCode": "Send a code to my phone",
+    "cardAttempts_one": "{{count}} card attempt left",
+    "cardAttempts_other": "{{count}} card attempts left",
+    "codeSent": "We sent a code to the phone linked to your card {{card}} ending in {{masked}}.",
+    "code": "One-time code",
+    "confirm": "Confirm",
+    "codeAttempts_one": "{{count}} code attempt left",
+    "codeAttempts_other": "{{count}} code attempts left",
+    "anotherCard": "Use another card",
+    "confirmed": "Card confirmed",
+    "confirmedText": "Your card is confirmed. The payment continues.",
+    "failed": "Payment page closed",
+    "failedText": "There were too many attempts. Go back to the shop and start again.",
+    "expired": "This link has expired",
+    "notFound": "Payment not found",
+    "until": "Valid until {{time}}",
+    "back": "Back to the shop"
   }
 }

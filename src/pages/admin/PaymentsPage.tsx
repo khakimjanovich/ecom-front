@@ -10,7 +10,12 @@ import { PageTitle } from '../../layout/PageTitle';
 import { formatSom } from '../../lib/money';
 import { formatDate } from '../../lib/time';
 
-const STATUS_COLOR = { CREATED: 'blue' } as const;
+const STATUS_COLOR = {
+  CREATED: 'blue',
+  AWAITING_CODE: 'yellow',
+  CARD_CONFIRMED: 'green',
+  FAILED: 'red',
+} as const;
 
 /** Every payment merchants' servers created, newest first, optionally for one merchant. */
 export function PaymentsPage() {

@@ -24,6 +24,7 @@ const CommissionsPage = page(() => import('./pages/admin/CommissionsPage'), 'Com
 const CardsPage = page(() => import('./pages/admin/CardsPage'), 'CardsPage');
 const PaymentsPage = page(() => import('./pages/admin/PaymentsPage'), 'PaymentsPage');
 const TerminalsPage = page(() => import('./pages/admin/TerminalsPage'), 'TerminalsPage');
+const PayPage = page(() => import('./pages/public/PayPage'), 'PayPage');
 
 const loading = (
   <Center mih="40vh">
@@ -35,6 +36,8 @@ export function App() {
   return (
     <Suspense fallback={loading}>
       <Routes>
+        {/* The buyer's payment page stands alone: no sign-in, no menus. */}
+        <Route path="pay/:token" element={<PayPage />} />
         <Route element={<Shell />}>
           <Route index element={<LandingPage />} />
           <Route path="signup" element={<SignUpPage />} />

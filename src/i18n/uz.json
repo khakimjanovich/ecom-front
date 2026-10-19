@@ -446,7 +446,10 @@
     "empty": "Hali toʻlovlar yoʻq",
     "emptyText": "Sotuvchi serveri ularni toʻlov API orqali imzolangan soʻrov bilan yaratadi.",
     "statusName": {
-      "CREATED": "Xaridorni kutmoqda"
+      "CREATED": "Xaridorni kutmoqda",
+      "AWAITING_CODE": "Kod kutilmoqda",
+      "CARD_CONFIRMED": "Karta tasdiqlandi",
+      "FAILED": "Sahifa yopildi"
     }
   },
   "terminalsPage": {
@@ -525,5 +528,29 @@
     "saved": "Logotip saqlandi.",
     "tooBig": "Logotip 1 MB dan oshmasligi kerak.",
     "alt": "{{name}} logotipi"
+  },
+  "pay": {
+    "secure": "Bankning xavfsiz toʻlov sahifasi",
+    "order": "Buyurtma {{order}}",
+    "amount": "Toʻlov summasi",
+    "number": "Karta raqami",
+    "expiry": "Amal qilish muddati",
+    "sendCode": "Telefonimga kod yuborish",
+    "cardAttempts_one": "Karta kiritish uchun {{count}} ta urinish qoldi",
+    "cardAttempts_other": "Karta kiritish uchun {{count}} ta urinish qoldi",
+    "codeSent": "{{masked}} bilan tugaydigan {{card}} kartangizga bogʻlangan telefonga kod yubordik.",
+    "code": "Bir martalik kod",
+    "confirm": "Tasdiqlash",
+    "codeAttempts_one": "Kod kiritish uchun {{count}} ta urinish qoldi",
+    "codeAttempts_other": "Kod kiritish uchun {{count}} ta urinish qoldi",
+    "anotherCard": "Boshqa karta",
+    "confirmed": "Karta tasdiqlandi",
+    "confirmedText": "Kartangiz tasdiqlandi. Toʻlov davom etmoqda.",
+    "failed": "Toʻlov sahifasi yopildi",
+    "failedText": "Urinishlar juda koʻp boʻldi. Doʻkonga qaytib, qaytadan boshlang.",
+    "expired": "Havola muddati tugadi",
+    "notFound": "Toʻlov topilmadi",
+    "until": "{{time}} gacha amal qiladi",
+    "back": "Doʻkonga qaytish"
   }
 }

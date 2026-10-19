@@ -1,4 +1,5 @@
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { currentLanguage } from '../i18n';
 import {
   api,
   call,
@@ -498,6 +499,38 @@ export const usePayments = (partnerId: string | null) =>
       ),
     placeholderData: keepPreviousData,
   });
+
+/* ------- the payment page (the buyer, no login: the link's token is the credential) ------- */
+
+const pageOf = (token: string) => ({ params: { path: { token } } });
+
+/** Keyed by language too: the bank's name comes back in it. */
+export const usePaymentPage = (token: string) =>
+  useQuery({
+    queryKey: ['pay', token, currentLanguage()],
+    queryFn: () => call(paymentApi.GET('/api/v1/pay/{token}', pageOf(token))),
+    retry: false,
+  });
+
+export function useSubmitCard(token: string) {
+  const client = useQueryClient();
+  return useMutation({
+    mutationFn: (card: { number: string; expiry: string }) =>
+      call(paymentApi.POST('/api/v1/pay/{token}/card', { ...pageOf(token), body: card })),
+    onSuccess: (page) => client.setQueryData(['pay', token, currentLanguage()], page),
+    onError: () => client.invalidateQueries({ queryKey: ['pay', token] }),
+  });
+}
+
+export function useConfirmCode(token: string) {
+  const client = useQueryClient();
+  return useMutation({
+    mutationFn: (code: string) =>
+      call(paymentApi.POST('/api/v1/pay/{token}/code', { ...pageOf(token), body: { code } })),
+    onSuccess: (page) => client.setQueryData(['pay', token, currentLanguage()], page),
+    onError: () => client.invalidateQueries({ queryKey: ['pay', token] }),
+  });
+}
 
 /* ------- documents (KYB) and logos ------- */
 

@@ -1,6 +1,9 @@
-import { expect, type Page, test } from '@playwright/test';
+import { createHash, createHmac, randomBytes } from 'node:crypto';
+import { expect, type APIRequestContext, type Page, test } from '@playwright/test';
 
 const MAILPIT = process.env.MAILPIT_URL ?? 'http://localhost:8025';
+const KEYCLOAK = process.env.KEYCLOAK_URL ?? 'http://localhost:8180';
+const VAULT = process.env.VAULT_URL ?? 'http://localhost:8200';
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD ?? 'local-only';
 const PASSWORD = 'correct-horse-battery-42';
 const PDF = '%PDF-1.4\n1 0 obj << >> endobj\ntrailer << >>\n%%EOF\n';
@@ -34,13 +37,60 @@ async function signIn(page: Page, username: string, password: string) {
   await page.locator('#kc-login').click();
 }
 
+/**
+ * The merchant's server: the bank puts its signing key into Vault, then the server signs a payment
+ * request (HMAC-SHA256 over method, path, timestamp, nonce and the body's hash). Returns the page link.
+ */
+async function createPayment(
+  request: APIRequestContext,
+  client: { id: string; secret: string },
+  salesPointId: string,
+  returnUrl: string,
+): Promise<string> {
+  const key = randomBytes(32);
+  await request.post(`${VAULT}/v1/secret/data/merchants/${client.id}`, {
+    headers: { 'X-Vault-Token': process.env.VAULT_TOKEN ?? 'local-only' },
+    data: { data: { signingKey: key.toString('base64') } },
+  });
+  const token = (
+    await (
+      await request.post(`${KEYCLOAK}/realms/ecom/protocol/openid-connect/token`, {
+        form: { grant_type: 'client_credentials', client_id: client.id, client_secret: client.secret },
+      })
+    ).json()
+  ).access_token;
+  const body = JSON.stringify({ salesPointId, orderId: `e2e-${Date.now()}`, amount: 12_500_000, returnUrl });
+  const timestamp = String(Math.floor(Date.now() / 1000));
+  const nonce = randomBytes(12).toString('hex');
+  const signed = [
+    'POST',
+    '/api/v1/payments',
+    timestamp,
+    nonce,
+    createHash('sha256').update(body).digest('hex'),
+  ].join('\n');
+  const created = await request.post('/api/v1/payments', {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      'Idempotency-Key': `e2e-${nonce}`,
+      'X-Timestamp': timestamp,
+      'X-Nonce': nonce,
+      'X-Signature': createHmac('sha256', key).update(signed).digest('base64'),
+    },
+    data: body,
+  });
+  expect(created.status()).toBe(201);
+  return new URL((await created.json()).paymentUrl).pathname;
+}
+
 async function signOut(page: Page) {
   await page.getByRole('button', { name: /account|hisob|аккаунт/i }).click();
   await page.getByRole('menuitem').click();
   await expect(page).toHaveURL(/localhost:5180\/?$/);
 }
 
-test('a merchant signs up in Uzbek, gives its documents, two admins activate it, it creates an API client, gets a website switched on with a terminal and a fee agreed by two admins, and the bank checks card schemes', async ({
+test('a merchant signs up in Uzbek, gives its documents, two admins activate it, it creates an API client, gets a website switched on with a terminal and a fee agreed by two admins, and the bank checks card schemes, and a buyer confirms a card on the payment page', async ({
   page,
 }) => {
   const email = `e2e-${Date.now()}@example.uz`;
@@ -154,6 +204,11 @@ test('a merchant signs up in Uzbek, gives its documents, two admins activate it,
   await page.getByRole('dialog').getByRole('button', { name: 'Rotate secret' }).click();
   await expect(page.getByRole('dialog').getByText('New secret')).toBeVisible();
 
+  const shown = page.getByRole('dialog').locator('pre');
+  const client = {
+    id: (await shown.nth(0).innerText()).trim(),
+    secret: (await shown.nth(1).innerText()).trim(),
+  };
   await page.getByRole('dialog').getByRole('checkbox').check();
   await page.getByRole('dialog').getByRole('button', { name: 'Done' }).click();
 
@@ -187,6 +242,7 @@ test('a merchant signs up in Uzbek, gives its documents, two admins activate it,
   await page.getByPlaceholder('Search by company or email').fill(email);
   await page.getByRole('link', { name: company }).click();
   await page.getByRole('link', { name: 'Main shop' }).click();
+  const salesPointId = page.url().split('/').pop()!;
   await page.getByRole('radiogroup', { name: 'Result' }).getByText('Failed').click();
   await page.getByLabel('What you found').fill('No refund policy page');
   await page.getByRole('button', { name: 'Record a check' }).click();
@@ -283,4 +339,20 @@ test('a merchant signs up in Uzbek, gives its documents, two admins activate it,
   await page.getByPlaceholder('All merchants').fill(email);
   await page.getByRole('option', { name: new RegExp(company) }).click();
   await expect(page.getByText('No payments yet')).toBeVisible();
+
+  // Its server creates a payment; the buyer pays on the bank's page: the card, then the code from the scheme.
+  await page.goto(await createPayment(page.request, client, salesPointId, `${site}/done`));
+  await expect(page.getByText('Main shop')).toBeVisible();
+  await page.getByLabel('Card number').fill('8600140234567890');
+  await page.getByLabel('Valid until').fill('1228');
+  await page.getByRole('button', { name: 'Send a code to my phone' }).click();
+  await expect(page.getByText('Asaka Bank · Uzcard', { exact: false })).toBeVisible();
+  await page.locator('.mantine-PinInput-input').first().pressSequentially('111111');
+  await expect(page.getByText('Card confirmed').first()).toBeVisible();
+
+  // The bank sees it.
+  await page.goto('/admin/payments');
+  await page.getByPlaceholder('All merchants').fill(email);
+  await page.getByRole('option', { name: new RegExp(company) }).click();
+  await expect(page.getByText('Card confirmed')).toBeVisible();
 });
