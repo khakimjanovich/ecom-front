@@ -406,7 +406,7 @@
     "synced": "Synced: Uzcard {{uzcard}}, Humo {{humo}} ranges",
     "syncKept": "{{scheme}} didn't answer, so its old list is kept.",
     "prefix": "Prefix",
-    "issuer": "Issuer",
+    "issuer": "Bank",
     "syncedAt": "Synced",
     "noBins": "No BIN ranges yet",
     "noBinsText": "Sync to fetch them from both schemes.",

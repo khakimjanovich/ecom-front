@@ -264,13 +264,14 @@ test('a merchant signs up in Uzbek, gives its documents, two admins activate it,
   await calculator.getByRole('button', { name: 'Calculate' }).click();
   await expect(calculator.getByText(/1,001\.00/)).toBeVisible();
 
-  // Cards: the BIN registry knows both schemes, and the vault finds nothing it hasn't stored.
+  // Cards: the BIN registry knows both schemes and each card's bank; the vault finds nothing it hasn't stored.
   await page.getByRole('link', { name: 'Cards' }).click();
   await page.getByRole('button', { name: 'Sync now' }).click();
   await expect(page.getByText(/Synced: Uzcard \d+, Humo \d+ ranges/)).toBeVisible();
   await expect(page.getByRole('cell', { name: '860014' })).toBeVisible();
+  await expect(page.getByText('Asaka Bank').first()).toBeVisible();
   await page.getByLabel("Check a card's first digits").fill('98600901');
-  await expect(page.getByText('Humo', { exact: true }).first()).toBeVisible();
+  await expect(page.getByText('Humo · Asia Alliance Bank')).toBeVisible();
   await page.getByLabel("Check a card's first digits").fill('41111111');
   await expect(page.getByText('No scheme issues cards starting with these digits.')).toBeVisible();
   await page.getByLabel('Card number').fill('8600 1402 0000 0033');

@@ -1,6 +1,7 @@
 import createClient, { type Middleware } from 'openapi-fetch';
 import { accessToken } from '../auth/session';
 import { currentLanguage } from '../i18n';
+import type { components as binComponents, paths as binPaths } from './generated/bin';
 import type { components as cardComponents, paths as cardPaths } from './generated/card';
 import type { components as paymentComponents, paths as paymentPaths } from './generated/payment';
 import type { paths as commissionPaths, components as commissionComponents } from './generated/commission';
@@ -20,7 +21,7 @@ export type CommissionSchemas = commissionComponents['schemas'];
 export type CommissionRule = CommissionSchemas['CommissionRuleResponse'];
 export type CommissionChange = CommissionSchemas['ChangeRequestResponse'];
 export type Terminal = terminalComponents['schemas']['TerminalResponse'];
-export type BinRange = cardComponents['schemas']['BinResponse'];
+export type BinRange = binComponents['schemas']['BinResponse'];
 export type StoredCard = cardComponents['schemas']['CardResponse'];
 export type AdminPayment = paymentComponents['schemas']['PaymentAdminResponse'];
 
@@ -72,6 +73,10 @@ export async function call<T>(
 /** Typed from the terminal contract (terminal-v1.yaml). */
 export const terminalApi = createClient<terminalPaths>({ baseUrl: '' });
 terminalApi.use(withTokenAndLanguage);
+
+/** Typed from the BIN contract (bin-v1.yaml). */
+export const binApi = createClient<binPaths>({ baseUrl: '' });
+binApi.use(withTokenAndLanguage);
 
 /** Typed from the card contract (card-v1.yaml). */
 export const cardApi = createClient<cardPaths>({ baseUrl: '' });

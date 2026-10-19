@@ -118,7 +118,14 @@ function BinRegistry() {
                       {t(`scheme.${bin.scheme}`)}
                     </Badge>
                   </Table.Td>
-                  <Table.Td ff="monospace">{bin.issuer ?? '—'}</Table.Td>
+                  <Table.Td>
+                    <Text size="sm">{bin.bankName ?? '—'}</Text>
+                    {bin.issuer && (
+                      <Text size="xs" c="dimmed" ff="monospace">
+                        {bin.issuer}
+                      </Text>
+                    )}
+                  </Table.Td>
                   <Table.Td>
                     <Text size="xs" c="dimmed">
                       {formatDate(bin.syncedAt)}
@@ -143,7 +150,11 @@ function BinLookup() {
   return (
     <TextInput
       label={t('cards.lookup')}
-      description={t('cards.lookupHint')}
+      description={
+        lookup.data
+          ? [t(`scheme.${lookup.data.scheme}`), lookup.data.bankName].filter(Boolean).join(' · ')
+          : t('cards.lookupHint')
+      }
       placeholder="860014"
       inputMode="numeric"
       maxLength={8}

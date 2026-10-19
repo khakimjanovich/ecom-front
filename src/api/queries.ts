@@ -2,6 +2,7 @@ import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tansta
 import {
   api,
   call,
+  binApi,
   cardApi,
   paymentApi,
   commissionApi,
@@ -445,13 +446,13 @@ export function useTerminalAction() {
 export const useBins = () =>
   useQuery({
     queryKey: ['bins'],
-    queryFn: () => call(cardApi.GET('/api/v1/admin/bins')),
+    queryFn: () => call(binApi.GET('/api/v1/admin/bins')),
   });
 
 export function useSyncBins() {
   const queries = useQueryClient();
   return useMutation({
-    mutationFn: () => call(cardApi.POST('/api/v1/admin/bins/sync')),
+    mutationFn: () => call(binApi.POST('/api/v1/admin/bins/sync')),
     onSuccess: () => queries.invalidateQueries({ queryKey: ['bins'] }),
   });
 }
@@ -460,7 +461,7 @@ export function useSyncBins() {
 export const useBinLookup = (digits: string) =>
   useQuery({
     queryKey: ['bins', 'lookup', digits],
-    queryFn: () => call(cardApi.GET('/api/v1/admin/bins/lookup', { params: { query: { digits } } })),
+    queryFn: () => call(binApi.GET('/api/v1/admin/bins/lookup', { params: { query: { digits } } })),
     enabled: /^\d{6,8}$/.test(digits),
     retry: false,
   });
