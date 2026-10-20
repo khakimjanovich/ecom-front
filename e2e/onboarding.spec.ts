@@ -8,7 +8,7 @@ const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD ?? 'local-only';
 const PASSWORD = 'correct-horse-battery-42';
 const PDF = '%PDF-1.4\n1 0 obj << >> endobj\ntrailer << >>\n%%EOF\n';
 const REQUIRED = ['Company charter', "Director's passport"];
-/** A 1×1 PNG: the file service reads the type from the bytes and decodes the image. */
+/** A 1×1 PNG: the file store reads the type from the bytes and decodes the image. */
 const PNG = Buffer.from(
   'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVR4nGP4z8AAAAMBAQDJ/pLvAAAAAElFTkSuQmCC',
   'base64',
