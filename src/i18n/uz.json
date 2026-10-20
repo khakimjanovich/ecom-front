@@ -260,7 +260,7 @@
     "returnUrlsHint": "Toʻlovdan soʻng xaridor qaytadigan manzillar. Har biridan keyin Enter bosing; ular saytning oʻz domenida boʻlishi kerak.",
     "webhook": "Webhook",
     "noWebhook": "Belgilanmagan: sayt har bir to'lov holatini o'zi so'raydi",
-    "webhookHint": "Har bir yakunlangan to'lov shu manzilga POST qilinadi, so'rovlaringiz kabi imzolangan (X-Event-Id, X-Timestamp, X-Signature). Saytning o'z domenida HTTPS; o'chirish uchun bo'sh qoldiring.",
+    "webhookHint": "Har bir yakunlangan to'lov shu manzilga POST qilinadi, imzo kalitingiz bilan Standard Webhooks bo'yicha imzolangan (webhook-id, webhook-timestamp, webhook-signature). Saytning o'z domenida HTTPS; o'chirish uchun bo'sh qoldiring.",
     "editReturnUrls": "Qaytish manzillarini oʻzgartirish",
     "schemes": "Kartalar",
     "noSchemes": "Hali belgilanmagan",

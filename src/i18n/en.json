@@ -260,7 +260,7 @@
     "returnUrlsHint": "Where buyers go back after paying. Press Enter after each one; they must be on the website's own domain.",
     "webhook": "Webhook",
     "noWebhook": "Not set: the website asks for each payment's status",
-    "webhookHint": "We POST each finished payment here, signed like your requests (X-Event-Id, X-Timestamp, X-Signature). HTTPS on the website's own domain; leave empty to stop.",
+    "webhookHint": "We POST each finished payment here, signed the Standard Webhooks way (webhook-id, webhook-timestamp, webhook-signature) with your signing key. HTTPS on the website's own domain; leave empty to stop.",
     "editReturnUrls": "Edit return addresses",
     "schemes": "Cards",
     "noSchemes": "Not set yet",
