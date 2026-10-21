@@ -31,10 +31,10 @@ import {
   useEposSearch,
 } from '../../api/queries';
 import { MerchantName, MerchantSelect, SalesPointSelect } from '../../components/MerchantPicker';
-import { EposActions, EposHistory, EposStatusBadge } from '../../components/EposControls';
+import { EposActions, EposHistory, EposStatusBadge, UzcardCheck } from '../../components/EposControls';
 import { Empty } from '../../layout/Empty';
 import { PageTitle } from '../../layout/PageTitle';
-import { notifyError, notifySuccess } from '../../lib/notify';
+import { notifySuccess } from '../../lib/notify';
 import { formatDate } from '../../lib/time';
 
 const SCHEMES = ['UZCARD', 'HUMO'] as const;
@@ -244,6 +244,12 @@ function EposDetails({ epos }: { epos: Epos }) {
       <Text size="xs" c="dimmed">
         {t('epos.hint')}
       </Text>
+      {epos.scheme === 'UZCARD' && (
+        <>
+          <Divider label={t('epos.uzcard.title')} labelPosition="left" />
+          <UzcardCheck key={epos.id} epos={epos} />
+        </>
+      )}
       <Divider label={t('epos.history')} labelPosition="left" />
       <EposHistory eposId={epos.id} />
     </Stack>
@@ -273,6 +279,7 @@ function RegisterEpos({ opened, onClose }: { opened: boolean; onClose: () => voi
   const website = websites.data?.find((s) => s.id === form.values.salesPointId);
   const close = () => {
     form.reset();
+    register.reset();
     onClose();
   };
   const submit = form.onSubmit((v) =>
@@ -288,7 +295,6 @@ function RegisterEpos({ opened, onClose }: { opened: boolean; onClose: () => voi
           notifySuccess(t('epos.registered'));
           close();
         },
-        onError: notifyError,
       },
     ),
   );
@@ -320,7 +326,13 @@ function RegisterEpos({ opened, onClose }: { opened: boolean; onClose: () => voi
           </Group>
           <Text size="xs" c="dimmed">
             {t('eposPage.registerHint')}
+            {form.values.scheme === 'UZCARD' && ` ${t('epos.uzcard.registerHint')}`}
           </Text>
+          {register.isError && (
+            <Alert color="red" title={t('epos.notRegistered')}>
+              {messageFor(register.error)}
+            </Alert>
+          )}
           <Group justify="flex-end">
             <Button variant="default" onClick={close}>
               {t('common.cancel')}

@@ -21,6 +21,7 @@ export type CommissionSchemas = commissionComponents['schemas'];
 export type CommissionRule = CommissionSchemas['CommissionRuleResponse'];
 export type CommissionChange = CommissionSchemas['ChangeRequestResponse'];
 export type Epos = eposComponents['schemas']['EposResponse'];
+export type UzcardTerminal = eposComponents['schemas']['UzcardTerminalResponse'];
 export type BinRange = binComponents['schemas']['BinResponse'];
 export type StoredCard = cardComponents['schemas']['CardResponse'];
 export type AdminPayment = paymentComponents['schemas']['PaymentAdminResponse'];

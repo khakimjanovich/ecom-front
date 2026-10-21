@@ -405,7 +405,28 @@
       "RESUMED": "Davom ettirildi",
       "REVOKED": "Bekor qilindi"
     },
-    "revokeHint": "Bekor qilingan MID/TID qaytmaydi. Audit uchun sababini yozing."
+    "revokeHint": "Bekor qilingan MID/TID qaytmaydi. Audit uchun sababini yozing.",
+    "revokedAtUzcard": "Bu yerda bekor qilindi va Uzcarddan oʻchirildi",
+    "notRevoked": "Bekor qilinmadi",
+    "revokeUzcardHint": "Bekor qilingan MID/TID qaytmaydi. Avval u Uzcarddan oʻchiriladi; Uzcard rad etsa yoki javob bermasa, hech narsa oʻzgarmaydi, shu orada uni toʻxtatib qoʻyishingiz mumkin. Audit uchun sababini yozing.",
+    "notRegistered": "Roʻyxatdan oʻtmadi",
+    "uzcard": {
+      "title": "Uzcardda",
+      "check": "Uzcardda tekshirish",
+      "checking": "Uzcarddan soʻralmoqda…",
+      "again": "Yana soʻrash",
+      "agrees": "Uzcard bizdagi yozuvga mos.",
+      "missing": "Uzcardda bu e-POS terminal yoʻq, shuning uchun uning toʻlovlari oʻtmaydi. Uni qayta roʻyxatdan oʻtkazing yoki bekor qiling.",
+      "leftover": "Bu yerda bekor qilingan, lekin Uzcardda hali bor. Uzcarddan uni oʻchirishni soʻrang.",
+      "registerHint": "Avval u Uzcardda roʻyxatdan oʻtkaziladi va faqat Uzcard qabul qilsa saqlanadi.",
+      "username": "Login",
+      "name": "Nomi",
+      "type": "Turi",
+      "purpose": "Maqsadi",
+      "port": "Port",
+      "instId": "Tashkilot",
+      "pid": "Uzcarddagi id"
+    }
   },
   "cards": {
     "title": "Kartalar",
