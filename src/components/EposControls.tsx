@@ -1,8 +1,10 @@
-import { Badge, Button, Group, Stack, Text, Timeline } from '@mantine/core';
+import { Alert, Badge, Button, Group, Stack, Table, Text, Timeline } from '@mantine/core';
+import { notifications } from '@mantine/notifications';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { Epos } from '../api/client';
-import { type EposAction, useEposAction, useEposAudit } from '../api/queries';
+import type { Epos, UzcardTerminal } from '../api/client';
+import { messageFor } from '../api/errors';
+import { type EposAction, useEposAction, useEposAudit, useEposUzcard } from '../api/queries';
 import { notifyError, notifySuccess } from '../lib/notify';
 import { formatDate } from '../lib/time';
 import { PromptModal } from './PromptModal';
@@ -29,9 +31,15 @@ export function EposActions({ epos, size = 'compact-xs' }: { epos: Epos; size?: 
       {
         onSuccess: () => {
           setAsking(null);
-          notifySuccess(t('partner.done'));
+          notifySuccess(
+            kind === 'revoke' && epos.scheme === 'UZCARD' ? t('epos.revokedAtUzcard') : t('partner.done'),
+          );
         },
-        onError: notifyError,
+        // A failed UZCARD revoke changed nothing on either side: say so, and that suspending stops payments meanwhile.
+        onError: (error) =>
+          kind === 'revoke' && epos.scheme === 'UZCARD'
+            ? notifications.show({ color: 'red', title: t('epos.notRevoked'), message: messageFor(error) })
+            : notifyError(error),
       },
     );
   return (
@@ -56,7 +64,11 @@ export function EposActions({ epos, size = 'compact-xs' }: { epos: Epos; size?: 
         onClose={() => setAsking(null)}
         title={asking ? t(`epos.${asking}`) : ''}
         label={t('partner.reason')}
-        hint={asking === 'revoke' ? t('epos.revokeHint') : t('partner.reasonHint')}
+        hint={
+          asking === 'revoke'
+            ? t(epos.scheme === 'UZCARD' ? 'epos.revokeUzcardHint' : 'epos.revokeHint')
+            : t('partner.reasonHint')
+        }
         multiline
         confirmLabel={asking ? t(`epos.${asking}`) : ''}
         color="red"
@@ -84,5 +96,62 @@ export function EposHistory({ eposId }: { eposId: string }) {
         </Timeline.Item>
       ))}
     </Timeline>
+  );
+}
+
+/** Whether SV-Gate agrees with our record: a terminal we route payments to must be there, a revoked one must not. */
+export function uzcardVerdict(
+  status: Epos['status'],
+  view: UzcardTerminal,
+): 'agrees' | 'missing' | 'leftover' {
+  const there = !!view.check;
+  if (status === 'REVOKED') return there ? 'leftover' : 'agrees';
+  return there ? 'agrees' : 'missing';
+}
+
+const UZCARD_FIELDS = ['username', 'name', 'type', 'purpose', 'port', 'instId', 'pid'] as const;
+
+/** SV-Gate's two views of a UZCARD e-POS terminal (terminal.check and terminal.get), next to our record. */
+export function UzcardCheck({ epos }: { epos: Epos }) {
+  const { t } = useTranslation();
+  const [asked, setAsked] = useState(false);
+  const view = useEposUzcard(epos.id, asked);
+  if (!asked) {
+    return (
+      <Button size="xs" variant="light" onClick={() => setAsked(true)}>
+        {t('epos.uzcard.check')}
+      </Button>
+    );
+  }
+  if (view.isError) return <Alert color="red">{messageFor(view.error)}</Alert>;
+  if (!view.data) return <Text size="sm">{t('epos.uzcard.checking')}</Text>;
+  const verdict = uzcardVerdict(epos.status, view.data);
+  return (
+    <Stack gap="xs">
+      <Alert color={verdict === 'agrees' ? 'green' : 'red'}>{t(`epos.uzcard.${verdict}`)}</Alert>
+      <Table withTableBorder fz="xs" verticalSpacing={4}>
+        <Table.Thead>
+          <Table.Tr>
+            <Table.Th />
+            <Table.Th>terminal.check</Table.Th>
+            <Table.Th>terminal.get</Table.Th>
+          </Table.Tr>
+        </Table.Thead>
+        <Table.Tbody>
+          {UZCARD_FIELDS.map((field) => (
+            <Table.Tr key={field}>
+              <Table.Td c="dimmed">{t(`epos.uzcard.${field}`)}</Table.Td>
+              <Table.Td>{view.data.check?.[field] ?? '—'}</Table.Td>
+              <Table.Td>{view.data.listing?.[field] ?? '—'}</Table.Td>
+            </Table.Tr>
+          ))}
+        </Table.Tbody>
+      </Table>
+      <Group justify="flex-end">
+        <Button size="compact-xs" variant="subtle" loading={view.isFetching} onClick={() => view.refetch()}>
+          {t('epos.uzcard.again')}
+        </Button>
+      </Group>
+    </Stack>
   );
 }

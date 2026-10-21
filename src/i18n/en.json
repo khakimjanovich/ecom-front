@@ -405,7 +405,28 @@
       "RESUMED": "Resumed",
       "REVOKED": "Revoked"
     },
-    "revokeHint": "A revoked MID/TID never comes back. Say why, for the audit."
+    "revokeHint": "A revoked MID/TID never comes back. Say why, for the audit.",
+    "revokedAtUzcard": "Revoked here and removed from Uzcard",
+    "notRevoked": "Not revoked",
+    "revokeUzcardHint": "A revoked MID/TID never comes back. It is removed from Uzcard first; if Uzcard refuses or doesn't answer, nothing changes, and you can suspend it meanwhile. Say why, for the audit.",
+    "notRegistered": "Not registered",
+    "uzcard": {
+      "title": "At Uzcard",
+      "check": "Check at Uzcard",
+      "checking": "Asking Uzcard…",
+      "again": "Ask again",
+      "agrees": "Uzcard agrees with our record.",
+      "missing": "Uzcard doesn't have this e-POS terminal, so its payments will fail. Register it again or revoke it.",
+      "leftover": "Revoked here, but Uzcard still has it. Ask Uzcard to remove it.",
+      "registerHint": "It is registered at Uzcard first, and kept only if Uzcard accepts it.",
+      "username": "Login",
+      "name": "Name",
+      "type": "Type",
+      "purpose": "Purpose",
+      "port": "Port",
+      "instId": "Institution",
+      "pid": "Uzcard id"
+    }
   },
   "cards": {
     "title": "Cards",

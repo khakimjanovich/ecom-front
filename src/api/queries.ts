@@ -399,6 +399,15 @@ export const useEposAudit = (eposId: string, enabled = true) =>
     enabled,
   });
 
+/** SV-Gate's view of a UZCARD e-POS terminal; asked only when an admin opens the check. */
+export const useEposUzcard = (eposId: string, enabled: boolean) =>
+  useQuery({
+    queryKey: ['epos', 'uzcard', eposId],
+    queryFn: () => call(eposApi.GET('/api/v1/admin/epos/{eposId}/uzcard', { params: { path: { eposId } } })),
+    enabled,
+    retry: false,
+  });
+
 export type EposAction = 'suspend' | 'resume' | 'revoke';
 
 /** Registering and every status change refresh every epos list and audit trail. */

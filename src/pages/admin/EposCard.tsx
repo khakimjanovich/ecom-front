@@ -1,5 +1,6 @@
 import {
   ActionIcon,
+  Alert,
   Button,
   Card,
   Code,
@@ -18,7 +19,8 @@ import { useTranslation } from 'react-i18next';
 import type { SalesPoint, Epos } from '../../api/client';
 import { useRegisterEpos, useEposList } from '../../api/queries';
 import { EposActions, EposHistory, EposStatusBadge } from '../../components/EposControls';
-import { notifyError, notifySuccess } from '../../lib/notify';
+import { messageFor } from '../../api/errors';
+import { notifySuccess } from '../../lib/notify';
 
 const ID = /^[A-Za-z0-9]{1,30}$/;
 
@@ -88,7 +90,6 @@ export function EposCard({ salesPoint }: { salesPoint: SalesPoint }) {
                 form.setValues({ merchantId: '', terminalId: '' });
                 notifySuccess(t('epos.registered'));
               },
-              onError: notifyError,
             },
           ),
         )}
@@ -103,6 +104,11 @@ export function EposCard({ salesPoint }: { salesPoint: SalesPoint }) {
           <TextInput label={t('epos.mid')} {...form.getInputProps('merchantId')} />
           <TextInput label={t('epos.tid')} {...form.getInputProps('terminalId')} />
         </Group>
+        {register.isError && (
+          <Alert color="red" title={t('epos.notRegistered')} mt="sm">
+            {messageFor(register.error)}
+          </Alert>
+        )}
         <Group justify="flex-end" mt="sm">
           <Button
             type="submit"
