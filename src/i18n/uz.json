@@ -582,6 +582,7 @@
     "amount": "Toʻlov summasi",
     "number": "Karta raqami",
     "expiry": "Amal qilish muddati",
+    "expiryHint": "Kartadagi oy va yil, masalan 12/28",
     "sendCode": "Telefonimga kod yuborish",
     "cardAttempts_one": "Karta kiritish uchun {{count}} ta urinish qoldi",
     "cardAttempts_other": "Karta kiritish uchun {{count}} ta urinish qoldi",

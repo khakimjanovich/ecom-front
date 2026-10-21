@@ -582,6 +582,7 @@
     "amount": "To pay",
     "number": "Card number",
     "expiry": "Valid until",
+    "expiryHint": "Month and year as printed on the card, for example 12/28",
     "sendCode": "Send a code to my phone",
     "cardAttempts_one": "{{count}} card attempt left",
     "cardAttempts_other": "{{count}} card attempts left",

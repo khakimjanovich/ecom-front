@@ -40,6 +40,8 @@ const digitsOnly = (value: string) => value.replace(/\D/g, '');
 const grouped = (digits: string) => digits.replace(/(\d{4})(?=\d)/g, '$1 ');
 /** People type MM/YY; the API takes YYMM. */
 const toExpiry = (mmyy: string) => (mmyy.length === 4 ? mmyy.slice(2) + mmyy.slice(0, 2) : '');
+/** A month the card can carry: 01–12. */
+const validMonth = (mmyy: string) => /^(0[1-9]|1[0-2])/.test(mmyy);
 
 /** The bank's payment page: the buyer types the card here, never on the shop's site. */
 export function PayPage() {
@@ -165,7 +167,8 @@ function CardStep({ token, page }: { token: string; page: PaymentPage }) {
   const submit = useSubmitCard(token);
   const [number, setNumber] = useState('');
   const [expiry, setExpiry] = useState('');
-  const ready = number.length === 16 && expiry.length === 4;
+  const expiryWrong = expiry.length === 4 && !validMonth(expiry);
+  const ready = number.length === 16 && expiry.length === 4 && !expiryWrong;
   return (
     <form
       onSubmit={(e) => {
@@ -196,10 +199,18 @@ function CardStep({ token, page }: { token: string; page: PaymentPage }) {
           inputMode="numeric"
           autoComplete="cc-exp"
           w={120}
+          error={expiryWrong && t('pay.expiryHint')}
           value={expiry.length > 2 ? `${expiry.slice(0, 2)}/${expiry.slice(2)}` : expiry}
           onChange={(e) => setExpiry(digitsOnly(e.currentTarget.value).slice(0, 4))}
         />
-        {submit.isError && <Alert color="red">{messageFor(submit.error)}</Alert>}
+        {submit.isError && (
+          <Alert color="red">
+            {/* The API names its own YYMM format; the buyer typed MM/YY. */}
+            {submit.error instanceof ApiError && submit.error.code === 'CARD_EXPIRY_INVALID'
+              ? t('pay.expiryHint')
+              : messageFor(submit.error)}
+          </Alert>
+        )}
         <Text size="xs" c="dimmed">
           {t('pay.cardAttempts', { count: page.cardAttemptsLeft })}
         </Text>
