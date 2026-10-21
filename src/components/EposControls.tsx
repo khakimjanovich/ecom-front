@@ -116,6 +116,7 @@ export function UzcardCheck({ epos }: { epos: Epos }) {
   const { t } = useTranslation();
   const [asked, setAsked] = useState(false);
   const view = useEposUzcard(epos.id, asked);
+  const act = useEposAction();
   if (!asked) {
     return (
       <Button size="xs" variant="light" onClick={() => setAsked(true)}>
@@ -129,6 +130,24 @@ export function UzcardCheck({ epos }: { epos: Epos }) {
   return (
     <Stack gap="xs">
       <Alert color={verdict === 'agrees' ? 'green' : 'red'}>{t(`epos.uzcard.${verdict}`)}</Alert>
+      {verdict === 'missing' && (
+        <Group>
+          {/* Success refreshes every e-POS query, so this check asks Uzcard again. */}
+          <Button
+            size="xs"
+            color="red"
+            loading={act.isPending}
+            onClick={() =>
+              act.mutate(
+                { eposId: epos.id, kind: 'uzcard' },
+                { onSuccess: () => notifySuccess(t('epos.uzcard.registered')), onError: notifyError },
+              )
+            }
+          >
+            {t('epos.uzcard.register')}
+          </Button>
+        </Group>
+      )}
       <Table withTableBorder fz="xs" verticalSpacing={4}>
         <Table.Thead>
           <Table.Tr>

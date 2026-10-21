@@ -401,6 +401,7 @@
     },
     "action": {
       "REGISTERED": "Registered",
+      "UZCARD_ADDED": "Registered at Uzcard",
       "SUSPENDED": "Suspended",
       "RESUMED": "Resumed",
       "REVOKED": "Revoked"
@@ -416,7 +417,9 @@
       "checking": "Asking Uzcard…",
       "again": "Ask again",
       "agrees": "Uzcard agrees with our record.",
-      "missing": "Uzcard doesn't have this e-POS terminal, so its payments will fail. Register it again or revoke it.",
+      "missing": "Uzcard doesn't have this e-POS terminal, so its payments will fail. Register it at Uzcard; if Uzcard refuses, revoke it.",
+      "register": "Register at Uzcard",
+      "registered": "Registered at Uzcard",
       "leftover": "Revoked here, but Uzcard still has it. Ask Uzcard to remove it.",
       "registerHint": "It is registered at Uzcard first, and kept only if Uzcard accepts it.",
       "username": "Login",

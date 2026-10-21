@@ -408,7 +408,8 @@ export const useEposUzcard = (eposId: string, enabled: boolean) =>
     retry: false,
   });
 
-export type EposAction = 'suspend' | 'resume' | 'revoke';
+/** 'uzcard' registers at Uzcard a UZCARD terminal saved before terminals were sent there. */
+export type EposAction = 'suspend' | 'resume' | 'revoke' | 'uzcard';
 
 /** Registering and every status change refresh every epos list and audit trail. */
 export function useRegisterEpos() {
@@ -445,6 +446,8 @@ export function useEposAction() {
           return call(eposApi.POST('/api/v1/admin/epos/{eposId}/suspend', { ...path, body: { reason } }));
         case 'revoke':
           return call(eposApi.POST('/api/v1/admin/epos/{eposId}/revoke', { ...path, body: { reason } }));
+        case 'uzcard':
+          return call(eposApi.POST('/api/v1/admin/epos/{eposId}/uzcard', path));
       }
     },
     onSuccess: () => queries.invalidateQueries({ queryKey: ['epos'] }),
