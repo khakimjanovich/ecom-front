@@ -603,8 +603,10 @@
     "paid": "Toʻlandi",
     "paidText": "Toʻlov oʻtdi. Operatsiya raqami: {{rrn}}.",
     "declined": "Toʻlov rad etildi",
-    "unknown": "Toʻlovni bankingiz bilan tekshirmoqdamiz",
-    "unknownText": "Bankingiz oʻz vaqtida javob bermadi. Qayta toʻlamang: doʻkonga natija xabar qilinadi.",
+    "processing": "Ishlov berilmoqda…",
+    "processingText": "Bankingiz toʻlovni tasdiqlamoqda.",
+    "unknown": "Toʻlovingizni tasdiqlamoqdamiz",
+    "unknownText": "Qayta toʻlamang. Natija bir necha daqiqa ichida SMS orqali keladi.",
     "decline": {
       "CARD_INSUFFICIENT_FUNDS": "Kartada mablagʻ yetarli emas.",
       "CARD_EXPIRED": "Karta muddati tugagan.",
