@@ -25,7 +25,7 @@ import {
   IconCreditCard,
   IconLock,
 } from '@tabler/icons-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router';
 import { ApiError, type PaymentPage } from '../../api/client';
@@ -43,11 +43,23 @@ const toExpiry = (mmyy: string) => (mmyy.length === 4 ? mmyy.slice(2) + mmyy.sli
 /** A month the card can carry: 01–12. */
 const validMonth = (mmyy: string) => /^(0[1-9]|1[0-2])/.test(mmyy);
 
+/** How long the page asks for the result of an unanswered debit when the API doesn't say. */
+const DEFAULT_RESULT_WINDOW_SECONDS = 5;
+
 /** The bank's payment page: the buyer types the card here, never on the shop's site. */
 export function PayPage() {
   const { t } = useTranslation();
   const { token = '' } = useParams();
-  const page = usePaymentPage(token);
+  const [windowOver, setWindowOver] = useState(false);
+  const page = usePaymentPage(token, !windowOver);
+  const waiting = page.data?.status === 'UNKNOWN';
+  const windowSeconds = page.data?.resultWindowSeconds ?? DEFAULT_RESULT_WINDOW_SECONDS;
+  // The debit got no answer: the bank keeps asking, and the page shows what it learns until the window ends.
+  useEffect(() => {
+    if (!waiting) return;
+    const timer = setTimeout(() => setWindowOver(true), windowSeconds * 1_000);
+    return () => clearTimeout(timer);
+  }, [waiting, windowSeconds]);
 
   return (
     <Container size={460} py={40}>
@@ -67,7 +79,7 @@ export function PayPage() {
           </Center>
         )}
         {page.isError && <Closed title={closedTitle(page.error, t)} text={messageFor(page.error)} />}
-        {page.data && <PageBody token={token} page={page.data} />}
+        {page.data && <PageBody token={token} page={page.data} windowOver={windowOver} />}
       </Paper>
     </Container>
   );
@@ -76,7 +88,7 @@ export function PayPage() {
 const closedTitle = (error: unknown, t: (key: string) => string) =>
   error instanceof ApiError && error.status === 410 ? t('pay.expired') : t('pay.notFound');
 
-function PageBody({ token, page }: { token: string; page: PaymentPage }) {
+function PageBody({ token, page, windowOver }: { token: string; page: PaymentPage; windowOver: boolean }) {
   const { t } = useTranslation();
   return (
     <Stack>
@@ -134,7 +146,10 @@ function PageBody({ token, page }: { token: string; page: PaymentPage }) {
           text={t(page.status === 'RETURNING' ? 'pay.returningText' : 'pay.returnedText')}
         />
       )}
-      {(page.status === 'UNKNOWN' || page.status === 'MANUAL_REVIEW') && (
+      {page.status === 'UNKNOWN' && !windowOver && (
+        <Done icon={<Loader />} title={t('pay.processing')} text={t('pay.processingText')} />
+      )}
+      {((page.status === 'UNKNOWN' && windowOver) || page.status === 'MANUAL_REVIEW') && (
         <Done
           icon={<IconClockHour4 size={44} color="var(--mantine-color-yellow-6)" />}
           title={t('pay.unknown')}

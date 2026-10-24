@@ -603,8 +603,10 @@
     "paid": "Paid",
     "paidText": "The payment went through. Reference number: {{rrn}}.",
     "declined": "Payment declined",
-    "unknown": "We are checking the payment with your bank",
-    "unknownText": "Your bank didn't answer in time. Don't pay again: the shop will be told how it ended.",
+    "processing": "Processing…",
+    "processingText": "Your bank is confirming the payment.",
+    "unknown": "We're confirming your payment",
+    "unknownText": "Don't pay again. You'll get the result by SMS within a few minutes.",
     "decline": {
       "CARD_INSUFFICIENT_FUNDS": "There isn't enough money on the card.",
       "CARD_EXPIRED": "The card has expired.",

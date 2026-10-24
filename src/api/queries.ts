@@ -569,14 +569,18 @@ export const fetchDailyPayments = (day: string) =>
 const pageOf = (token: string) => ({ params: { path: { token } } });
 
 /** Keyed by language too: the bank's name comes back in it. */
-export const usePaymentPage = (token: string) =>
+/** While the bank is still asking the scheme, the page checks again on its own: every second in the result window. */
+export const usePaymentPage = (token: string, inResultWindow: boolean) =>
   useQuery({
     queryKey: ['pay', token, currentLanguage()],
     queryFn: () => call(paymentApi.GET('/api/v1/pay/{token}', pageOf(token))),
     retry: false,
-    // While the bank is still asking the scheme, the page checks again on its own.
     refetchInterval: (query) =>
-      ['DEBITING', 'UNKNOWN'].includes(query.state.data?.status ?? '') ? 5_000 : false,
+      ['DEBITING', 'UNKNOWN'].includes(query.state.data?.status ?? '')
+        ? inResultWindow
+          ? 1_000
+          : 5_000
+        : false,
   });
 
 export function useSubmitCard(token: string) {
