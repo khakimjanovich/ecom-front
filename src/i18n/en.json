@@ -470,6 +470,7 @@
   "payments": {
     "title": "Payments",
     "description": "Payments merchants' servers created, newest first.",
+    "all": "All payments",
     "merchant": "Merchant",
     "allMerchants": "All merchants",
     "order": "Order",
@@ -497,7 +498,25 @@
     },
     "fee": "Fee {{fee}}",
     "card": "Card",
-    "link": "Payment link"
+    "link": "Payment link",
+    "review": {
+      "tab": "Needs review",
+      "age": "Waiting",
+      "empty": "Nothing to review",
+      "emptyText": "Payments the card scheme did not answer show up here until they are settled.",
+      "debited": "Debited",
+      "notDebited": "Not debited",
+      "debitedTitle": "The scheme took the money",
+      "notDebitedTitle": "The scheme has no such debit",
+      "debitedText": "Order {{order}}, {{amount}}. It becomes Paid while its payment page is open; after that the money goes back to the card.",
+      "notDebitedText": "Order {{order}}, {{amount}}. It becomes Declined, and the merchant is told.",
+      "reference": "The scheme's reference for the debit",
+      "referenceRequired": "Enter the scheme's reference",
+      "note": "Note",
+      "noteHint": "Who at the scheme confirmed it, and how. Saved in the audit trail.",
+      "confirm": "Resolve",
+      "resolved": "Resolved: {{status}}"
+    }
   },
   "eposPage": {
     "title": "e-POS terminals",

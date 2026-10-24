@@ -11,6 +11,7 @@ import {
   type CommissionSchemas,
   type PartnerStatus,
   type PaymentLinkRequest,
+  type PaymentResolution,
   type Schemas,
 } from './client';
 
@@ -511,6 +512,28 @@ export const usePayments = (partnerId: string | null) =>
       ),
     placeholderData: keepPreviousData,
   });
+
+/** Payments the scheme left without an answer, oldest first: still being checked, or for a person. */
+export const usePaymentsToReview = () =>
+  useQuery({
+    queryKey: ['payments', 'review'],
+    queryFn: () => call(paymentApi.GET('/api/v1/admin/payments/review')),
+  });
+
+/** A person's decision on a MANUAL_REVIEW payment, after checking with the scheme. */
+export function useResolvePayment() {
+  const queries = useQueryClient();
+  return useMutation({
+    mutationFn: ({ paymentId, ...body }: PaymentResolution & { paymentId: string }) =>
+      call(
+        paymentApi.POST('/api/v1/admin/payments/{paymentId}/resolution', {
+          params: { path: { paymentId } },
+          body,
+        }),
+      ),
+    onSuccess: () => queries.invalidateQueries({ queryKey: ['payments'] }),
+  });
+}
 
 /* ------- payment links (the merchant's portal) ------- */
 

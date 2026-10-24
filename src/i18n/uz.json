@@ -470,6 +470,7 @@
   "payments": {
     "title": "Toʻlovlar",
     "description": "Sotuvchilar serverlari yaratgan toʻlovlar, avval yangilari.",
+    "all": "Barcha toʻlovlar",
     "merchant": "Sotuvchi",
     "allMerchants": "Barcha sotuvchilar",
     "order": "Buyurtma",
@@ -497,7 +498,25 @@
     },
     "fee": "Komissiya {{fee}}",
     "card": "Karta",
-    "link": "Toʻlov havolasi"
+    "link": "Toʻlov havolasi",
+    "review": {
+      "tab": "Tekshiruvda",
+      "age": "Kutmoqda",
+      "empty": "Tekshiradigan narsa yoʻq",
+      "emptyText": "Toʻlov tizimi javob bermagan toʻlovlar hal boʻlguncha shu yerda koʻrinadi.",
+      "debited": "Yechilgan",
+      "notDebited": "Yechilmagan",
+      "debitedTitle": "Toʻlov tizimi pulni yechgan",
+      "notDebitedTitle": "Toʻlov tizimida bunday yechish yoʻq",
+      "debitedText": "Buyurtma {{order}}, {{amount}}. Toʻlov sahifasi ochiq boʻlsa, toʻlangan boʻladi; undan keyin pul kartaga qaytariladi.",
+      "notDebitedText": "Buyurtma {{order}}, {{amount}}. Toʻlov rad etiladi va doʻkonga xabar beriladi.",
+      "reference": "Toʻlov tizimidagi yechish identifikatori",
+      "referenceRequired": "Toʻlov tizimi identifikatorini kiriting",
+      "note": "Izoh",
+      "noteHint": "Toʻlov tizimida kim va qanday tasdiqlagan. Jurnalda saqlanadi.",
+      "confirm": "Hal qilish",
+      "resolved": "Hal qilindi: {{status}}"
+    }
   },
   "eposPage": {
     "title": "e-POS terminallar",
