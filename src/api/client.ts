@@ -25,6 +25,7 @@ export type UzcardTerminal = eposComponents['schemas']['UzcardTerminalResponse']
 export type BinRange = binComponents['schemas']['BinResponse'];
 export type StoredCard = cardComponents['schemas']['CardResponse'];
 export type AdminPayment = paymentComponents['schemas']['PaymentAdminResponse'];
+export type PaymentResolution = paymentComponents['schemas']['PaymentResolutionRequest'];
 export type PaymentPage = paymentComponents['schemas']['PaymentPage'];
 export type PaymentStatus = paymentComponents['schemas']['PaymentStatus'];
 export type PaymentLinkRequest = paymentComponents['schemas']['PaymentLinkRequest'];
